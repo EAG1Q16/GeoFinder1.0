@@ -33,8 +33,14 @@ GeoFinderApp.config(['$routeProvider', function($routeProvider){
         })
         .otherwise({
             redirectTo: '/index'
+        })
+    .when('/adventures', {
+        templateUrl: './views/adventures.html',
+        controller: 'AdventuresCtrl'
+        })
+        .otherwise({
+            redirectTo: '/index'
         });
-
 }]);
 
 

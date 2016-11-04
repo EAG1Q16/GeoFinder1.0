@@ -1,0 +1,49 @@
+<div class="adventures-panel row" ng-controller="AdventuresCtrl">
+    <div class="panel panel-primary">
+        <!-- Default panel contents -->
+        <div class="panel-heading panel-heading-adventures">Aventuras Registradas</div>
+        <div class="panel-body">
+            <div class="col-sm-2">
+                <label>Nombre:</label>
+                <input class="form-control" type="text" ng-model="NewAdventure.name" required>
+            </div>
+            <div class="col-sm-4">
+                <label>Descripción:</label>
+                <input class="form-control" type="text" ng-model="NewAdventure.description" required>
+            </div>
+            <div class="col-sm-2">
+                <label>Dificultad:</label>
+                <input class="form-control" type="text" ng-model="NewAdventure.difficulty" required>
+            </div>
+            <div class="col-sm-2">
+                <label>Punto Inicial:</label>
+                <input class="form-control" type="text" ng-model="NewAdventure.initialPoint" required>
+            </div>
+            <div class="col-sm-2">
+                <button type="button" class="btn btn-success btn-block" ng-click="CreateAdventure()" ng-disabled="!NewAdventure.name || !NewAdventure.description || !NewAdventure.description || !NewAdventure.initialPoint || selected">Crear nueva Aventura</button>
+            </div>
+        </div>
+        <!-- Table -->
+        <table class="table">
+            <tr class="info">
+                <td>Nombre</td>
+                <td>Descripción</td>
+                <td>Dificultad</td>
+                <td>Punto Inicial</td>
+                <td>Acciones</td>
+                <td></td>
+            </tr>
+            <tr ng-repeat="adventure in adventures | orderBy:'name'">
+                <td>{{adventure.name}}</td>
+                <td>{{adventure.description}}</td>
+                <td>{{adventure.difficulty}}</td>
+                <td>{{adventure.initialPoint}}</td>
+                <td><button class="btn btn-danger" ng-click="DeleteAdventure(adventure._id)">Eliminar</button></td>
+            </tr>
+        </table>
+
+        <ui-gmap-google-map center="map.center" zoom="map.zoom"></ui-gmap-google-map>
+
+    </div>
+
+</div>

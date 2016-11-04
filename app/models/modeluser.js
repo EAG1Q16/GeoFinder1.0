@@ -37,7 +37,10 @@ var UserSchema = mongoose.Schema({
     },
     registerdate: {
         type : Date, default: Date.now
-    }
+    },
+    adventures: [
+        {type: mongoose.Schema.Types.ObjectId, ref: 'Adventures' }
+    ]
 
 
 });
