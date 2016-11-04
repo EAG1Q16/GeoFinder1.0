@@ -21,6 +21,7 @@
     "passport-facebook": "^2.1.1",
     "passport-local": "^1.0.0",
     "passport-twitter": "^1.0.4",
-    "serve-favicon": "~2.3.0"
+    "serve-favicon": "~2.3.0",
+    "forever": "^0.15.3"
   }
 }
