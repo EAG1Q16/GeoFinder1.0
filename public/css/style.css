@@ -1,0 +1,53 @@
+/*----------------Body Style-------------------*/
+body {
+  font: 14px "Monospaced", Helvetica, Arial, sans-serif;
+  font-family: Montserrat, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+/*----------------Navbar Style-------------------*/
+
+#navbarstyle.navbar-default{
+  background-color: #00ADB5;
+  border-bottom-color: #00ADB5;
+}
+#navbarstyle.navbar-default .navbar-brand{
+  color: white;
+}
+
+#imgbrand{
+  height:  35px;
+  margin-top: -7px;
+  margin-right:5px;
+}
+
+/*----------Footer Style-----------*/
+#Footer{
+  background-color: #00ADB5;
+  color: white;
+}
+
+/*-------------------------------Global Styles-------------------------------------*/
+
+/*----------Input Style-----------*/
+.InputStyle{
+  border-radius: 2%;
+}
+
+.ButtonStyle{
+  border-radius: 2%;
+}
+
+/*---------Back containers colors------*/
+.bg-blue{
+  background-color: #00ADB5;
+  color: white;
+}
+
+
+
+
+
