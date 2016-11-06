@@ -1,7 +1,7 @@
 /**
  * Created by tonim on 05/10/2016.
  */
-var GeoFinderApp = angular.module('GeoFinderApp', ['ngRoute']);
+var GeoFinderApp = angular.module('GeoFinderApp', ['ngRoute','uiGmapgoogle-maps']);
 
 GeoFinderApp.config(['$routeProvider', function($routeProvider){
 
@@ -40,7 +40,35 @@ GeoFinderApp.config(['$routeProvider', function($routeProvider){
         })
         .otherwise({
             redirectTo: '/index'
+        })
+    .when('/maps', {
+        templateUrl: './views/maps.html',
+        controller: 'MapsCtrl'
+    })
+        .otherwise({
+            redirectTo: '/index'
         });
 }]);
+
+
+
+/*
+GeoFinderApp.config(
+    ['uiGmapGoogleMapApiProvider', function(GoogleMapApiProviders) {
+        GoogleMapApiProviders.configure({
+            china: true
+        });
+    }],
+    function(uiGmapGoogleMapApiProvider) {
+            uiGmapGoogleMapApiProvider.configure({
+                key: 'AIzaSyB82JOzgkrMP_ViC8v3aE9P2VHEWX5aaAE',
+                v: '3', //defaults to latest 3.X anyhow
+                libraries: 'weather,geometry,visualization'
+            });
+        }
+);
+ */
+
+
 
 
