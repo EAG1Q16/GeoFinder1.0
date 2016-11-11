@@ -7,13 +7,14 @@
 var app = require('../app');
 var debug = require('debug')('Beta:server');
 var fs = require('fs');
+var http = require('http');
 var https = require('https');
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '80');
+var port = normalizePort(process.env.PORT || '443');
 app.set('port', port);
 
 /**
@@ -21,8 +22,8 @@ app.set('port', port);
  */
 
 var server = https.createServer({
-      key: fs.readFileSync('geofinder.key'),
-      cert: fs.readFileSync('geofinder.crt')
+      key: fs.readFileSync('bin/geofinder.key'),
+      cert: fs.readFileSync('bin/geofinder.crt')
     },
     app);
 
@@ -33,6 +34,11 @@ var server = https.createServer({
 server.listen(port);
 console.log("Server Running in port:" + port);
 
+// Redirect from http port 80 to https
+http.createServer(function (req, res) {
+    res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
+    res.end();
+}).listen(80);
 /**
  * Normalize a port into a number, string, or false.
  */
