@@ -17,7 +17,6 @@ router.get('/', function(req, res) {
         res.json(adventures);
     });
 });
-
 // Create an Adventure
 router.post('/createadventure/', function(req, res) {
     Adventures.create({

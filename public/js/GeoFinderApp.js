@@ -7,8 +7,7 @@ GeoFinderApp.config(['$routeProvider', function($routeProvider){
 
     $routeProvider
         .when('/index', {
-            templateUrl: './views/home.html',
-            controller: 'HomeCtrl'
+            templateUrl: './views/home.html'
         })
         .otherwise({
             redirectTo: '/index'
