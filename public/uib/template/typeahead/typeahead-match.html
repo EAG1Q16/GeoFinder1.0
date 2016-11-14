@@ -1,0 +1,20 @@
+<!--
+<a>
+
+    <span ng-bind-html="match.label | uibTypeaheadHighlight:query"></span>&middot;
+
+</a>
+-->
+<a href="">
+    <div class="row">
+        <div class="col-md-3" style="position:relative;">
+            <span style="cursor:pointer;"> <img src="{{match.label.imgurl}}" height="35" width="35"></span>
+        </div>
+        <div class="col-md-9">
+            <span ng-if="match.label.fullname!== undefined" style="display:block; cursor:pointer;" ng-bind-html="match.label.fullname | uibTypeaheadHighlight:query"></span>
+            <span style="cursor:pointer;" ng-bind-html="match.label.username | uibTypeaheadHighlight:query"></span> &middot;
+            <span ng-if="match.label.email!== undefined" style="cursor:pointer;"ng-bind-html="match.label.email| uibTypeaheadHighlight:query"></span>
+        </div>
+    </div>
+
+</a>
