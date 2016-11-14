@@ -48,6 +48,20 @@ GeoFinderApp.config(['$routeProvider', function($routeProvider){
     })
         .otherwise({
             redirectTo: '/index'
+        })
+    .when('/adventureprofile/:id', {
+            templateUrl: './views/adventureProfile.html',
+            controller: 'PublicAdventureProfileCtrl'
+        })
+        .otherwise({
+            redirectTo: '/index'
+        })
+    .when('/userprofile/:id', {
+        templateUrl: './views/publicUserProfile.html',
+        controller: 'PublicUserProfileCtrl'
+    })
+        .otherwise({
+            redirectTo: '/index'
         });
     
 }]);
