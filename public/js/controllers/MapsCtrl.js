@@ -12,11 +12,10 @@ angular.module('GeoFinderApp').controller('MapsCtrl',['$scope','$http','uiGmapGo
         styles: BlackMap,
         scrollwheel: false
     };
-
-    $scope.map = { center: { latitude: 45, longitude: -73 }, zoom: 16 };
     /**
      *need to do $scope.$apply to trigger the digest cycle when the geolocation arrives and to update all the watchers.
      */
+    $scope.map = { center: { latitude: 0.1, longitude: 0.1 }, zoom: 2 };
 
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position){
@@ -63,6 +62,9 @@ angular.module('GeoFinderApp').controller('MapsCtrl',['$scope','$http','uiGmapGo
             });
         });
     }
+    else if (!navigator.geolocation){
+        $window.alert("No se ha permitido el acceso a la posición del usuario.");
+    }
 
     $scope.CreateAdventure = function(){
         $scope.NewAdventure.location_type = 'Point';
@@ -98,5 +100,37 @@ angular.module('GeoFinderApp').controller('MapsCtrl',['$scope','$http','uiGmapGo
                 $scope.stylemap = "Night";
                 break;
         }
-    }
+    };
+
+
+    $scope.PrintMarkersAdventuresMap = function () {
+
+        var markersAdventures = [];
+        $http.get('/adventures/')
+            .success(function (data) {
+                angular.forEach(data, function (value, key) {
+                    markersAdventures.push(
+                        {
+                            id: value._id,
+                            latitude: value.location.coordinates[1],
+                            longitude: value.location.coordinates[0],
+                            showWindow: false,
+                            options: {
+                                animation: 1,
+                                title: value.name,
+                                labelAnchor: "26 0",
+                                labelClass: "marker-labels"
+                            }
+                        }
+                    );
+                });
+                console.log(markersAdventures);
+            })
+            .error(function (data) {
+            })
+
+            $scope.map.markerAdventures = markersAdventures;
+    };
+
+
 }]);
