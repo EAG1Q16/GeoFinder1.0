@@ -3,12 +3,12 @@
         <div class="row">
         <div class="card hovercard">
             <div class="card-background">
-                <img class="card-bkimg" alt="" src="http://georgia.travel/uploads/2015/01/bg1small-1.jpg">
+                <img class="card-bkimg" alt="" ng-src={{UserProfileInfo.photo}}>
             </div>
             <div class="useravatar">
-                <img alt="" src="http://i.imgur.com/LFkRLpr.png">
+                <img alt="" ng-src={{UserProfileInfo.photo}}>
             </div>
-            <div class="card-info"> <span class="card-title">Pamela Anderson</span>
+            <div class="card-info"> <span class="card-title">{{UserProfileInfo.username}}</span>
 
             </div>
         </div>

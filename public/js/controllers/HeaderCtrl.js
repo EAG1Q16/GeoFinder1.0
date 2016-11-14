@@ -39,7 +39,7 @@ if ($scope.selectedUser.ID = 1){
     
     $scope.onSelect = function ($item, $model, $label) {
 
-        window.location.href = "#/profile/" + $model.username;
+        //$location.path('/profile/'+ $model.username);
         $scope.$item = $item;
         $scope.$model = $model;
         $scope.$label = $label;
@@ -74,7 +74,7 @@ if ($scope.selectedUser.ID = 2){
 
     $scope.onSelect = function ($item, $model, $label) {
 
-        window.location.href = "#/profileAventure/" + $model.name;
+        window.location.href = "#/adventureProfile/" + $model._id;
         $scope.$item = $item;
         $scope.$model = $model;
         $scope.$label = $label;

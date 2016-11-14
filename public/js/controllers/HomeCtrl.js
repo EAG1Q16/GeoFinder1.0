@@ -12,7 +12,7 @@ angular.module('GeoFinderApp').controller('HomeCtrl',['$scope','$location','$roo
         });
 
     $scope.Searcher = function() {
-        $window.location.href= "#/adventures";
+        $location.path('/adventures');
     };
 
 }]);

@@ -76,6 +76,15 @@ router.delete('/removeadventure/:adventure_id', function(req, res) {
     });
 });
 
+//GEt adventure by ID
+router.get('/id/:adv_id', function(req, res){
+    Adventures.findById(req.params.adv_id, function(err, adventure){
+        if(err)
+            res.send(err)
+        res.send(adventure);
+    });
+});
+
 
 
 
