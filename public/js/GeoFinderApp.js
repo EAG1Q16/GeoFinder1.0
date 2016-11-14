@@ -1,11 +1,8 @@
 /**
  * Created by tonim on 05/10/2016.
  */
-<<<<<<< HEAD
-var GeoFinderApp = angular.module('GeoFinderApp', ['ngRoute','ui.bootstrap']);
-=======
-var GeoFinderApp = angular.module('GeoFinderApp', ['ngRoute','uiGmapgoogle-maps']);
->>>>>>> origin
+
+var GeoFinderApp = angular.module('GeoFinderApp', ['ngRoute','uiGmapgoogle-maps','ui.bootstrap']);
 
 GeoFinderApp.config(['$routeProvider', function($routeProvider){
 
