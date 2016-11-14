@@ -1,7 +1,4 @@
-/**
- * Created by tonim on 14/11/2016.
- */
-angular.module('GeoFinderApp').controller('HomeCtrl',['$scope','$location','$rootScope','$http','$routeParams', function($scope, $location, $rootScope, $http, $routeParams){
+angular.module('GeoFinderApp').controller('HomeCtrl',['$scope','$location','$rootScope','$http','$routeParams', '$window', function($scope, $location, $rootScope, $http, $routeParams, $window){
 
     // when landing on the page get user
     $http.get('/user/sessionid')
@@ -13,5 +10,9 @@ angular.module('GeoFinderApp').controller('HomeCtrl',['$scope','$location','$roo
         .error(function(data) {
             console.log('not logged');
         });
+
+    $scope.Searcher = function() {
+        $window.location.href= "#/adventures";
+    };
 
 }]);

@@ -5,10 +5,11 @@
     <h1>Aventuras</h1>
         <div class="col-md-3"></div>
     <div class="input-group col-md-6">
-        <input type="text" class="form-control InputStyle" size="60" placeholder="Buscar por Localidad" required>
+        <input type="text" class="form-control InputStyle" size="60" placeholder="Buscar una aventura o usuario" ng-model="search.$" required>
         <span class="input-group-btn">
-        <button type="button" class="btn btn-info ButtonStyle">Buscar!</button>
+        <button type="button" class="btn btn-info ButtonStyle" ng-click="Searcher()">Buscar!</button>
         </span>
+
     </div>
         <div class="col-md-3"></div>
     </div>

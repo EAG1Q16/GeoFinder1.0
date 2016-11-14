@@ -191,9 +191,22 @@ function isLoggedIn(req, res, next) {
 
 //route for get the seesion id in the front
 router.get('/sessionid', isLoggedIn, function(req, res) {
-    console.log('profile:' + req.user)
+    console.log('profile:' + req.user);
     res.send(req.user);
+});
+
+router.get('/', function(req, res) {
+
+    User.find(function (err, user) {
+        if (err)
+            res.send(err);
+        res.json(user);
+ 
+    });
 
 });
 
 module.exports = router;
+
+
+

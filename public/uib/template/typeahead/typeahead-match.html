@@ -1,0 +1,11 @@
+<a href="">
+    <div class="row">
+        <div class="col-md-9">
+            <span style="cursor:pointer;" ng-bind-html="match.label.username | uibTypeaheadHighlight:query"></span> &middot;
+            <span ng-if="match.label.email!== undefined" style="cursor:pointer;"ng-bind-html="match.label.email| uibTypeaheadHighlight:query"></span>
+
+        </div>
+    </div>
+
+</a>
+

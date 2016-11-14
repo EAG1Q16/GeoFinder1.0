@@ -17,7 +17,6 @@ router.get('/', function(req, res) {
         res.json(adventures);
     });
 });
-
 // Create an Adventure
 router.post('/createadventure/', function(req, res) {
     Adventures.create({
@@ -76,6 +75,8 @@ router.delete('/removeadventure/:adventure_id', function(req, res) {
         res.json(adventures);
     });
 });
+
+
 
 
 module.exports = router;

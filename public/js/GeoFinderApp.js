@@ -1,17 +1,19 @@
 /**
  * Created by tonim on 05/10/2016.
  */
-var GeoFinderApp = angular.module('GeoFinderApp', ['ngRoute','uiGmapgoogle-maps']);
+
+var GeoFinderApp = angular.module('GeoFinderApp', ['ngRoute','uiGmapgoogle-maps','ui.bootstrap']);
 
 GeoFinderApp.config(['$routeProvider', function($routeProvider){
 
     $routeProvider
-        .when('/index', {
-            templateUrl: './views/home.html',
+    .when('/index', {
+        templateUrl: './views/home.html',
+        controller: 'HomeCtrl'
         })
         .otherwise({
             redirectTo: '/index'
-        })
+    })
     .when('/login', {
         templateUrl: './views/login.html',
         controller: 'LoginCtrl'
@@ -36,7 +38,7 @@ GeoFinderApp.config(['$routeProvider', function($routeProvider){
     .when('/adventures', {
         templateUrl: './views/adventures.html',
         controller: 'AdventuresCtrl'
-        })
+    })
         .otherwise({
             redirectTo: '/index'
         })
@@ -47,6 +49,7 @@ GeoFinderApp.config(['$routeProvider', function($routeProvider){
         .otherwise({
             redirectTo: '/index'
         });
+    
 }]);
 
 

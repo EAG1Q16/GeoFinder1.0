@@ -87,3 +87,4 @@ app.use('/user', users);
 app.use('/adventures', adventures);
 
 module.exports = app;
+
