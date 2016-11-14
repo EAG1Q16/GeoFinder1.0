@@ -17,14 +17,17 @@ router.get('/', function(req, res) {
         res.json(adventures);
     });
 });
-
 // Create an Adventure
 router.post('/createadventure/', function(req, res) {
     Adventures.create({
         name:req.body.name,
         description:req.body.description,
         difficulty:req.body.difficulty,
-        initialPoint: req.body.initialPoint,
+        location:
+        {
+             type: req.body.location_type,
+             coordinates: req.body.location_coordinates
+        }
     }, function(err, adv) {
         if (err)
             res.send(err);

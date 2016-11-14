@@ -16,10 +16,6 @@ router.post('/signup', function(req, res) {
     var email = req.body.email;
     var username = req.body.username;
     var password = req.body.password;
-    console.log(name);
-    console.log(email);
-    console.log(username);
-    console.log(password);
 
     // Validation
     req.checkBody('name', 'Name is required').notEmpty();

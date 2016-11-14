@@ -7,10 +7,17 @@ var adventures = new mongoose.Schema({
     name: String,
     description: String,
     difficulty: String,
-    initialPoint: String
+    location:
+    {
+        type: { type: String },
+        coordinates: []
+    }
 });
 
+adventures.index({location: '2dsphere'});
+
 module.exports = mongoose.model('Adventures', adventures);
+
 
 
 
