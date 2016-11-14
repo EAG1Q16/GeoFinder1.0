@@ -13,8 +13,15 @@
     <link rel="stylesheet" href="libs/components-font-awesome/css/font-awesome.min.css">
 
     <!-- JS -->
+    <script src="libs/jquery/dist/jquery.min.js"></script>
     <script src="libs/angular/angular.min.js"></script>
     <script src="libs/angular-route/angular-route.min.js"></script>
+    <script src="libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="libs/angular-bootstrap/ui-bootstrap.js"></script>
+    <script src="libs/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA074MjSl_vwyccolvnfyB2jnowz7pGK7s"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.17/angular.min.js"></script>
+
 
 
     <!-- ANGULAR CUSTOM -->
@@ -23,10 +30,13 @@
     <script src="js/controllers/LoginCtrl.js"></script>
     <script src="js/controllers/ProfileCtrl.js"></script>
     <script src="js/controllers/AdventuresCtrl.js"></script>
+    <script src="js/controllers/HomeCtrl.js"></script>
+    <script src="js/controllers/HeaderCtrl.js"></script>
 
 </head>
 <body>
-<header ng-include="'views/header.html'"></header>
+<header ng-include="'views/header.html'" ng-controller="HeaderCtrl"></header>
+
 
 <ng-view></ng-view>
 

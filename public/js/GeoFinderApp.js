@@ -1,7 +1,7 @@
 /**
  * Created by tonim on 05/10/2016.
  */
-var GeoFinderApp = angular.module('GeoFinderApp', ['ngRoute']);
+var GeoFinderApp = angular.module('GeoFinderApp', ['ngRoute','ui.bootstrap']);
 
 GeoFinderApp.config(['$routeProvider', function($routeProvider){
 
@@ -37,10 +37,11 @@ GeoFinderApp.config(['$routeProvider', function($routeProvider){
     .when('/adventures', {
         templateUrl: './views/adventures.html',
         controller: 'AdventuresCtrl'
-        })
+    })
         .otherwise({
             redirectTo: '/index'
         });
+    
 }]);
 
 

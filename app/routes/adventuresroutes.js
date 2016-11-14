@@ -74,4 +74,6 @@ router.delete('/removeadventure/:adventure_id', function(req, res) {
 });
 
 
+
+
 module.exports = router;

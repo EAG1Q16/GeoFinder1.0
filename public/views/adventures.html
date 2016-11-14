@@ -1,4 +1,20 @@
-<div class="adventures-panel row" ng-controller="AdventuresCtrl">
+<div class="adventures-panel row">
+    <!--ng-controller="AdventuresCtrl"-->
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="input-group col-md-6">
+        <input type="text" class="form-control InputStyle" size="60" placeholder="Buscar una aventura o usuario" ng-model="search.$" required>
+        <span class="input-group-btn">
+        <button type="button" class="btn btn-info ButtonStyle">Buscar!</button>
+        </span>
+    </div>
+    <br>
+    <br>
+    <br>
+</div>
     <div class="panel panel-primary">
         <!-- Default panel contents -->
         <div class="panel-heading panel-heading-adventures">Aventuras Registradas</div>
@@ -20,6 +36,7 @@
                 <input class="form-control" type="text" ng-model="NewAdventure.initialPoint" required>
             </div>
             <div class="col-sm-2">
+                <br>
                 <button type="button" class="btn btn-success btn-block" ng-click="CreateAdventure()" ng-disabled="!NewAdventure.name || !NewAdventure.description || !NewAdventure.description || !NewAdventure.initialPoint || selected">Crear nueva Aventura</button>
             </div>
         </div>
@@ -33,7 +50,8 @@
                 <td>Acciones</td>
                 <td></td>
             </tr>
-            <tr ng-repeat="adventure in adventures | orderBy:'name'">
+            <tr ng-repeat="adventure in adventures | filter:search">
+                <!---->
                 <td>{{adventure.name}}</td>
                 <td>{{adventure.description}}</td>
                 <td>{{adventure.difficulty}}</td>
@@ -41,9 +59,9 @@
                 <td><button class="btn btn-danger" ng-click="DeleteAdventure(adventure._id)">Eliminar</button></td>
             </tr>
         </table>
-
         <ui-gmap-google-map center="map.center" zoom="map.zoom"></ui-gmap-google-map>
 
     </div>
 
-</div>
+<!--<button class="btn btn-danger" ng-click="getLocationGoogle(40.714224,-73.961452)">Localizacion</button>-->
+

@@ -161,4 +161,17 @@ router.get('/facebook/callback', passport.authenticate('facebook',
     { successRedirect: '/#/profile', failureRedirect: '/#/login' }
 ));
 
+router.get('/', function(req, res) {
+
+    User.find(function (err, user) {
+        if (err)
+            res.send(err);
+        res.json(user);
+ 
+    });
+});
+
 module.exports = router;
+
+
+
