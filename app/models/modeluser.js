@@ -45,7 +45,7 @@ var UserSchema = mongoose.Schema({
 
 });
 
-module.exports = mongoose.model('User', UserSchema);
+var User = module.exports = mongoose.model('User', UserSchema);
 
 module.exports.createUser = function(newUser, callback){
     bcrypt.genSalt(10, function(err, salt) {
@@ -57,7 +57,9 @@ module.exports.createUser = function(newUser, callback){
 }
 
 module.exports.getUserByUsername = function(username, callback){
+    console.log('estoy en el get username');
     var query = {username: username};
+    console.log(query);
     User.findOne(query, callback);
 }
 

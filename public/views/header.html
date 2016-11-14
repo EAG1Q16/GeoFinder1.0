@@ -10,7 +10,13 @@
         </div>
         <div class="collapse navbar-collapse navHeaderCollapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a ng-href="#/login" class="glyphicon glyphicon-user" style="color:white"></a></li>
+                <li><a ng-href="#/login" class="glyphicon glyphicon-log-in" style="color:white"></a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right" ng-if="UserSessionId">
+                <li><a ng-href="#/profile" class="glyphicon glyphicon-user" style="color:white"></a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right" ng-if="UserSessionId">
+                <li><a ng-href="/user/logout" class="glyphicon glyphicon-log-out" style="color:white"></a></li>
             </ul>
         </div>
     </div>

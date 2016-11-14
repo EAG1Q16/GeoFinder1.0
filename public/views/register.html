@@ -26,6 +26,9 @@
             <input type="password" class="form-control InputStyle" id="pwd" ng-model="NewUser.password">
         </div>
 
+        <div ng-if="ErrorMsg" class="alert alert-danger text-center" role="alert">{{ErrorMsg}}</div>
+
+
         <button type="submit" class="btn btn-block" id="LoginBtn" ng-click="RegisterUser()"><span>Crear Cuenta</span></button>
 
     </form>

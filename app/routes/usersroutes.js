@@ -26,11 +26,12 @@ router.post('/signup', function(req, res) {
     var errors = req.validationErrors();
 
     if(errors){
-       console.log('faltan campos')
+       console.log('faltan campos');
+        res.status(400).send(errors);
     } else {
         var newUser = new User({
             name: name,
-            email:email,
+            email: email,
             username: username,
             password: password
         });
@@ -40,29 +41,32 @@ router.post('/signup', function(req, res) {
             console.log(user);
         });
 
-        req.flash('success_msg', 'You are registered and can now login');
-
-        console.log('Usuario Creado');
-
-        res.redirect('/#/login');
+        res.send('Usuario Registrado');
     }
-
 });
 
 //Local Strategy
 passport.use(new LocalStrategy(
     function(username, password, done) {
+        console.log('Estoy aqui' + username + password);
         User.getUserByUsername(username, function(err, user){
+            console.log('este el usuario encontrado' + user);
             if(err) throw err;
             if(!user){
+                console.log('No encontrado');
                 return done(null, false, {message: 'Unknown User'});
             }
 
             User.comparePassword(password, user.password, function(err, isMatch){
+                console.log('he comparado el password');
+                console.log('match= ' + isMatch);
+                console.log('error= ' + err);
                 if(err) throw err;
                 if(isMatch){
+                    console.log('ok' + user);
                     return done(null, user);
                 } else {
+                    console.log('contranseña incorrecta');
                     return done(null, false, {message: 'Invalid password'});
                 }
             });
@@ -122,26 +126,43 @@ passport.use(new FacebookStrategy({
 
 
 passport.serializeUser(function(user, done) {
+    console.log('serializedID abans ' + user.id);
     done(null, user.id);
+    console.log('serializedID ' + user.id);
+
 });
 
 passport.deserializeUser(function(id, done) {
-    User.getUserById(id, function(err, user) {
-        done(err, user);
+    console.log('hola deserialize');
+    User.findById(id, function(err, user) {
+        console.log('Deserialized User' + user);
+        if(!err) done(err, user);
+        else done(err, null);
+
     });
 });
 
 router.post('/login',
-    passport.authenticate('local', {successRedirect:'/#/profile', failureRedirect:'/#/login',failureFlash: true}),
+    passport.authenticate('local'),
     function(req, res) {
-
+        console.log('hi my friend');
+        res.send(req.user.id);
     });
 
 router.get('/logout', function(req, res){
     req.logout();
-    req.flash('success_msg', 'You are logged out');
+    console.log('he hecho logout');
     res.redirect('/#/index');
 
+});
+
+//GEt user by ID
+router.get('/my/:user_id', function(req, res){
+    User.findById(req.params.user_id, function(err, user){
+        if(err)
+            res.send(err)
+        res.send(user);
+    });
 });
 
 
@@ -150,11 +171,29 @@ router.get('/twitter', passport.authenticate('twitter'));
 router.get('/facebook', passport.authenticate('facebook'));
 
 router.get('/twitter/callback', passport.authenticate('twitter',
-    { successRedirect: '/#/profile', failureRedirect: '/#/login' }
-));
+    { successRedirect: '/#/index', failureRedirect: '/#/login' }
+    ));
 
 router.get('/facebook/callback', passport.authenticate('facebook',
-    { successRedirect: '/#/profile', failureRedirect: '/#/login' }
+    { successRedirect: '/#/index', failureRedirect: '/#/login' }
 ));
+
+// route middleware to make sure a user is logged in
+function isLoggedIn(req, res, next) {
+
+    // if user is authenticated in the session, carry on
+    if (req.isAuthenticated())
+        return next();
+
+    // if they aren't redirect them to the home page
+    res.send('The user is logged');
+}
+
+//route for get the seesion id in the front
+router.get('/sessionid', isLoggedIn, function(req, res) {
+    console.log('profile:' + req.user)
+    res.send(req.user);
+
+});
 
 module.exports = router;
