@@ -85,7 +85,10 @@ router.get('/id/:adv_id', function(req, res){
     });
 });
 
-
-
-
+/*near = function(req,res) {
+    geolib.isPointInCircle(
+        {latitude: 52.516272, longitude: 52.516272},
+        {latitude: 51.503333, longitude: 51.503333},
+        10);
+}*/
 module.exports = router;

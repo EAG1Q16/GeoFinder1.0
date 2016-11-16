@@ -61,10 +61,14 @@ angular.module('GeoFinderApp').controller('AdventuresCtrl',['$scope','$http','$r
                     }
                 }
             })
-            console.log(position);
+            /*var geolib = require('geolib');
+            geolib.
+                {latitude: 52.516272, longitude: 52.516272},
+                {latitude: 51.503333, longitude: 51.503333},
+                10);
+            console.log(position);*/
         })
     })
-
-
+    
 
 }]);

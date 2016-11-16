@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default navbar-fixed-top" id="navbarstyle">
+<nav class="navbar navbar-default navbar-fixed-top" id="navbarstyle" onload="select(1)">
     <div class="container">
         <div class="navbar-header">
         <a ng-href="#/index" class="navbar-brand"><img id="imgbrand" alt="GeoFinder" src="../images/GeoLogo2.png"></a>
@@ -6,10 +6,9 @@
         <!--TYPEAHEAD-->
         <form class="navbar-form navbar-left" role="search">
             <div  class='container-fluid typeahead-demo'>
-                <input ng-if="data.selectedOption.Name=='Usuarios'" type="text" placeholder="Busca usuarios" ng-model="userSelected" typeahead-on-select="onSelect($item, $model, $label)" ng-model-options="modelOptions"  uib-typeahead="user for user in users | filter:{username:$viewValue} | limitTo:5" typeahead-template-url="/uib/template/typeahead/typeahead-match.html" typeahead-popup-template-url="/uib/template/typeahead/typeahead-popup.html" class="form-control">
-                <input ng-if="data.selectedOption.Name=='Aventuras'" type="text" placeholder="Busca aventuras" ng-model="userSelected" typeahead-on-select="onSelect($item, $model, $label)" ng-model-options="modelOptions"  uib-typeahead="adventure for adventure in adventures | filter:{name:$viewValue} | limitTo:5" typeahead-template-url="/uib/template/typeahead/typeahead-match2.html" typeahead-popup-template-url="/uib/template/typeahead/typeahead-popup.html" class="form-control">
-                <select ng-options="option.Name for option in data.options track by option.ID" ng-model="data.selectedOption"></select>
-
+                <input ng-if="!flag" type="text" placeholder="Busca usuarios" ng-model="userSelected" typeahead-on-select="onSelect($item, $model, $label)" ng-model-options="modelOptions"  uib-typeahead="user for user in users | filter:{username:$viewValue} | limitTo:5" typeahead-template-url="/uib/template/typeahead/typeahead-match.html" typeahead-popup-template-url="/uib/template/typeahead/typeahead-popup.html" class="form-control">
+                <input ng-if="flag" type="text" placeholder="Busca aventuras" ng-model="userSelected" typeahead-on-select="onSelect($item, $model, $label)" ng-model-options="modelOptions"  uib-typeahead="adventure for adventure in adventures | filter:{name:$viewValue} | limitTo:5" typeahead-template-url="/uib/template/typeahead/typeahead-match2.html" typeahead-popup-template-url="/uib/template/typeahead/typeahead-popup.html" class="form-control">
+                <select ng-change="cambio()" ng-options="item as item.name for item in items track by item.id" ng-model="items[0]" ></select>
             </div>
 
         </form>
