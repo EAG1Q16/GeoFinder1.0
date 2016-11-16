@@ -3,7 +3,7 @@ angular.module('GeoFinderApp').controller('HomeCtrl',['$scope','$location','$roo
     // when landing on the page get user
     $http.get('/user/sessionid')
         .success(function(data) {
-            $rootScope.UserSessionId = data._id;
+            $rootScope.UserSessionId = data;
             console.log($rootScope.UserSessionId)
 
         })

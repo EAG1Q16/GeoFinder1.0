@@ -2,7 +2,7 @@
  * Created by Andrea on 06/11/2016.
  */
 <!--TYPEAHEAD-->
-angular.module('GeoFinderApp').controller('HeaderCtrl',['$scope','$http','$routeParams',function($scope, $http, $routeParams){
+angular.module('GeoFinderApp').controller('HeaderCtrl',['$scope','$http','$routeParams','$rootScope' ,function($scope, $http, $routeParams, $rootScope){
 
     $scope.data ={
         Options:[
@@ -91,6 +91,7 @@ if ($scope.data.selectedOption.ID == 2){
         },
         getterSetter: true
     };
+
 }
 }]);
 
