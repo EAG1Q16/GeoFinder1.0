@@ -1,56 +1,46 @@
 <div id="ProfileContainer" ng-controller="ProfileCtrl">
-    <div class=" container-fluid">
-        <div class="row">
-        <div class="card hovercard">
-            <div class="card-background">
-                <img class="card-bkimg" alt="" ng-src={{UserProfileInfo.photo}}>
-            </div>
-            <div class="useravatar">
-                <img alt="" ng-src={{UserProfileInfo.photo}}>
-            </div>
-            <div class="card-info"> <span class="card-title">{{UserProfileInfo.username}}</span>
-
-            </div>
+    <div class="container">
+    <div class="row">
+    <div class="col-md-8">
+    <div class="panel panel-success PersonalPanel">
+        <div class="panel-heading">
+            <div class="panel-title"><b><i class="fa fa-user-circle-o"></i> Información de Usuario:</b></div>
         </div>
-        <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
-            <div class="btn-group" role="group">
-                <button type="button" id="myprofile" class="btn btn-profile active" href="#tab2"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                    <div class="hidden-xs">Mi Perfil</div>
-                </button>
+        <div class="panel-body">
+            <div class="form-group">
+                <label for="usr">Nombre:</label>
+                <input type="text" class="form-control" id="usr">
             </div>
-            <div class="btn-group" role="group">
-                <button type="button" id="stars" class="btn btn-profile" href="#tab1" ><span class="glyphicon glyphicon-tent" aria-hidden="true"></span>
-                    <div class="hidden-xs">Aventuras Creadas</div>
-                </button>
+            <div class="form-group">
+                <label for="usr">Nombre de Usuario:</label>
+                <input type="text" class="form-control" id="usr">
             </div>
-            <div class="btn-group" role="group">
-                <button type="button" id="favorites" class="btn btn-profile" href="#tab2"><span class="glyphicon glyphicon-tree-conifer" aria-hidden="true"></span>
-                    <div class="hidden-xs">Aventuras jugadas</div>
-                </button>
+            <div class="form-group">
+                <label for="comment">Descripción:</label>
+                <textarea class="form-control" rows="3" id="comment"></textarea>
             </div>
-            <div class="btn-group" role="group">
-                <button type="button" id="following" class="btn btn-profile" href="#tab3" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
-                    <div class="hidden-xs">Seguidos</div>
-                </button>
+            <div class="form-group">
+                <label for="foto">Enlace de la Foto:</label>
+                <input type="text" class="form-control" id="foto">
             </div>
+            <div class="form-group">
+                <label for="pwd">Contraseña:</label>
+                <input type="password" class="form-control" id="pwd">
+            </div>
+            <a class="btn btn-success center-block ButtonStyle" style="background-color: #00ADB5;" role="button">Modificar</a>
         </div>
-            <br>
-    </div>
-        <table class="table">
-            <tr class="info">
-                <td>Nombre</td>
-                <td>Correo</td>
-                <td>Username</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>{{UserProfileInfo.name}}</td>
-                <td>{{UserProfileInfo.email}}</td>
-                <td>{{UserProfileInfo.username}}</td>
-            </tr>
-        </table>
-
     </div>
     </div>
-
+    <div class="col-md-4">
+                <div class="panel panel-info PersonalPanel">
+                    <div class="panel-heading">
+                        <div class="panel-title"><b><i class="fa fa-users"></i> Administrar Seguidores:</b></div>
+                    </div>
+                    <div class="panel-body">
+                        Panel content
+                    </div>
+                </div>
+            </div>
+    </div>
+    </div>
 </div>

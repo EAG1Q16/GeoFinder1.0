@@ -1,38 +1,38 @@
-<nav class="navbar navbar-default navbar-fixed-top" id="navbarstyle" onload="select(1)">
+<nav role="navigation" class="navbar navbar-default navbar-fixed-top" id="navbarstyle" onload="select(1)">
     <div class="container">
         <div class="navbar-header">
         <a ng-href="#/index" class="navbar-brand"><img id="imgbrand" alt="GeoFinder" src="../images/GeoLogo2.png"></a>
         </div>
         <!--TYPEAHEAD-->
-        <form class="navbar-form navbar-left" role="search">
+        <div class="col-md-2"></div>
+        <div class="navbar-left col-md-5">
+        <form class="navbar-form" role="search">
             <div  class='container-fluid typeahead-demo'>
-                <input ng-if="!flag" type="text" placeholder="Busca usuarios" ng-model="userSelected" typeahead-on-select="onSelect($item, $model, $label)" ng-model-options="modelOptions"  uib-typeahead="user for user in users | filter:{username:$viewValue} | limitTo:5" typeahead-template-url="/uib/template/typeahead/typeahead-match.html" typeahead-popup-template-url="/uib/template/typeahead/typeahead-popup.html" class="form-control">
-                <input ng-if="flag" type="text" placeholder="Busca aventuras" ng-model="userSelected" typeahead-on-select="onSelect($item, $model, $label)" ng-model-options="modelOptions"  uib-typeahead="adventure for adventure in adventures | filter:{name:$viewValue} | limitTo:5" typeahead-template-url="/uib/template/typeahead/typeahead-match2.html" typeahead-popup-template-url="/uib/template/typeahead/typeahead-popup.html" class="form-control">
-                <select ng-change="cambio()" ng-options="item as item.name for item in items track by item.id" ng-model="items[0]" ></select>
+                <input class="form-control" ng-if="!flag" type="text" placeholder="Buscar Usuarios" ng-model="userSelected" typeahead-on-select="onSelect($item, $model, $label)" ng-model-options="modelOptions"  uib-typeahead="user for user in users | filter:{username:$viewValue} | limitTo:5" typeahead-template-url="/uib/template/typeahead/typeahead-match.html" typeahead-popup-template-url="/uib/template/typeahead/typeahead-popup.html" class="form-control">
+                <input class="form-control" ng-if="flag" type="text" placeholder="Buscar Aventuras" ng-model="userSelected" typeahead-on-select="onSelect($item, $model, $label)" ng-model-options="modelOptions"  uib-typeahead="adventure for adventure in adventures | filter:{name:$viewValue} | limitTo:5" typeahead-template-url="/uib/template/typeahead/typeahead-match2.html" typeahead-popup-template-url="/uib/template/typeahead/typeahead-popup.html" class="form-control">
+                <select class="form-control select"ng-change="cambio()" ng-options="item as item.name for item in items track by item.id" ng-model="items[0]"></select>
             </div>
-
         </form>
+        </div>
+
         <!--TYPEAHEAD-->
         <div class="collapse navbar-collapse navHeaderCollapse">
             <ul class="nav navbar-nav navbar-right" ng-if="UserSessionId == undefined">
                 <li><a style="color: white" ng-href="#/login">Iniciar Sesión <i class="fa fa-sign-in" aria-hidden="true"></i></a></li>
             </ul>
 
-
             <li class="nav navbar-nav navbar-right dropdown" ng-if="UserSessionId">
                 <a style="color: white" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img alt="Brand" class="img-circle img-size-header" ng-src="{{UserSessionId.photo}}"> {{UserSessionId.username}}<span class="caret"></span></a>
                 <ul class="dropdown-menu nav navbar-nav navbar-right">
+                    <li><a ng-href="#/adventures"><i class="fa fa-search" aria-hidden="true"></i> Buscar Aventuras</a></li>
                     <li><a ng-href="#/userprofile/{{UserSessionId._id}}"><i class="fa fa-user-circle-o" aria-hidden="true"></i> Mi Perfil</a></li>
-                    <li><a ng-href="#/adventures"><i class="fa fa-tree" aria-hidden="true"></i> Mis Aventuras</a></li>
+                    <li><a ng-href="#/useradventures"><i class="fa fa-tree" aria-hidden="true"></i> Administrar Aventuras</a></li>
                     <li><a ng-href="#/profile"><i class="fa fa-cog" aria-hidden="true"></i> Editar Perfil</a></li>
                     <li><a ng-href="/user/logout"><i class="fa fa-sign-out" aria-hidden="true"></i> Cerrar Sesión</a></li>
                 </ul>
             </li>
 
-
             <a role="button" class="btn btn-success navbar-right navbarr-position" ng-if="UserSessionId" style="color: white" ng-href="#/maps"><i class="fa fa-map-o" aria-hidden="true"></i> Crear Aventura</a>
-
-
 
 
         </div>

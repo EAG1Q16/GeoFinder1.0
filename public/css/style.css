@@ -32,6 +32,7 @@ a {
 .navbarr-position{
   margin-top: 10px;
 }
+
 /*----------Footer Style-----------*/
 #Footer{
   background-color: #00ADB5;
@@ -105,3 +106,15 @@ body {
   padding:10px;
 }
 
+
+
+/*--------Personal panel style--*/
+.PersonalPanel {
+  border-color: #00ADB5;
+
+}
+.PersonalPanel> .panel-heading {
+  background: #00ADB5;
+  color: #ffffff;
+  border-color: #00ADB5;
+}

@@ -11,8 +11,4 @@ angular.module('GeoFinderApp').controller('HomeCtrl',['$scope','$location','$roo
             console.log('not logged');
         });
 
-    $scope.Searcher = function() {
-        $location.path('/adventures');
-    };
-
 }]);

@@ -1,11 +1,11 @@
 /*----------------Banner Style-------------------*/
 #banner {
     background-color: #00ADB5;
-    background-image: url(/../images/BannerGeo.png);
+    background-image: url(/../images/mountain4.png);
     color: #fff;
-    padding: 150px 25px;
+    padding: 120px 25px;
     font-family: Montserrat, sans-serif;
-    height: 500px;
+    height: 370px;
 }
 
 
