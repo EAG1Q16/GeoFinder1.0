@@ -1,10 +1,77 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+<div class="ProfilePadding" ng-controller="PublicUserProfileCtrl">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6 col-md-3">
+                <div class="panel panel-success PersonalPanel">
+                    <div class="panel-heading">
+                        <div class="panel-title"><b><i class=" fa fa-compass"></i> {{pUserProfileInfo.username}}</b></div>
+                    </div>
+                    <div class="panel-body">
+                    <img class="img-rounded center-block" height="200" width="235" ng-src={{pUserProfileInfo.photo}}>
+                    <div class="text-justify">
+                        <h3><b>{{pUserProfileInfo.name}}</b></h3>
+                        <p class="text-justify">{{pUserProfileInfo.description}}</p>
+                        <a class="btn btn-success center-block ButtonStyle" style="background-color: #00ADB5;" role="button"><b>Seguir</b></a>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <div class="panel panel-success PersonalPanel">
+                    <div class="panel-heading">
+                        <div class="panel-title"><b><i class=" fa fa-diamond"></i> Rango:</b></div>
+                    </div>
+                    <div class="panel-body">
+                        <img ng-if="pUserProfileInfo" class="img-responsive center-block" height="65px" width="65px" src="../images/CAmpista.png">
+                        <img ng-if="pUserProfileInfo.username == 3" class="img-responsive center-block" height="65px" width="65px" src="../images/Navegante.png">
+                        <img ng-if="pUserProfileInfo.username == 5" class="img-responsive center-block" height="65px" width="65px" src="../images/Montañero.png">
+                        <img ng-if="pUserProfileInfo.username == 1 " class="img-responsive center-block" height="65px" width="65px" src="../images/Aventurero.png">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-2">
+                <div class="panel panel-success PersonalPanel">
+                    <div class="panel-heading">
+                        <div class="panel-title"><b><i class=" fa fa-users"></i> Seguidores:</b></div>
+                    </div>
+                    <div class="panel-body ">
+                        <h1 class="text-center">20</h1>
+                    </div>
+                </div>
+                </div>
+            <div class="col-sm-6 col-md-2">
+                <div class="panel panel-success PersonalPanel">
+                    <div class="panel-heading">
+                        <div class="panel-title"><b><i class=" fa fa-tree"></i> Creadas:</b></div>
+                    </div>
+                    <div class="panel-body">
+                        <h1 class="text-center">10</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-2">
+                <div class="panel panel-success PersonalPanel">
+                    <div class="panel-heading">
+                        <div class="panel-title"><b><i class=" fa fa-map-signs"></i> Jugadas:</b></div>
+                    </div>
+                    <div class="panel-body">
+                        <h1 class="text-center">20</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-9">
+                <div class="panel panel-success PersonalPanel">
+                    <div class="panel-heading">
+                        <div class="panel-title"><b><i class=" fa fa-binoculars"></i> Aventuras Creadas Recientemente:</b></div>
+                    </div>
+                    <!-- List group -->
+                    <ul class="list-group">
+                        <li class="list-group-item">Aventura 1</li>
+                        <li class="list-group-item">Aventura 2</li>
+                    </ul>
+                </div>
+            </div>
+        </div><!--END ROW-->
+        </div>
+    </div>
+</div>

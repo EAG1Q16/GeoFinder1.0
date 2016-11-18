@@ -7,6 +7,7 @@ var mongoose = require('mongoose');
 var Users = require('../models/modeluser');
 var Adventures = require('../models/modeladventures');
 var router = express.Router();
+var geolib = new require('geolib');
 
 // GET adventures in list
 router.get('/', function(req, res) {
@@ -16,6 +17,7 @@ router.get('/', function(req, res) {
             res.send(err);
         res.json(adventures);
     });
+
 });
 
 // GET adventure by ID
@@ -95,8 +97,45 @@ router.delete('/unassignadventure/', function (req, res) {
     });
 });
 
+router.post('/near', function (req, res){
+
+    var lat = req.body.latitude;
+    var lon = req.body.longitude;
+
+    console.log(lat);
+    console.log(lon);
+
+    Adventures.find(function (err, adventures) {
+        Adv = adventures;
+        console.log("Adv");
+        console.log(Adv.length);
+        //console.log(Adv);
+        var cercanas = [];
+        for(i=0;i<Adv.length;i++){
+           // console.log("enbuscadelascordenadasperdidas");
+            var c_long = Adv[i].location.coordinates[0];
+            var c_lat = Adv[i].location.coordinates[1];
+            //console.log(c_lat);
+            //console.log(c_long);
+            if(
+            geolib.isPointInCircle(
+                {latitude: lat, longitude: lon},
+                {latitude: c_lat, longitude: c_long},
+                10000)==true){
+                cercanas.push(Adv[i]);
+                console.log(cercanas);
+                //return cercanas;
+                //res.send(cercanas);
+                //cercanas=[];
+                }else {console.log('false')}
+            
+        }
+
+        res.send(cercanas);
+    });
 
 
+});
 
 
 module.exports = router;

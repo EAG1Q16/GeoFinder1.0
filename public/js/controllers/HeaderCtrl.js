@@ -1,95 +1,111 @@
 /**
  * Created by Andrea on 06/11/2016.
  */
-<!--TYPEAHEAD-->
-angular.module('GeoFinderApp').controller('HeaderCtrl',['$scope','$http','$routeParams',function($scope, $http, $routeParams){
+angular.module('GeoFinderApp').controller('HeaderCtrl',['$scope','$rootScope','$http','$routeParams',function($scope, $rootScope, $http, $routeParams){
 
-    $scope.JSON ={
-        "ResponseObject":
-            [{
-            "Name" : "Usuarios",
-            "ID": 1},
-            {
-            "Name" : "Aventuras",
-            "ID": 2
-            }]
-    };
-
-    $scope.selectedUser = $scope.JSON.ResponseObject[0];
-    
-    //$scope.selectedUserName = $scope.selectedUser.Name;
-    //console.log($scope.selectedUser.Name)
-
-//Search functions
-
-if ($scope.selectedUser.ID = 1){
-    $http.get('/user')
-        .success(function(data) {
-            $scope.users = data;
-            console.log(data);
-
-        })
-        .error(function(data) {
-            console.log('Error: ' + data);
-        });
-
-
-    $scope.selected = undefined;
-
-    
-    $scope.onSelect = function ($item, $model, $label) {
-
-        //$location.path('/profile/'+ $model.username);
-        $scope.$item = $item;
-        $scope.$model = $model;
-        $scope.$label = $label;
-        console.log($model);
-        $scope.userSelected = $model.username;
-
-    };
-
+    function clear() {
+        $scope.model = {}; 
+    }
     
 
-    $scope.modelOptions = {
-        debounce: {
-            default: 500,
-            blur: 250
-        },
-        getterSetter: true
-    };
+    $scope.options = [{
+        id: 1,
+        name: 'Usuarios'
+    },{
+        id: 2,
+        name: 'Aventuras'
+    }];
 
-}
-if ($scope.selectedUser.ID = 2){
-    $http.get('/adventures')
-        .success(function(data) {
-            $scope.adventures = data;
-            console.log(data);
+    $scope.sel = $scope.options[0];
+    
+    $scope.flag = true;
+    
+    searcher();
+    function  searcher() {
+        if ($scope.flag){
+            $scope.sel = $scope.options[0];
+            $http.get('/user')
+                .success(function(data) {
+                    $scope.users = data;
+                    console.log(data);
 
-        })
-        .error(function(data) {
-            console.log('Error: ' + data);
-        });
-    $scope.selected = undefined;
+                })
+                .error(function(data) {
+                    console.log('Error: ' + data);
+                });
 
 
-    $scope.onSelect = function ($item, $model, $label) {
+            $scope.selected = undefined;
 
-        window.location.href = "#/adventureProfile/" + $model._id;
-        $scope.$item = $item;
-        $scope.$model = $model;
-        $scope.$label = $label;
-        console.log($model);
-        $scope.userSelected = $model.name;
 
-    };
+            $scope.onSelect = function ($item, $model, $label) {
+                
+                window.location.href = "#/userprofile/" + $model._id;
+                $scope.$item = $item;
+                $scope.$model = $model;
+                $scope.$label = $label;
+                console.log($model);
+                $scope.userSelected = $model.username;
 
-    $scope.modelOptions = {
-        debounce: {
-            default: 500,
-            blur: 250
-        },
-        getterSetter: true
-    };
-}
+                
+            };
+
+            $scope.modelOptions = {
+                debounce: {
+                    default: 500,
+                    blur: 250
+                },
+                getterSetter: true
+            };
+            $scope.flag = false;
+
+        }
+
+
+        else{
+            $scope.sel = $scope.options[1];
+            $http.get('/adventures')
+                .success(function(data) {
+                    $scope.adventures = data;
+                    console.log(data);
+
+                })
+                .error(function(data) {
+                    console.log('Error: ' + data);
+                });
+            $scope.selected = undefined;
+
+
+            $scope.onSelect = function ($item, $model, $label) {
+
+                window.location.href = "#/adventureprofile/" + $model._id;
+                $scope.$item = $item;
+                $scope.$model = $model;
+                $scope.$label = $label;
+                console.log($model);
+                $scope.userSelected = $model.name;
+
+
+            };
+
+            $scope.modelOptions = {
+                debounce: {
+                    default: 500,
+                    blur: 250
+                },
+                getterSetter: true
+            };
+            $scope.flag =true;
+
+        }
+    }
+
+
+    $scope.cambio = (function () {
+
+        searcher();
+
+    });
+
 }]);
 
