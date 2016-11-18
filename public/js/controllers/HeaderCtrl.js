@@ -3,9 +3,12 @@
  */
 angular.module('GeoFinderApp').controller('HeaderCtrl',['$scope','$rootScope','$http','$routeParams',function($scope, $rootScope, $http, $routeParams){
 
-    $scope.flag = true;
+    function clear() {
+        $scope.model = {}; 
+    }
+    
 
-    $scope.items = [{
+    $scope.options = [{
         id: 1,
         name: 'Usuarios'
     },{
@@ -13,9 +16,14 @@ angular.module('GeoFinderApp').controller('HeaderCtrl',['$scope','$rootScope','$
         name: 'Aventuras'
     }];
 
+    $scope.sel = $scope.options[0];
+    
+    $scope.flag = true;
+    
     searcher();
     function  searcher() {
         if ($scope.flag){
+            $scope.sel = $scope.options[0];
             $http.get('/user')
                 .success(function(data) {
                     $scope.users = data;
@@ -31,13 +39,14 @@ angular.module('GeoFinderApp').controller('HeaderCtrl',['$scope','$rootScope','$
 
 
             $scope.onSelect = function ($item, $model, $label) {
-
+                
                 window.location.href = "#/userprofile/" + $model._id;
                 $scope.$item = $item;
                 $scope.$model = $model;
                 $scope.$label = $label;
                 console.log($model);
                 $scope.userSelected = $model.username;
+
                 
             };
 
@@ -54,6 +63,7 @@ angular.module('GeoFinderApp').controller('HeaderCtrl',['$scope','$rootScope','$
 
 
         else{
+            $scope.sel = $scope.options[1];
             $http.get('/adventures')
                 .success(function(data) {
                     $scope.adventures = data;
@@ -74,6 +84,7 @@ angular.module('GeoFinderApp').controller('HeaderCtrl',['$scope','$rootScope','$
                 $scope.$label = $label;
                 console.log($model);
                 $scope.userSelected = $model.name;
+
 
             };
 

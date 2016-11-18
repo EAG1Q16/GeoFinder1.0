@@ -7,6 +7,7 @@ var mongoose = require('mongoose');
 var Users = require('../models/modeluser');
 var Adventures = require('../models/modeladventures');
 var router = express.Router();
+var geolib = new require('geolib');
 
 // GET adventures in list
 router.get('/', function(req, res) {
@@ -16,7 +17,18 @@ router.get('/', function(req, res) {
             res.send(err);
         res.json(adventures);
     });
+
 });
+
+// GET adventure by ID
+router.get('/id/:adv_id', function(req, res){
+    Adventures.findById(req.params.adv_id, function(err, adventure){
+        if(err)
+            res.send(err)
+        res.send(adventure);
+    });
+});
+
 // Create an Adventure
 router.post('/createadventure/', function(req, res) {
     Adventures.create({
@@ -41,8 +53,8 @@ router.post('/createadventure/', function(req, res) {
 
 // Assign Adventure <--> User
 router.post('/assignadventure/', function(req, res) {
-    var query = {_id: req.params.user_id};
-    var update = {$addToSet : {"adventures" : req.params.adventure_id}};
+    var query = {_id: req.body.user_id};
+    var update = {$addToSet : {"adventures" : req.body.adventure_id}};
     var options = {};
 
     Users.findOneAndUpdate(query, update, options, function(err, user) {
@@ -52,43 +64,78 @@ router.post('/assignadventure/', function(req, res) {
         console.log(user);
     });
 
-    Users.find({_id: req.params.user_id}).populate('adventures').exec().then(function (err, user) {
+    Users.find({_id: req.body.user_id}).populate('adventures').exec().then(function (err, user) {
         if(err)
             res.send(err)
         res.json(user);
     });
 });
 
-// Delete Adventure & remove Adventure <--> User
-router.delete('/removeadventure/:adventure_id', function(req, res) {
+//Delete Adventure
+router.delete('/removeadventure/', function(req, res) {
 
     Adventures.remove({
-        _id : req.params.adventure_id
+        _id : req.body.adventure_id
     }, function(err) {
         if (err)
             res.send(err)
     });
+});
+
+// Unassign Adventure <--> User
+router.delete('/unassignadventure/', function (req, res) {
+
+    var query = {_id: req.body.user_id};
+    var update = {$pull : {"adventures" : req.body.adventure_id}};
+    var options = {};
+
+    Users.findOneAndUpdate(query, update, options, function(err, user) {
+        if (err) {
+            res.send(err)
+        }
+        res.send("Unassigned:" + req.body.adventure_id);
+    });
+});
+
+router.post('/near', function (req, res){
+
+    var lat = req.body.latitude;
+    var lon = req.body.longitude;
+
+    console.log(lat);
+    console.log(lon);
 
     Adventures.find(function (err, adventures) {
-        if (err)
-            res.send(err);
-        res.json(adventures);
+        Adv = adventures;
+        console.log("Adv");
+        console.log(Adv.length);
+        //console.log(Adv);
+        var cercanas = [];
+        for(i=0;i<Adv.length;i++){
+           // console.log("enbuscadelascordenadasperdidas");
+            var c_long = Adv[i].location.coordinates[0];
+            var c_lat = Adv[i].location.coordinates[1];
+            //console.log(c_lat);
+            //console.log(c_long);
+            if(
+            geolib.isPointInCircle(
+                {latitude: lat, longitude: lon},
+                {latitude: c_lat, longitude: c_long},
+                10000)==true){
+                cercanas.push(Adv[i]);
+                console.log(cercanas);
+                //return cercanas;
+                //res.send(cercanas);
+                //cercanas=[];
+                }else {console.log('false')}
+            
+        }
+
+        res.send(cercanas);
     });
+
+
 });
 
-//GEt adventure by ID
-router.get('/id/:adv_id', function(req, res){
-    Adventures.findById(req.params.adv_id, function(err, adventure){
-        if(err)
-            res.send(err)
-        res.send(adventure);
-    });
-});
 
-/*near = function(req,res) {
-    geolib.isPointInCircle(
-        {latitude: 52.516272, longitude: 52.516272},
-        {latitude: 51.503333, longitude: 51.503333},
-        10);
-}*/
 module.exports = router;

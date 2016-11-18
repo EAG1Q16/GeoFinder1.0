@@ -8,9 +8,12 @@
         <div class="navbar-left col-md-5">
         <form class="navbar-form" role="search">
             <div  class='container-fluid typeahead-demo'>
-                <input class="form-control" ng-if="!flag" type="text" placeholder="Buscar Usuarios" ng-model="userSelected" typeahead-on-select="onSelect($item, $model, $label)" ng-model-options="modelOptions"  uib-typeahead="user for user in users | filter:{username:$viewValue} | limitTo:5" typeahead-template-url="/uib/template/typeahead/typeahead-match.html" typeahead-popup-template-url="/uib/template/typeahead/typeahead-popup.html" class="form-control">
-                <input class="form-control" ng-if="flag" type="text" placeholder="Buscar Aventuras" ng-model="userSelected" typeahead-on-select="onSelect($item, $model, $label)" ng-model-options="modelOptions"  uib-typeahead="adventure for adventure in adventures | filter:{name:$viewValue} | limitTo:5" typeahead-template-url="/uib/template/typeahead/typeahead-match2.html" typeahead-popup-template-url="/uib/template/typeahead/typeahead-popup.html" class="form-control">
-                <select class="form-control select"ng-change="cambio()" ng-options="item as item.name for item in items track by item.id" ng-model="items[0]"></select>
+
+                <input ng-if="!flag" type="text" placeholder="Busca usuarios" ng-model="userSelected" typeahead-on-select="onSelect($item, $model, $label)" ng-model-options="modelOptions"  uib-typeahead="user for user in users | filter:{username:$viewValue} | limitTo:5" typeahead-template-url="/uib/template/typeahead/typeahead-match.html" typeahead-popup-template-url="/uib/template/typeahead/typeahead-popup.html" class="form-control">
+                <input ng-if="flag" type="text" placeholder="Busca aventuras" ng-model="userSelected" typeahead-on-select="onSelect($item, $model, $label)" ng-model-options="modelOptions"  uib-typeahead="adventure for adventure in adventures | filter:{name:$viewValue} | limitTo:5" typeahead-template-url="/uib/template/typeahead/typeahead-match2.html" typeahead-popup-template-url="/uib/template/typeahead/typeahead-popup.html" class="form-control">
+                <select ng-change="cambio()" ng-options="option as option.name for option in options track by option.id" ng-model="sel"></select>
+
+
             </div>
         </form>
         </div>
