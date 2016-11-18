@@ -89,6 +89,19 @@ angular.module('GeoFinderApp').controller('AdventuresCtrl',['$scope','$http','$r
         });
     };
 
+    $scope.getTodas=function () {
+        $http.get('/adventures')
+            .success(function(data) {
+                $scope.adventures = data;
+                console.log(data);
+                $scope.cerca = false;
+
+            })
+            .error(function(data) {
+                console.log('Error: ' + data);
+            });
+        
+    };
     
 
 }]);
