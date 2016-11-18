@@ -9,25 +9,49 @@
         <div class="panel-body">
             <div class="form-group">
                 <label for="usr">Nombre:</label>
-                <input type="text" class="form-control" id="usr">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="usr" placeholder="{{UserProfileInfo.name}}" ng-model="UpdatedUser.name">
+                    <span class="input-group-btn">
+                <button class="btn btn-warning" type="button" ng-click="UpdateName()">Modificar Nombre</button>
+                </span>
+                </div>
             </div>
             <div class="form-group">
-                <label for="usr">Nombre de Usuario:</label>
-                <input type="text" class="form-control" id="usr">
+                <label for="usrname">Nombre de Usuario:</label>
+                <div class="input-group">
+                <input type="text" class="form-control" id="usrname" placeholder="{{UserProfileInfo.username}}" ng-model="UpdatedUser.username">
+                <span class="input-group-btn">
+                <button class="btn btn-warning" type="button" ng-click="UpdateUsername()">Modificar Usuario</button>
+                </span>
+                </div>
             </div>
             <div class="form-group">
-                <label for="comment">Descripción:</label>
-                <textarea class="form-control" rows="3" id="comment"></textarea>
+                <label for="description">Descripción:</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="description" placeholder="{{UserProfileInfo.description}}" ng-model="UpdatedUser.description">
+                    <span class="input-group-btn">
+                <button class="btn btn-warning" type="button" ng-click="UpdateDescription()">Modificar Biografía</button>
+                </span>
+                </div>
             </div>
             <div class="form-group">
                 <label for="foto">Enlace de la Foto:</label>
-                <input type="text" class="form-control" id="foto">
+                <div class="input-group">
+                <input type="text" class="form-control" id="foto" placeholder="{{UserProfileInfo.photo}}" ng-model="UpdatedUser.photo">
+                    <span class="input-group-btn">
+                <button class="btn btn-warning" type="button" ng-click="UpdatePhoto()">Modificar Imagen</button>
+                </span>
+                </div>
             </div>
             <div class="form-group">
                 <label for="pwd">Contraseña:</label>
-                <input type="password" class="form-control" id="pwd">
+                <div class="input-group">
+                <input type="password" class="form-control" id="pwd" placeholder="Contraseña" ng-model="UpdatedUser.password">
+                    <span class="input-group-btn">
+                <button class="btn btn-warning" type="button" ng-click="UpdatePassword()">Modificar Contraseña</button>
+                </span>
+                </div>
             </div>
-            <a class="btn btn-success center-block ButtonStyle" style="background-color: #00ADB5;" role="button">Modificar</a>
         </div>
     </div>
     </div>

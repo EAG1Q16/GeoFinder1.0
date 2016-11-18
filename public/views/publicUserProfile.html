@@ -11,7 +11,7 @@
                     <div class="text-justify">
                         <h3><b>{{pUserProfileInfo.name}}</b></h3>
                         <p class="text-justify">{{pUserProfileInfo.description}}</p>
-                        <a class="btn btn-success center-block ButtonStyle" style="background-color: #00ADB5;" role="button"><b>Seguir</b></a>
+                        <a ng-if="pUserProfileInfo._id != UserSessionId._id" class="btn btn-success center-block ButtonStyle" style="background-color: #00ADB5;" role="button"><b>Seguir</b></a>
                     </div>
                     </div>
                 </div>
