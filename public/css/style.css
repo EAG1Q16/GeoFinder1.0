@@ -24,6 +24,15 @@ a {
   margin-right:5px;
 }
 
+.img-size-header{
+  height:  38px;
+  margin-top: -4px;
+}
+
+.navbarr-position{
+  margin-top: 10px;
+}
+
 /*----------Footer Style-----------*/
 #Footer{
   background-color: #00ADB5;
@@ -50,9 +59,6 @@ a {
 body {
   padding-top: 2.4%;
 }
-
-
-
 
 .transparent {
   background: rgba(19, 35, 47, 0.9);
@@ -100,3 +106,15 @@ body {
   padding:10px;
 }
 
+
+
+/*--------Personal panel style--*/
+.PersonalPanel {
+  border-color: #00ADB5;
+
+}
+.PersonalPanel> .panel-heading {
+  background: #00ADB5;
+  color: #ffffff;
+  border-color: #00ADB5;
+}

@@ -1,7 +1,6 @@
 /**
  * Created by Andrea on 06/11/2016.
  */
-<!--TYPEAHEAD-->
 angular.module('GeoFinderApp').controller('HeaderCtrl',['$scope','$rootScope','$http','$routeParams',function($scope, $rootScope, $http, $routeParams){
 
     function clear() {
@@ -108,6 +107,5 @@ angular.module('GeoFinderApp').controller('HeaderCtrl',['$scope','$rootScope','$
 
     });
 
-   
 }]);
 

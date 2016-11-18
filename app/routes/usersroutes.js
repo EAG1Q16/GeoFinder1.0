@@ -88,8 +88,9 @@ passport.use(new TwitterStrategy({
 
         var usertweet = new User({
             provider_id	: profile.id,
-            name				 : profile.displayName,
-            photo				: profile.photos[0].value
+            name				: profile.displayName,
+            photo				: profile.photos[0].value,
+            username            : profile.id
         });
 
         usertweet.save(function(err) {
@@ -115,7 +116,8 @@ passport.use(new FacebookStrategy({
         var userface = new User({
             provider_id	: profile.id,
             name				 : profile.displayName,
-            photo				: profile.photos[0].value
+            photo				: profile.photos[0].value,
+            username            :profile.id
         });
         userface.save(function(err) {
             if(err) throw err;
@@ -186,7 +188,7 @@ function isLoggedIn(req, res, next) {
         return next();
 
     // if they aren't redirect them to the home page
-    res.send('The user is logged');
+    res.status(400).send('The user is not logged');
 }
 
 //route for get the seesion id in the front

@@ -5,7 +5,7 @@ angular.module('GeoFinderApp').controller('ProfileCtrl',['$scope','$rootScope','
     console.log('Rootscope en profile' + $rootScope.UserSessionId);
 
     // when landing on the page get user
-   $http.get('/user/my/' + $rootScope.UserSessionId)
+   $http.get('/user/my/' + $rootScope.UserSessionId._id)
         .success(function(data) {
             $scope.UserProfileInfo = data;
 
