@@ -1,73 +1,82 @@
-<div class="adventures-panel row">
-    <!--ng-controller="AdventuresCtrl"-->
+
+<div class="adventures row container-fluid">
     <br>
     <br>
     <br>
     <br>
-    <br>
-    <div class="input-group col-md-6">
-        <input type="text" class="form-control InputStyle" size="60" placeholder="Buscar una aventura o usuario" ng-model="search.$" required>
-        <span class="input-group-btn">
-        <button type="button" class="btn btn-info ButtonStyle">Buscar!</button>
-        </span>
-    </div>
-    <br>
-    <br>
-    <br>
-</div>
-    <div class="panel panel-primary">
-        <!-- Default panel contents -->
-        <div class="panel-heading panel-heading-adventures">Aventuras Registradas</div>
-        <div class="panel-body">
-            <div class="col-sm-2">
-                <label>Nombre:</label>
-                <input class="form-control" type="text" ng-model="NewAdventure.name" required>
-            </div>
-            <div class="col-sm-4">
-                <label>Descripción:</label>
-                <input class="form-control" type="text" ng-model="NewAdventure.description" required>
-            </div>
-            <div class="col-sm-2">
-                <label>Dificultad:</label>
-                <input class="form-control" type="text" ng-model="NewAdventure.difficulty" required>
-            </div>
-            <div class="col-sm-2">
-                <label>Punto Inicial:</label>
-                <input class="form-control" type="text" ng-model="NewAdventure.initialPoint" required>
-            </div>
-            <div class="col-sm-2">
+    <div class="filter col-md-4" style="position: fixed">
+        <div class="PersonalPanel panel panel-default ">
+            <div class="panel-heading">Filtros:</div>
+            <div class="panel-body">
+
                 <br>
-                <button type="button" class="btn btn-success btn-block" ng-click="CreateAdventure()" ng-disabled="!NewAdventure.name || !NewAdventure.description || !NewAdventure.description || !NewAdventure.initialPoint || selected">Crear nueva Aventura</button>
+                <br>
+                <br>
+
+                <div class="input-group col-md-12">
+                    <input type="text" class="form-control InputStyle" size="60" placeholder="Filtra las aventuras"
+                           ng-model="search.$" required>
+                <span class="input-group-btn">
+                <button type="button" class="btn btn-info ButtonStyle">Buscar!</button>
+                </span><br>
+                </div>
+                <div class="text-center">
+                    <h5>Filtra tu busqueda por dificultad:</h5>
+                    <form action="Dificultad">
+                        <input type="checkbox" name="Dificultad" value="Baja">Baja
+                        <input type="checkbox" name="Dificultad" value="Media">Media
+                        <input type="checkbox" name="Dificultad" value="Alta">Alta
+                    </form>
+                </div>
+                <br>
+                <div class="text-center">
+                    <h5>Busca tus aventuras mas cercanas:</h5>
+
+                    <p>
+                        <button class="btn btn-success" ng-click="searchNearby()">Buscar aventuras cercanas</button>
+                    </p><br>
+                    <h5>O filtra entre todas las aventuras:</h5>
+                    <p>
+                        <button class="btn btn-warning" ng-click="getTodas()">Buscar aventuras</button>
+                    </p>
+                </div>
+                <br>
+                <br>
             </div>
         </div>
-        <!-- Table -->
-        <table class="table">
-            <tr class="info">
-                <td>Nombre</td>
-                <td>Descripción</td>
-                <td>Dificultad</td>
-                <td>Punto Inicial</td>
-                <td>Acciones</td>
-                <td></td>
-            </tr>
-            <tr ng-if="!cerca" ng-repeat="adventure in adventures | filter:search">
-                <!---->
-                <td>{{adventure.name}}</td>
-                <td>{{adventure.description}}</td>
-                <td>{{adventure.difficulty}}</td>
-                <td>{{adventure.initialPoint}}</td>
-                <td><button class="btn btn-danger" ng-click="DeleteAdventure(adventure._id)">Eliminar</button></td>
-            </tr>
-            <tr ng-if="cerca" ng-repeat="adventure in probando | filter:search">
-                <!---->
-                <td>{{adventure.name}}</td>
-                <td>{{adventure.description}}</td>
-                <td>{{adventure.difficulty}}</td>
-                <td>{{adventure.initialPoint}}</td>
-                <td><button class="btn btn-danger" ng-click="DeleteAdventure(adventure._id)">Eliminar</button></td>
-            </tr>
-        </table>
     </div>
+    <div class="col-md-4"></div>
+    <div class="showadventures col-md-8">
 
-<button class="btn btn-success" ng-click="searchNearby()">Buscar aventuras cercanas</button>
+        <div class="col-md-12">
+        <div id="ff" class="PersonalPanel panel panel-default" ng-if="!cerca" ng-repeat="adventure in adventures | filter:search">
+            <td>{{adventure.name}}</td>
+            <td>{{adventure.description}}</td>
+            <td>{{adventure.difficulty}}</td>
+            <td>{{adventure.initialPoint}}</td>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+        </div>
+        <div class="PersonalPanel panel panel-default" ng-if="cerca" ng-repeat="adventure in probando | filter:search">
+
+            <td>{{adventure.name}}</td>
+            <td>{{adventure.description}}</td>
+            <td>{{adventure.difficulty}}</td>
+            <td>{{adventure.initialPoint}}</td>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+        </div>
+        </div>
+    </div>
+</div>
+<br>
+<br>
 

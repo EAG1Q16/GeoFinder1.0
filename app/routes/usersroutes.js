@@ -16,6 +16,8 @@ router.post('/signup', function(req, res) {
     var email = req.body.email;
     var username = req.body.username;
     var password = req.body.password;
+    var description = 'Soy nuevo en Geofinder';
+    var photo = 'http://i66.tinypic.com/2yopwmr.jpg';
 
     // Validation
     req.checkBody('name', 'Name is required').notEmpty();
@@ -33,7 +35,9 @@ router.post('/signup', function(req, res) {
             name: name,
             email: email,
             username: username,
-            password: password
+            password: password,
+            description: description,
+            photo: photo
         });
 
         User.createUser(newUser, function(err, user){
@@ -90,7 +94,8 @@ passport.use(new TwitterStrategy({
             provider_id	: profile.id,
             name				: profile.displayName,
             photo				: profile.photos[0].value,
-            username            : profile.id
+            username            : profile.id,
+            description         : 'Soy nuevo en Geofinder'
         });
 
         usertweet.save(function(err) {
@@ -117,7 +122,8 @@ passport.use(new FacebookStrategy({
             provider_id	: profile.id,
             name				 : profile.displayName,
             photo				: profile.photos[0].value,
-            username            :profile.id
+            username            :profile.id,
+            description         : 'Soy nuevo en Geofinder'
         });
         userface.save(function(err) {
             if(err) throw err;
@@ -167,6 +173,92 @@ router.get('/my/:user_id', function(req, res){
     });
 });
 
+//Modify the name of a user
+router.put('/update/name/:user_id', function(req, res) {
+    User.update({_id : req.params.user_id
+        },{$set:{name: req.body.name
+        }},
+        function(err, user) {
+            if (err)
+                res.send(err);
+
+            User.findById(req.params.user_id, function(err, user) {
+                if(err)
+                    res.send(err)
+                res.send(user);
+            });
+        });
+});
+
+//Modify the description of a user
+router.put('/update/description/:user_id', function(req, res) {
+    User.update({_id : req.params.user_id
+        },{$set:{description: req.body.description
+        }},
+        function(err, user) {
+            if (err)
+                res.send(err);
+
+            User.findById(req.params.user_id, function(err, user) {
+                if(err)
+                    res.send(err)
+                res.send(user);
+            });
+        });
+});
+
+//Modify the photo of a user
+router.put('/update/photo/:user_id', function(req, res) {
+    User.update({_id : req.params.user_id
+        },{$set:{photo: req.body.photo
+        }},
+        function(err, user) {
+            if (err)
+                res.send(err);
+
+            User.findById(req.params.user_id, function(err, user) {
+                if(err)
+                    res.send(err)
+                res.send(user);
+            });
+        });
+});
+
+//Modify the username of a user
+router.put('/update/username/:user_id', function(req, res) {
+    console.log('hole estoy en la funcion');
+    console.log(req.body.username);
+    User.findOne(req.body.username, function(err, user) {
+        console.log('estoy en findune username el usuario encontrado');
+        if (err) {
+            console.log('Tengo un Error');
+            res.send('Tengo un error');
+        }
+        if (!user) {
+            console.log('Estoy en User diferente');
+            User.update({
+                    _id: req.params.user_id
+                }, {
+                    $set: {
+                        username: req.body.username
+                    }
+                },
+                function (err, user) {
+                    if (err)
+                        res.send(err);
+                    User.findById(req.params.user_id, function (err, user) {
+                        if (err)
+                            res.send(err)
+                        res.send(user);
+                    });
+                });
+        }
+        if (user){
+            console.log('Estoy en user encontrado');
+            res.status(400).send('Este nombre de usuario ya existe prueba con otro')
+        }
+    });
+});
 
 router.get('/twitter', passport.authenticate('twitter'));
 
@@ -197,6 +289,7 @@ router.get('/sessionid', isLoggedIn, function(req, res) {
     res.send(req.user);
 });
 
+//Get all users
 router.get('/', function(req, res) {
 
     User.find(function (err, user) {
