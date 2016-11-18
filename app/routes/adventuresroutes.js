@@ -17,6 +17,16 @@ router.get('/', function(req, res) {
         res.json(adventures);
     });
 });
+
+// GET adventure by ID
+router.get('/id/:adv_id', function(req, res){
+    Adventures.findById(req.params.adv_id, function(err, adventure){
+        if(err)
+            res.send(err)
+        res.send(adventure);
+    });
+});
+
 // Create an Adventure
 router.post('/createadventure/', function(req, res) {
     Adventures.create({
@@ -41,8 +51,8 @@ router.post('/createadventure/', function(req, res) {
 
 // Assign Adventure <--> User
 router.post('/assignadventure/', function(req, res) {
-    var query = {_id: req.params.user_id};
-    var update = {$addToSet : {"adventures" : req.params.adventure_id}};
+    var query = {_id: req.body.user_id};
+    var update = {$addToSet : {"adventures" : req.body.adventure_id}};
     var options = {};
 
     Users.findOneAndUpdate(query, update, options, function(err, user) {
@@ -52,38 +62,39 @@ router.post('/assignadventure/', function(req, res) {
         console.log(user);
     });
 
-    Users.find({_id: req.params.user_id}).populate('adventures').exec().then(function (err, user) {
+    Users.find({_id: req.body.user_id}).populate('adventures').exec().then(function (err, user) {
         if(err)
             res.send(err)
         res.json(user);
     });
 });
 
-// Delete Adventure & remove Adventure <--> User
-router.delete('/removeadventure/:adventure_id', function(req, res) {
+//Delete Adventure
+router.delete('/removeadventure/', function(req, res) {
 
     Adventures.remove({
-        _id : req.params.adventure_id
+        _id : req.body.adventure_id
     }, function(err) {
         if (err)
             res.send(err)
     });
-
-    Adventures.find(function (err, adventures) {
-        if (err)
-            res.send(err);
-        res.json(adventures);
-    });
 });
 
-//GEt adventure by ID
-router.get('/id/:adv_id', function(req, res){
-    Adventures.findById(req.params.adv_id, function(err, adventure){
-        if(err)
+// Unassign Adventure <--> User
+router.delete('/unassignadventure/', function (req, res) {
+
+    var query = {_id: req.body.user_id};
+    var update = {$pull : {"adventures" : req.body.adventure_id}};
+    var options = {};
+
+    Users.findOneAndUpdate(query, update, options, function(err, user) {
+        if (err) {
             res.send(err)
-        res.send(adventure);
+        }
+        res.send("Unassigned:" + req.body.adventure_id);
     });
 });
+
 
 
 
