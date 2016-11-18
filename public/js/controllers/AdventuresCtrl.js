@@ -3,13 +3,15 @@
  */
 angular.module('GeoFinderApp').controller('AdventuresCtrl',['$scope','$http','$routeParams','$window',function($scope, $http, $routeParams,$window){
     $scope.NewAdventure = {};
-    
+
+    $scope.cerca = false;
     
     // when landing on the page, get all user and show them
     $http.get('/adventures')
         .success(function(data) {
             $scope.adventures = data;
             console.log(data);
+            $scope.cerca = false;
 
         })
         .error(function(data) {
@@ -38,37 +40,55 @@ angular.module('GeoFinderApp').controller('AdventuresCtrl',['$scope','$http','$r
             });
     };
 
-    
 
-    $window.navigator.geolocation.getCurrentPosition(function(position) {
-        $scope.$apply(function() {
-            $scope.lat = position.coords.latitude;
-            $scope.lng = position.coords.longitude;
+    $scope.searchNearby = function() {
+        $window.navigator.geolocation.getCurrentPosition(function (position) {
+            $scope.cerca = true;
+            $scope.$apply(function () {
+                $scope.lat = position.coords.latitude;
+                $scope.lng = position.coords.longitude;
 
-            var geocoder = new google.maps.Geocoder();
-            var latlng = new google.maps.LatLng($scope.lat, $scope.lng);
-            console.log($scope.lat);
-            console.log($scope.lng);
-            var request = {
-                latLng: latlng
-            };
-            geocoder.geocode(request, function(data, status) {
-                if (status == google.maps.GeocoderStatus.OK) {
-                    if (data[0] != null) {
-                        console.log("address is: " + data[0].formatted_address);
-                    } else {
-                        console.log("No address available");
+                console.log($scope.lat);
+                console.log($scope.lng);
+
+                $scope.cordenada = {
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude
+                };
+
+
+                $http.post('adventures/near', $scope.cordenada)
+                    .success(function (data) {
+                        $scope.probando = (data);
+                        //console.log("cercanas"+ $scope.probando[0].name);
+                    })
+                    .error(function (data) {
+                        console.log('Error: ' + data);
+                    });
+
+
+                var geocoder = new google.maps.Geocoder();
+                var latlng = new google.maps.LatLng($scope.lat, $scope.lng);
+
+
+                var request = {
+                    latLng: latlng
+                };
+                geocoder.geocode(request, function (data, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        if (data[0] != null) {
+                            console.log("address is: " + data[0].formatted_address);
+                        } else {
+                            console.log("No address available");
+                        }
                     }
-                }
+                })
+
+
             })
-            /*var geolib = require('geolib');
-            geolib.
-                {latitude: 52.516272, longitude: 52.516272},
-                {latitude: 51.503333, longitude: 51.503333},
-                10);
-            console.log(position);*/
-        })
-    })
+        });
+    };
+
     
 
 }]);

@@ -50,7 +50,15 @@
                 <td>Acciones</td>
                 <td></td>
             </tr>
-            <tr ng-repeat="adventure in adventures | filter:search">
+            <tr ng-if="!cerca" ng-repeat="adventure in adventures | filter:search">
+                <!---->
+                <td>{{adventure.name}}</td>
+                <td>{{adventure.description}}</td>
+                <td>{{adventure.difficulty}}</td>
+                <td>{{adventure.initialPoint}}</td>
+                <td><button class="btn btn-danger" ng-click="DeleteAdventure(adventure._id)">Eliminar</button></td>
+            </tr>
+            <tr ng-if="cerca" ng-repeat="adventure in probando | filter:search">
                 <!---->
                 <td>{{adventure.name}}</td>
                 <td>{{adventure.description}}</td>
@@ -60,7 +68,6 @@
             </tr>
         </table>
     </div>
-<button class="btn btn-danger" ng-click="FindNearAdventure()">Eliminar</button>
 
-<!--<button class="btn btn-danger" ng-click="getLocationGoogle(40.714224,-73.961452)">Localizacion</button>-->
+<button class="btn btn-success" ng-click="searchNearby()">Buscar aventuras cercanas</button>
 
