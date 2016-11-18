@@ -15,7 +15,7 @@ router.get('/', function(req, res) {
     Adventures.find(function (err, adventures) {
         if (err)
             res.send(err);
-        res.json(adventures);
+        res.send(adventures);
     });
 
 });
@@ -43,13 +43,14 @@ router.post('/createadventure/', function(req, res) {
     }, function(err, adv) {
         if (err)
             res.send(err);
-        Adventures.find(function (err, adventures) {
+        Adventures.findById(adv._id, function (err, advent) {
             if (err)
                 res.send(err);
-            res.json(adventures);
+            res.send(advent);
         });
     });
 });
+
 
 // Assign Adventure <--> User
 router.post('/assignadventure/', function(req, res) {
@@ -67,7 +68,7 @@ router.post('/assignadventure/', function(req, res) {
     Users.find({_id: req.body.user_id}).populate('adventures').exec().then(function (err, user) {
         if(err)
             res.send(err)
-        res.json(user);
+        res.send(user);
     });
 });
 

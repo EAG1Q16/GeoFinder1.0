@@ -160,7 +160,7 @@ router.get('/logout', function(req, res){
 
 //GEt user by ID
 router.get('/my/:user_id', function(req, res){
-    User.findById(req.params.user_id, function(err, user){
+    User.findById(req.params.user_id).populate('adventures').exec().then(function(err, user){
         if(err)
             res.send(err)
         res.send(user);

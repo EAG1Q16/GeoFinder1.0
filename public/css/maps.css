@@ -5,9 +5,9 @@
 #LateralMenu{
     padding-top: 20px;
 }
-.PaddingTopBott{
-    padding-top: 10px;
-    padding-bottom: 10px;
+
+.PaddingBodyMap{
+    padding-top: 3%;
 }
 /**
 [ng-app="GeoFinder"] {
