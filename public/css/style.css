@@ -9,6 +9,14 @@ a {
   color: #00B7FF;
 }
 
+/*---------------------Main Padding ----------------------*/
+
+.main{
+  padding-top: 3%;
+  padding-bottom: 5%;
+  background-color: #EEEEEE;
+}
+
 /*----------------Navbar Style-------------------*/
 
 #navbarstyle.navbar-default{

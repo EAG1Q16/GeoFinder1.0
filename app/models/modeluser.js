@@ -40,8 +40,13 @@ var UserSchema = mongoose.Schema({
     },
     adventures: [
         {type: mongoose.Schema.Types.ObjectId, ref: 'Adventures' }
+    ],
+    following:[
+        {type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+    ],
+    followers:[
+        {type: mongoose.Schema.Types.ObjectId, ref: 'User' }
     ]
-
 
 });
 
@@ -52,6 +57,14 @@ module.exports.createUser = function(newUser, callback){
         bcrypt.hash(newUser.password, salt, function(err, hash) {
             newUser.password = hash;
             newUser.save(callback);
+        });
+    });
+}
+
+module.exports.hashPassword = function (newpassword, callback) {
+    bcrypt.genSalt(10, function (err, salt) {
+        bcrypt.hash(newpassword, salt, function(err, hash){
+            callback(null, hash);
         });
     });
 }

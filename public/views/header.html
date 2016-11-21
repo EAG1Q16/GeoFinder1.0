@@ -25,7 +25,7 @@
             </ul>
 
             <li class="nav navbar-nav navbar-right dropdown" ng-if="UserSessionId">
-                <a style="color: white" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img alt="Brand" class="img-circle img-size-header" ng-src="{{UserSessionId.photo}}"> {{UserSessionId.username}}<span class="caret"></span></a>
+                <a style="color: white" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img alt="Brand" class="img-rounded img-size-header" ng-src="{{UserSessionId.photo}}"><span class="caret"></span></a>
                 <ul class="dropdown-menu nav navbar-nav navbar-right">
                     <li><a ng-href="#/adventures"><i class="fa fa-search" aria-hidden="true"></i> Buscar Aventuras</a></li>
                     <li><a ng-href="#/userprofile/{{UserSessionId._id}}"><i class="fa fa-user-circle-o" aria-hidden="true"></i> Mi Perfil</a></li>
