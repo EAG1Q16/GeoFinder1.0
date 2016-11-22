@@ -3,6 +3,7 @@
  */
 var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
+var deepPopulate = require('mongoose-deep-populate')(mongoose);
 
 // define the schema for our user model
 var UserSchema = mongoose.Schema({
@@ -38,12 +39,17 @@ var UserSchema = mongoose.Schema({
     registerdate: {
         type : Date, default: Date.now
     },
-    adventures: [
-        {type: mongoose.Schema.Types.ObjectId, ref: 'Adventures' }
-    ]
-
-
+    adventures: {
+        created: [{type: mongoose.Schema.Types.ObjectId, ref: 'Adventures'}],
+        played: [{type: mongoose.Schema.Types.ObjectId, ref: 'Adventures'}],
+        favs: [{type: mongoose.Schema.Types.ObjectId, ref: 'Adventures'}],
+    }
 });
+
+//La última coma puesta en favs es importante para que detecte que favs es un array.
+
+//Activamos la función deepPopulate en el esquema
+UserSchema.plugin(deepPopulate, null);
 
 var User = module.exports = mongoose.model('User', UserSchema);
 

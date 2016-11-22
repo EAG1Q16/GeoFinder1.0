@@ -86,7 +86,7 @@ angular.module('GeoFinderApp').controller('MapsCtrl',['$scope','$rootScope','$ht
                     Newassign.adventure_id = data._id;
                     Newassign.user_id = $rootScope.UserSessionId._id;
 
-                    $http.post('/adventures/assignadventure/', Newassign)
+                    $http.post('/user/acreatedadv/', Newassign)
                         .success(function (data) {
                             $scope.NewAdventure = {}; //clear the form
                         })
