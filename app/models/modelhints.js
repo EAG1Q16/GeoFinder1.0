@@ -20,6 +20,6 @@ var hints = new mongoose.Schema({
         }
 });
 
-adventures.index({location: '2dsphere'});
+hints.index({location: '2dsphere'});
 
 module.exports = mongoose.model('Hints', hints);
