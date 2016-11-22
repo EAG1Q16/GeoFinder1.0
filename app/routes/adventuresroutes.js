@@ -4,7 +4,7 @@
 
 var express = require('express');
 var mongoose = require('mongoose');
-var Users = require('../models/modeluser');
+var Hints = require('../models/modelhints');
 var Adventures = require('../models/modeladventures');
 var router = express.Router();
 var geolib = new require('geolib');
@@ -52,26 +52,6 @@ router.post('/createadventure/', function(req, res) {
 });
 
 
-// Assign Adventure <--> User
-router.post('/assignadventure/', function(req, res) {
-    var query = {_id: req.body.user_id};
-    var update = {$addToSet : {"adventures" : req.body.adventure_id}};
-    var options = {};
-
-    Users.findOneAndUpdate(query, update, options, function(err, user) {
-        if (err) {
-            res.send(err);
-        }
-        console.log(user);
-    });
-
-    Users.find({_id: req.body.user_id}).populate('adventures').exec().then(function (err, user) {
-        if(err)
-            res.send(err)
-        res.send(user);
-    });
-});
-
 //Delete Adventure
 router.delete('/removeadventure/', function(req, res) {
 
@@ -83,20 +63,32 @@ router.delete('/removeadventure/', function(req, res) {
     });
 });
 
-// Unassign Adventure <--> User
-router.delete('/unassignadventure/', function (req, res) {
+/**
+ *
+ *  Hints Zone
+ *
+ */
 
-    var query = {_id: req.body.user_id};
-    var update = {$pull : {"adventures" : req.body.adventure_id}};
+// Assign Hint <--> Adventure
+router.post('/ahintdadv/', function(req, res) {
+    var query = {_id: req.body.adventure_id};
+    var update = {$addToSet : {"hints" : req.body.hint_id}};
     var options = {};
 
-    Users.findOneAndUpdate(query, update, options, function(err, user) {
+    Adventures.findOneAndUpdate(query, update, options, function(err, user) {
         if (err) {
-            res.send(err)
+            res.send(err);
         }
-        res.send("Unassigned:" + req.body.adventure_id);
+        console.log(user);
+    });
+
+    Adventures.find({_id: req.body.adventure_id}).deepPopulate(pathdeepPopulate).exec().then(function (err, user) {
+        if(err)
+            res.send(err)
+        res.send(user);
     });
 });
+
 
 router.post('/near', function (req, res){
 

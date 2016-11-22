@@ -174,7 +174,9 @@ router.get('/logout', function(req, res){
 
 //GEt user by ID
 router.get('/my/:user_id', function(req, res){
-    User.findById(req.params.user_id).populate('adventures').exec().then(function(err, user){
+    //La variable pathdeepPopulate se utiliza para no repetir los paths en cada pathdeepPopulate
+    //La variable se guarda en la Adventure Zone
+    User.findById(req.params.user_id).deepPopulate(pathdeepPopulate).exec().then(function(err, user){
         if(err)
             res.send(err)
         res.send(user);
@@ -331,6 +333,12 @@ router.get('/', function(req, res) {
 
 });
 
+/**
+ *
+ * Followers Zone
+ *
+ */
+
 //Follow a user
 router.post('/follow/:user_id', function(req, res) {
     //The id recived in the uri is the id of the user public profile and the id recived in the req is the id of the user logged in
@@ -359,7 +367,7 @@ router.post('/follow/:user_id', function(req, res) {
                 }
             });
         }
-});
+    });
 });
 
 //Function to know if a user is following another one
@@ -407,6 +415,123 @@ router.delete('/unfollow/:user_public/:user_logged', function (req, res) {
 });
 
 
+
+/**
+ *
+ * Adventures Zone
+ *
+ */
+
+//La variable pathdeepPopulate se utiliza para no repetir los paths en cada pathdeepPopulate
+var pathdeepPopulate = ['adventures.created', 'adventures.favs', 'adventures.played'];
+
+// Assign Created Adventure <--> User
+router.post('/acreatedadv/', function(req, res) {
+    var query = {_id: req.body.user_id};
+    var update = {$addToSet : {"adventures.created" : req.body.adventure_id}};
+    var options = {};
+
+    User.findOneAndUpdate(query, update, options, function(err, user) {
+        if (err) {
+            res.send(err);
+        }
+        console.log(user);
+    });
+
+    User.find({_id: req.body.user_id}).deepPopulate(pathdeepPopulate).exec().then(function (err, user) {
+        if(err)
+            res.send(err)
+        res.send(user);
+    });
+});
+
+
+// Unassign Created Adventure <--> User
+router.delete('/uacreatedadv/', function (req, res) {
+
+    var query = {_id: req.body.user_id};
+    var update = {$pull : {"adventures.created" : req.body.adventure_id}};
+    var options = {};
+
+    User.findOneAndUpdate(query, update, options, function(err, user) {
+        if (err) {
+            res.send(err)
+        }
+        res.send("Unassigned:" + req.body.adventure_id);
+    });
+});
+
+// Assign Fav Adventure <--> User
+router.post('/afavadv/', function(req, res) {
+    var query = {_id: req.body.user_id};
+    var update = {$addToSet : {"adventures.favs" : req.body.adventure_id}};
+    var options = {};
+
+    User.findOneAndUpdate(query, update, options, function(err, user) {
+        if (err) {
+            res.send(err);
+        }
+        console.log(user);
+    });
+
+    User.find({_id: req.body.user_id}).deepPopulate(pathdeepPopulate).exec().then(function (err, user) {
+        if(err)
+            res.send(err)
+        res.send(user);
+    });
+});
+
+// Unassign Fav Adventure <--> User
+router.delete('/uafavadv/', function (req, res) {
+
+    var query = {_id: req.body.user_id};
+    var update = {$pull : {"adventures.favs" : req.body.adventure_id}};
+    var options = {};
+
+    User.findOneAndUpdate(query, update, options, function(err, user) {
+        if (err) {
+            res.send(err);
+        }
+        res.send("Unfav:" + req.body.adventure_id);
+    });
+});
+
+
+// Assign Played Adventure <--> User
+router.post('/aplayedadv/', function(req, res) {
+    var query = {_id: req.body.user_id};
+    var update = {$addToSet : {"adventures.played" : req.body.adventure_id}};
+    var options = {};
+
+    User.findOneAndUpdate(query, update, options, function(err, user) {
+        if (err) {
+            res.send(err);
+        }
+        console.log(user);
+    });
+
+    User.find({_id: req.body.user_id}).deepPopulate(pathdeepPopulate).exec().then(function (err, user) {
+        if(err)
+            res.send(err)
+        res.send(user);
+    });
+});
+
+// Unassign Played Adventure <--> User
+router.delete('/uaplayedadv/', function (req, res) {
+
+    var query = {_id: req.body.user_id};
+    var update = {$pull : {"adventures.played" : req.body.adventure_id}};
+    var options = {};
+
+    User.findOneAndUpdate(query, update, options, function(err, user) {
+        if (err) {
+            res.send(err)
+        }
+        res.send("Unplayed:" + req.body.adventure_id);
+
+    });
+});
 
 module.exports = router;
 
