@@ -29,7 +29,7 @@ router.post('/signup', function(req, res) {
 
     if(errors){
        console.log('faltan campos');
-        res.status(400).send(errors);
+        res.status(400).send('Faltan campos por rellenar');
     } else {
         var newUser = new User({
             name: name,
@@ -40,13 +40,21 @@ router.post('/signup', function(req, res) {
             photo: photo
         });
 
-        User.createUser(newUser, function(err, user){
+    var query = {username: username};
+    User.findOne(query, function(err, existingUser) {
+         if (existingUser) {
+         res.status(400).send('Este nombre de usuario ya existe prueba con otro :)')
+         }
+         else{
+            User.createUser(newUser, function(err, user){
             if(err) throw err;
             console.log(user);
-        });
+                res.send(user);
 
-        res.send('Usuario Registrado');
+         });
     }
+    });
+}
 });
 
 //Local Strategy
@@ -228,15 +236,12 @@ router.put('/update/photo/:user_id', function(req, res) {
 
 //Modify the username of a user
 router.put('/update/username/:user_id', function(req, res) {
-    console.log('hole estoy en la funcion');
-    console.log(req.body.username);
-    User.findOne(req.body.username, function(err, user) {
-        console.log('estoy en findune username el usuario encontrado');
-        if (err) {
-            console.log('Tengo un Error');
-            res.send('Tengo un error');
+    var query = {username: req.body.username};
+    User.findOne(query, function(err, existingUser) {
+        if (existingUser) {
+            res.status(400).send('Este usuario ya existe prueba con otro :)')
         }
-        if (!user) {
+        else {
             console.log('Estoy en User diferente');
             User.update({
                     _id: req.params.user_id
@@ -255,9 +260,34 @@ router.put('/update/username/:user_id', function(req, res) {
                     });
                 });
         }
-        if (user){
-            console.log('Estoy en user encontrado');
-            res.status(400).send('Este nombre de usuario ya existe prueba con otro')
+    });
+});
+
+
+//Modify the user password
+router.put('/update/password/:user_id', function(req, res) {
+    var newpassword = req.body.password;
+    User.hashPassword(newpassword, function (err, password) {
+        if(password) {
+            User.update({
+                    _id: req.params.user_id
+                }, {
+                    $set: {
+                        password: password
+                    }
+                },
+                function (err, user) {
+                    if (err)
+                        res.send(err);
+                    User.findById(req.params.user_id, function (err, user) {
+                        if (err)
+                            res.send(err)
+                        res.send(user);
+                    });
+                });
+        }
+        else{
+            res.status(400).send('Error en el password');
         }
     });
 });
@@ -305,6 +335,77 @@ router.get('/', function(req, res) {
 
 /**
  *
+ * Followers Zone
+ *
+ */
+
+//Follow a user
+router.post('/follow/:user_id', function(req, res) {
+    //The id recived in the uri is the id of the user public profile and the id recived in the req is the id of the user logged in
+    //Here we save the user wich i follow in the mongo database using the season id of the user logged in
+    var query = {_id: req.body._id};
+    var update = {$addToSet : {"following" : req.params.user_id}};
+    var options = {};
+    User.findOneAndUpdate(query, update, options, function(err, user) {
+        if (err) {
+            res.send(err);
+        }
+        if(user){
+            //Then if this works we add these id to the other user making a simple relationship
+            var query2 = {_id: req.params.user_id};
+            var update2 = {$addToSet : {"followers" : req.body._id}};
+            User.findOneAndUpdate(query2, update2, options, function(err, user) {
+                if (err) {
+                    res.send(err);
+                }
+                if(user){
+                    User.find({_id: req.body._id}).populate('following').exec().then(function (err, user) {
+                        if(err)
+                            res.send(err)
+                        res.send(user);
+                    });
+                }
+            });
+        }
+    });
+});
+
+//Function to know if a user is following another one
+router.get('/isfollowing/:user_public/:user_logged', function (req, res) {
+    var query = {_id: req.params.user_logged, following: req.params.user_public};
+    User.findOne(query, function(err, userisfollowing){
+        console.log(err);
+        console.log(userisfollowing);
+        if(userisfollowing){
+            res.send('true');
+        }
+        else{
+            res.send('false');
+        }
+    });
+});
+
+//function to unfollow a user
+router.delete('/unfollow/:user_public/:user_logged', function (req, res) {
+    var query = {_id: req.params.user_logged};
+    var update = {$pull : {"following" : req.params.user_public}};
+    var options = {};
+    User.findOneAndUpdate(query, update, options, function(err, user) {
+        console.log(err);
+        console.log(user);
+        if (err) {
+            res.send(err)
+        }
+        if (user) {
+            res.send(user);
+        }
+    });
+});
+
+
+
+/**
+ *
  * Adventures Zone
  *
  */
@@ -331,6 +432,7 @@ router.post('/acreatedadv/', function(req, res) {
         res.send(user);
     });
 });
+
 
 // Unassign Created Adventure <--> User
 router.delete('/uacreatedadv/', function (req, res) {
@@ -415,9 +517,9 @@ router.delete('/uaplayedadv/', function (req, res) {
             res.send(err)
         }
         res.send("Unplayed:" + req.body.adventure_id);
+
     });
 });
-
 
 module.exports = router;
 

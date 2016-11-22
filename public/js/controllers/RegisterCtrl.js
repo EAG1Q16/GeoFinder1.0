@@ -11,16 +11,21 @@ angular.module('GeoFinderApp').controller('RegisterCtrl',['$scope','$location','
     $scope.RegisterUser = function(){
         $http.post('/user/signup', $scope.NewUser)
             .success(function(data){
-                $scope.NewUser = {}; //clear the form
-                console.log('nice usuario registrado');
-                console.log(data);
-                $location.path('/login');
-
-
+                $scope.UserRegistred = {
+                    username: $scope.NewUser.username,
+                    password: $scope.NewUser.password
+                };
+                $http.post('/user/login', $scope.UserRegistred)
+                    .success(function(data){
+                        $location.path('/index');
+                    })
+                    .error(function(data){
+                        console.log('Error:' + data);
+                    });
             })
             .error(function(data){
                 console.log('Error:' + data);
-                $scope.ErrorMsg = ('¡Faltan Campos!');
+                $scope.ErrorMsg = (data);
             });
     };
 

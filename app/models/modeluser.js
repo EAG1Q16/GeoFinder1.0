@@ -39,6 +39,12 @@ var UserSchema = mongoose.Schema({
     registerdate: {
         type : Date, default: Date.now
     },
+    following:[
+        {type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+    ],
+    followers:[
+        {type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+    ],
     adventures: {
         created: [{type: mongoose.Schema.Types.ObjectId, ref: 'Adventures'}],
         played: [{type: mongoose.Schema.Types.ObjectId, ref: 'Adventures'}],
@@ -51,6 +57,7 @@ var UserSchema = mongoose.Schema({
 //Activamos la función deepPopulate en el esquema
 UserSchema.plugin(deepPopulate, null);
 
+
 var User = module.exports = mongoose.model('User', UserSchema);
 
 module.exports.createUser = function(newUser, callback){
@@ -58,6 +65,14 @@ module.exports.createUser = function(newUser, callback){
         bcrypt.hash(newUser.password, salt, function(err, hash) {
             newUser.password = hash;
             newUser.save(callback);
+        });
+    });
+}
+
+module.exports.hashPassword = function (newpassword, callback) {
+    bcrypt.genSalt(10, function (err, salt) {
+        bcrypt.hash(newpassword, salt, function(err, hash){
+            callback(null, hash);
         });
     });
 }
