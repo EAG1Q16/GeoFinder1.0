@@ -2,7 +2,7 @@
 body {
   font: 14px "Monospaced", Helvetica, Arial, sans-serif;
   font-family: Montserrat, sans-serif;
-  background-color: #EEEEEE;
+  background-color: #ebeef2;
 }
 
 a {
@@ -14,7 +14,12 @@ a {
 .main{
   padding-top: 3%;
   padding-bottom: 5%;
-  background-color: #EEEEEE;
+  background-color: #ebeef2;
+}
+/*---------------------User Home ----------------------*/
+.UserHomeLog{
+  padding-top: 3%;
+  padding-bottom: 5%;
 }
 
 /*----------------Navbar Style-------------------*/
@@ -119,8 +124,8 @@ body {
 
 /*--------Personal panel style--*/
 .PersonalPanel {
-  border-color: #00ADB5;
-
+  border-color: transparent;
+;
 }
 .PersonalPanel> .panel-heading {
   background: #00ADB5;

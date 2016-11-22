@@ -33,10 +33,12 @@ angular.module('GeoFinderApp').controller('PublicUserProfileCtrl',['$scope','$ro
         $http.post('/user/follow/' + puserID, $rootScope.UserSessionId)
             .success(function(data){
                 console.log(data);
+                $scope.FollowSucces = 'Ahora sigues a este usuario'
 
             })
             .error(function(data) {
                 console.log('Error' + data);
+                $scope.FollowError = 'Hemos tenido un problema interno prueba más tarde'
             });
     };
 
@@ -44,10 +46,12 @@ angular.module('GeoFinderApp').controller('PublicUserProfileCtrl',['$scope','$ro
         $http.delete('/user/unfollow/' + puserID +'/'+ $rootScope.UserSessionId._id)
             .success(function(data){
                 console.log(data);
+                $scope.FollowSucces = 'Has dejado de seguir a este usuario'
 
             })
             .error(function(data) {
                 console.log('Error' + data);
+                $scope.FollowError = 'Hemos tenido un problema interno prueba más tarde'
             });
     };
 

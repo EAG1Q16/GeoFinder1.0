@@ -17,6 +17,8 @@
             <input type="password" class="form-control InputStyle" id="pwd" ng-model="LogUser.password">
         </div>
 
+        <div ng-if="ErrorLogin" class="alert alert-danger text-center" role="alert">El usuario o la contraseña son incorrectos prueba de nuevo</div>
+
         <button type="submit" class="btn btn-block" id="LoginBtn" ng-click="LoginUser()"><span>Entrar</span></button>
 
     </form>

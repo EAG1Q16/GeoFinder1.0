@@ -11,13 +11,15 @@
                     <div class="text-justify">
                         <h3><b>{{pUserProfileInfo.name}}</b></h3>
                         <p class="text-justify">{{pUserProfileInfo.description}}</p>
-                        <a ng-if="pUserProfileInfo._id != UserSessionId._id && isfollowing == 'false'" class="btn btn-success center-block ButtonStyle" role="button" ng-click="followUser()"><b>Seguir</b></a>
-                        <a ng-if="pUserProfileInfo._id != UserSessionId._id && isfollowing == 'true'" class="btn btn-danger center-block ButtonStyle" role="button" ng-click="stopfollowUser()"><b>Dejar de Seguir</b></a>
+                        <a ng-if="pUserProfileInfo._id != UserSessionId._id && isfollowing == 'false'" class="btn btn-success center-block" role="button" ng-click="followUser()"><b>Seguir</b></a>
+                        <a ng-if="pUserProfileInfo._id != UserSessionId._id && isfollowing == 'true'" class="btn btn-danger center-block" role="button" ng-click="stopfollowUser()"><b>Dejar de Seguir</b></a>
+                        <p><div ng-if="FollowError" class="alert alert-danger text-center" role="alert">{{FollowError}}</div></p>
+                        <p><div ng-if="FollowSucces" class="alert alert-success text-center" role="alert">{{FollowSucces}}</div></p>
+                    </div>
                     </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-sm-6 col-md-3">
+            <div class="col-sm-6 col-md-2">
                 <div class="panel panel-success PersonalPanel">
                     <div class="panel-heading">
                         <div class="panel-title"><b><i class=" fa fa-diamond"></i> Rango:</b></div>
@@ -30,16 +32,16 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6 col-md-2">
+            <div class="col-sm-6 col-md-3">
                 <div class="panel panel-success PersonalPanel">
                     <div class="panel-heading">
-                        <div class="panel-title"><b><i class=" fa fa-users"></i> Seguidores:</b></div>
+                        <div class="panel-title"><b><i class=" fa fa-users"></i> Siguiendo | Seguidores</b></div>
                     </div>
                     <div class="panel-body ">
-                        <h1 class="text-center">{{pUserProfileInfo.followers.length}}</h1>
+                        <h1 class="text-center">{{pUserProfileInfo.following.length}} | {{pUserProfileInfo.followers.length}}</h1>
                     </div>
                 </div>
-                </div>
+            </div>
             <div class="col-sm-6 col-md-2">
                 <div class="panel panel-success PersonalPanel">
                     <div class="panel-heading">

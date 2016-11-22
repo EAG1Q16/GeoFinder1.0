@@ -386,10 +386,22 @@ router.delete('/unfollow/:user_public/:user_logged', function (req, res) {
         console.log(err);
         console.log(user);
         if (err) {
-            res.send(err)
+            res.status(400).send('Probelmas al dejar de seguir el usuario pruebe mas tarde')
         }
         if (user) {
-            res.send(user);
+            var query2 = {_id: req.params.user_public};
+            var update2 = {$pull : {"followers" : req.params.user_logged}};
+            User.findOneAndUpdate(query2, update2, options, function(err, user) {
+                console.log(err);
+                console.log(user);
+                if (err) {
+                    res.status(400).send('Probelmas al dejar de seguir el usuario pruebe mas tarde');
+                }
+                if (user) {
+                    res.send('Has dejado de seguir a este usuario');
+                }
+            });
+
         }
     });
 });
