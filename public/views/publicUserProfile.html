@@ -48,7 +48,7 @@
                         <div class="panel-title"><b><i class=" fa fa-tree"></i> Creadas:</b></div>
                     </div>
                     <div class="panel-body">
-                        <h1 class="text-center">{{AdventuresLength}}</h1>
+                        <h1 class="text-center">{{CreatedAdventures.length}}</h1>
                     </div>
                 </div>
             </div>
@@ -69,9 +69,9 @@
                     </div>
                     <!-- List group -->
                     <ul class="list-group">
-                        <li class="list-group-item" ng-repeat="pUserAdventure in pUserAdventures">
-                            <h3>{{pUserAdventure.name}}</h3>
-                            <p>{{pUserAdventure.description}}</p>
+                        <li class="list-group-item" ng-repeat="CreatedAdventure in CreatedAdventures">
+                            <h3>{{CreatedAdventure.name}}</h3>
+                            <p>{{CreatedAdventure.description}}</p>
                         </li>
                     </ul>
                 </div>

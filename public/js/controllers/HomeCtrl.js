@@ -4,8 +4,10 @@ angular.module('GeoFinderApp').controller('HomeCtrl',['$scope','$location','$roo
     $http.get('/user/sessionid')
         .success(function(data) {
             $rootScope.UserSessionId = data;
-            console.log($rootScope.UserSessionId)
+            $rootScope.UserSessionUri = data._id;
+            console.log($rootScope.UserSessionId);
             $scope.UserHome = data;
+            console.log($scope.UserHome.adventures.created.length)
 
         })
         .error(function(data) {

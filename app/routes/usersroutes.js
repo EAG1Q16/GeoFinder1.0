@@ -371,18 +371,23 @@ router.post('/follow/:user_id', function(req, res) {
 });
 
 //Function to know if a user is following another one
-router.get('/isfollowing/:user_public/:user_logged', function (req, res) {
-    var query = {_id: req.params.user_logged, following: req.params.user_public};
-    User.findOne(query, function(err, userisfollowing){
-        console.log(err);
-        console.log(userisfollowing);
-        if(userisfollowing){
-            res.send('true');
+router.get('/isfollowing/:user_public/:user_logged',function (req, res) {
+        if (req.params.user_logged == 'undefined'){
+            res.send('notlogged');
         }
         else{
-            res.send('false');
+            var query = {_id: req.params.user_logged, following: req.params.user_public};
+            User.findOne(query, function (err, userisfollowing) {
+                console.log(err);
+                console.log(userisfollowing);
+                if (userisfollowing) {
+                    res.send('true');
+                }
+                else {
+                    res.send('false');
+                }
+            });
         }
-    });
 });
 
 //function to unfollow a user
