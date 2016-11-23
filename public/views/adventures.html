@@ -23,15 +23,21 @@
                 <div class="text-center">
                     <h5>Filtra tu busqueda por dificultad:</h5>
                     <form action="Dificultad">
-                        <input type="checkbox" name="Dificultad" value="Baja">Baja
-                        <input type="checkbox" name="Dificultad" value="Media">Media
-                        <input type="checkbox" name="Dificultad" value="Alta">Alta
+                        <md-radio-group ng-model="search.difficulty" id="difficulty-radiobutton">
+                            <md-radio-button value="Facil" class="md-primary">Fácil</md-radio-button>
+                            <md-radio-button value="Media" class="md-primary">Media </md-radio-button>
+                            <md-radio-button value="Dificil" class="md-primary">Díficil</md-radio-button>
+                        </md-radio-group>
+                        <md-radio-group ng-model="search">
+                            <md-radio-button ng-click="getTodas()" class="md-primary" >Todas</md-radio-button>
+                        </md-radio-group>
                     </form>
                 </div>
                 <br>
                 <div class="text-center">
                     <h5>Busca tus aventuras mas cercanas:</h5>
-
+                    <input type="text" class="form-control" placeholder="Filtra por radio en Km" ng-model="UpdateNear.radius" id="radius">
+                    <br>
                     <p>
                         <button class="btn btn-success" ng-click="searchNearby()">Buscar aventuras cercanas</button>
                     </p><br>

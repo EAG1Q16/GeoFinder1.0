@@ -1,15 +1,32 @@
-<div ng-controller="PublicAdventureProfileCtrl">
-<table class="table">
-    <tr class="info">
-        <td>Nombre</td>
-        <td>desc</td>
-        <td>dif</td>
-    </tr>
-    <tr>
-        <td>{{AdventureProfileInfo.name}}</td>
-        <td>{{AdventureProfileInfo.description}}</td>
-        <td>{{AdventureProfileInfo.difficulty}}</td>
-    </tr>
-</table>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div ng-controller="PublicAdventureProfileCtrl" class="container-fluid">
+
+    <div class="map col-md-7" >
+        <ui-gmap-google-map center='map.center' zoom='map.zoom' options="options">
+            <ui-gmap-marker coords="marker.coords" options="marker.options" idkey="marker.id">
+            </ui-gmap-marker>
+        </ui-gmap-google-map>
+
+    </div>
+
+    <div class="map col-md-5">
+        <div class="panel panel-default ">
+            <div class=panel-heading"><h3>Información de la aventura:</h3></div>
+            <div class="panel-body">
+            <h4><b> Nombre:</b> {{AdventureProfileInfo.name}}</h4>
+            <h4><b> Descripción:</b> {{AdventureProfileInfo.description}}</h4>
+            <h4><b> Dificultad:</b> {{AdventureProfileInfo.difficulty}}</h4>
+            <h4><b> mas:</b> faltara info de km y asi! y fotooooo!!</h4>
+            </div>
+        </div>
+    </div>
+
 
 </div>
+
+

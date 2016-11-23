@@ -102,9 +102,11 @@ router.post('/near', function (req, res){
 
     var lat = req.body.latitude;
     var lon = req.body.longitude;
+    var rd = req.body.radius;
 
     console.log(lat);
     console.log(lon);
+    console.log(rd);
 
     Adventures.find(function (err, adventures) {
         Adv = adventures;
@@ -122,7 +124,7 @@ router.post('/near', function (req, res){
             geolib.isPointInCircle(
                 {latitude: lat, longitude: lon},
                 {latitude: c_lat, longitude: c_long},
-                10000)==true){
+                rd)==true){
                 cercanas.push(Adv[i]);
                 console.log(cercanas);
                 //return cercanas;
