@@ -11,7 +11,9 @@ var adventures = new mongoose.Schema({
     {
         type: { type: String },
         coordinates: []
-    }
+    },
+    hints: [{type: mongoose.Schema.Types.ObjectId, ref: 'Hints'}],
+    image: String
 });
 
 adventures.index({location: '2dsphere'});

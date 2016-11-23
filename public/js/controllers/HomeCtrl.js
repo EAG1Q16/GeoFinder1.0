@@ -5,6 +5,7 @@ angular.module('GeoFinderApp').controller('HomeCtrl',['$scope','$location','$roo
         .success(function(data) {
             $rootScope.UserSessionId = data;
             console.log($rootScope.UserSessionId)
+            $scope.UserHome = data;
 
         })
         .error(function(data) {

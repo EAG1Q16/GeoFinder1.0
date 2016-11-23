@@ -13,6 +13,7 @@ angular.module('GeoFinderApp').controller('LoginCtrl',['$scope','$location','$ro
             })
             .error(function(data){
                 console.log('Error:' + data);
+                $scope.ErrorLogin = data;
             });
     };
 

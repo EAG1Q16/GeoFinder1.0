@@ -18,6 +18,7 @@ var expressValidator = require('express-validator');
 var routes = require('./app/routes/index');
 var users = require('./app/routes/usersroutes');
 var adventures = require('./app/routes/adventuresroutes');
+var hints = require('./app/routes/hintsroutes');
 
 //Declarate express
 var app = express();
@@ -86,6 +87,7 @@ app.use(function (req, res, next) {
 app.use('/', routes);
 app.use('/user', users);
 app.use('/adventures', adventures);
+app.use('/hints', hints);
 
 module.exports = app;
 

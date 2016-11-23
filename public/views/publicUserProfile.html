@@ -11,41 +11,44 @@
                     <div class="text-justify">
                         <h3><b>{{pUserProfileInfo.name}}</b></h3>
                         <p class="text-justify">{{pUserProfileInfo.description}}</p>
-                        <a ng-if="pUserProfileInfo._id != UserSessionId._id" class="btn btn-success center-block ButtonStyle" style="background-color: #00ADB5;" role="button"><b>Seguir</b></a>
+                        <a ng-if="pUserProfileInfo._id != UserSessionId._id && isfollowing == 'false'" class="btn btn-success center-block" role="button" ng-click="followUser()"><b>Seguir</b></a>
+                        <a ng-if="pUserProfileInfo._id != UserSessionId._id && isfollowing == 'true'" class="btn btn-danger center-block" role="button" ng-click="stopfollowUser()"><b>Dejar de Seguir</b></a>
+                        <p><div ng-if="FollowError" class="alert alert-danger text-center" role="alert">{{FollowError}}</div></p>
+                        <p><div ng-if="FollowSucces" class="alert alert-success text-center" role="alert">{{FollowSucces}}</div></p>
                     </div>
+                    </div>
+                    </div>
+                </div>
+            <div class="col-sm-6 col-md-2">
+                <div class="panel panel-success PersonalPanel">
+                    <div class="panel-heading">
+                        <div class="panel-title"><b><i class=" fa fa-diamond"></i> Rango:</b></div>
+                    </div>
+                    <div class="panel-body">
+                        <img ng-if="AdventuresLength >=0 && AdventuresLength <3" class="img-responsive center-block" height="65px" width="65px" src="../images/CAmpista.png">
+                        <img ng-if="AdventuresLength >= 3 && AdventuresLength <10" class="img-responsive center-block" height="65px" width="65px" src="../images/Navegante.png">
+                        <img ng-if="AdventuresLength >= 10 && AdventuresLength<20" class="img-responsive center-block" height="65px" width="65px" src="../images/Montañero.png">
+                        <img ng-if="AdventuresLength >= 20 " class="img-responsive center-block" height="65px" width="65px" src="../images/Aventurero.png">
                     </div>
                 </div>
             </div>
             <div class="col-sm-6 col-md-3">
                 <div class="panel panel-success PersonalPanel">
                     <div class="panel-heading">
-                        <div class="panel-title"><b><i class=" fa fa-diamond"></i> Rango:</b></div>
+                        <div class="panel-title"><b><i class=" fa fa-users"></i> Siguiendo | Seguidores</b></div>
                     </div>
-                    <div class="panel-body">
-                        <img ng-if="pUserProfileInfo" class="img-responsive center-block" height="65px" width="65px" src="../images/CAmpista.png">
-                        <img ng-if="pUserProfileInfo.username == 3" class="img-responsive center-block" height="65px" width="65px" src="../images/Navegante.png">
-                        <img ng-if="pUserProfileInfo.username == 5" class="img-responsive center-block" height="65px" width="65px" src="../images/Montañero.png">
-                        <img ng-if="pUserProfileInfo.username == 1 " class="img-responsive center-block" height="65px" width="65px" src="../images/Aventurero.png">
+                    <div class="panel-body ">
+                        <h1 class="text-center">{{pUserProfileInfo.following.length}} | {{pUserProfileInfo.followers.length}}</h1>
                     </div>
                 </div>
             </div>
             <div class="col-sm-6 col-md-2">
                 <div class="panel panel-success PersonalPanel">
                     <div class="panel-heading">
-                        <div class="panel-title"><b><i class=" fa fa-users"></i> Seguidores:</b></div>
-                    </div>
-                    <div class="panel-body ">
-                        <h1 class="text-center">20</h1>
-                    </div>
-                </div>
-                </div>
-            <div class="col-sm-6 col-md-2">
-                <div class="panel panel-success PersonalPanel">
-                    <div class="panel-heading">
                         <div class="panel-title"><b><i class=" fa fa-tree"></i> Creadas:</b></div>
                     </div>
                     <div class="panel-body">
-                        <h1 class="text-center">10</h1>
+                        <h1 class="text-center">{{AdventuresLength}}</h1>
                     </div>
                 </div>
             </div>
@@ -66,8 +69,10 @@
                     </div>
                     <!-- List group -->
                     <ul class="list-group">
-                        <li class="list-group-item">Aventura 1</li>
-                        <li class="list-group-item">Aventura 2</li>
+                        <li class="list-group-item" ng-repeat="pUserAdventure in pUserAdventures">
+                            <h3>{{pUserAdventure.name}}</h3>
+                            <p>{{pUserAdventure.description}}</p>
+                        </li>
                     </ul>
                 </div>
             </div>
