@@ -1,12 +1,25 @@
 /*----------------Login Container-------------------*/
 #ProfileContainer{
- padding-top: 5%;
+ padding-top: 3%;
 }
 
 .ProfilePadding{
-    padding-top: 5%;
+    padding-top: 3%;
 }
 
 #AdventuresProfileContainer{
-    padding-top: 5%;
+    padding-top: 3%;
+}
+
+.custombtnsize{
+    width: 85px;
+}
+.customColor{
+    background-color: #00ADB5;
+    color: white;
+}
+
+.GreenBtnColor{
+    background-color: limegreen;
+    color: white;
 }

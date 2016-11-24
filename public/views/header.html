@@ -25,7 +25,7 @@
             </ul>
 
             <li class="nav navbar-nav navbar-right dropdown" ng-if="UserSessionId">
-                <a style="color: white" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img alt="Brand" class="img-rounded img-size-header" ng-src="{{UserSessionId.photo}}"><span class="caret"></span></a>
+                <a style="color: white" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img class="img-rounded img-size-header" ng-src="{{UserSessionId.photo}}"><span class="caret"></span></a>
                 <ul class="dropdown-menu nav navbar-nav navbar-right">
                     <li><a ng-href="#/adventures"><i class="fa fa-search" aria-hidden="true"></i> Buscar Aventuras</a></li>
                     <li><a ng-href="#/userprofile/{{UserSessionId._id}}"><i class="fa fa-user-circle-o" aria-hidden="true"></i> Mi Perfil</a></li>
@@ -34,10 +34,7 @@
                     <li><a ng-href="/user/logout"><i class="fa fa-sign-out" aria-hidden="true"></i> Cerrar Sesión</a></li>
                 </ul>
             </li>
-
-            <a role="button" class="btn btn-success navbar-right navbarr-position" ng-if="UserSessionId" style="color: white" ng-href="#/maps"><i class="fa fa-map-o" aria-hidden="true"></i> Crear Aventura</a>
-
-
+            <md-button class="md-fab md-mini md-primary navbar-right" ng-if="UserSessionId" style=" background-color: #00db83; color: white" ng-href="#/maps"><i class="fa fa-compass" aria-hidden="true"></i></md-button>
         </div>
     </div>
 </nav>

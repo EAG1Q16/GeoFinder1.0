@@ -9,7 +9,9 @@ angular.module('GeoFinderApp').controller('ProfileCtrl',['$scope','$rootScope','
    $http.get('/user/my/' + $rootScope.UserSessionId._id)
         .success(function(data) {
             $scope.UserProfileInfo = data;
+            $scope.FollowingUsers = data.following;
             console.log($scope.UserProfileInfo);
+            console.log($scope.FollowingUsers);
 
         })
         .error(function(data) {
@@ -89,6 +91,18 @@ angular.module('GeoFinderApp').controller('ProfileCtrl',['$scope','$rootScope','
             .error(function(data) {
                 console.log('Error' + data);
                 $scope.UpdatedUser = {};
+            });
+    };
+
+    $scope.StopFollowUser = function (id) {
+        $http.delete('/user/unfollow/' + id +'/'+ $rootScope.UserSessionId._id)
+            .success(function(data){
+                console.log(data);
+                $scope.FollowingUsers = data.following;
+
+            })
+            .error(function(data) {
+                console.log('Error' + data);
             });
     };
 
