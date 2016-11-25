@@ -6,6 +6,7 @@ var express = require('express');
 var mongoose = require('mongoose');
 var Adventures = require('../models/modeladventures');
 var Comments = require('../models/modelcomment');
+var User = require('../models/modeluser');
 var router = express.Router();
 
 //crear comentario
@@ -25,6 +26,7 @@ router.post('/:usr_id', function(req, res) {
     
 });
 
+
 //añadir comentario a aventura
 router.post('/addtoadventure/:adv_id', function(req, res) {
     console.log(req.body._id);
@@ -37,22 +39,32 @@ router.post('/addtoadventure/:adv_id', function(req, res) {
             res.send(err);
         }
         if (adventure){
-            Adventures.findById(adventure._id).populate('comments').exec().then(function (err, adventure) {
+            Adventures.findById(adventure._id).deepPopulate(['adventures.comments', 'comments.user']).exec().then(function (err, adventure) {
                 if(err)
                     res.send(err)
                 if(adventure)
                     console.log(adventure);
                     res.send(adventure);
             });
-        }
-    });
+           /* Adventures.findById(adventure._id).deepPopulate(adventure, 'comments.user').exec().then(function (err, adventure) {
+                if(err)
+                    res.send(err)
+                if(adventure)
+                    console.log(adventure);
+                res.send(adventure);
+
+        });*/
+    }
 });
+});
+
+
 
 router.delete('/deletecomment/:cmt_id/:adv_id', function (req, res) {
     Comments.remove({
         _id: req.params.cmt_id
     },function (err, comment) {
-        Adventures.findById(req.params.adv_id).populate('comments').exec().then(function (err, adventure) {
+        Adventures.findById(req.params.adv_id).deepPopulate(['adventures.comments', 'comments.user']).exec().then(function (err, adventure) {
             if(err)
                 res.send(err)
             res.send(adventure);

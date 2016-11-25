@@ -29,16 +29,17 @@
 
             </div>
             <div class="actionBox">
-                <ul class="commentList" ng-repeat="comment in comments">
-                    <li>
-                        <button type="button" class="close" aria-hidden="true"></button>
-                        <button type="button" class="btn btn-danger" ng-if="UserSessionId == comment.user" ng-click="deletecomment(comment._id)">Eliminar</button>
+                <ul class="commentList">
+                    <li ng-repeat="comment in comments">
+                        <button type="button" class="btn btn-custom glyphicon glyphicon-remove close" ng-show="UserSessionId._id == comment.user._id" ng-click="deletecomment(comment._id)"></button>
                         <div class="commenterImage">
-                            <img src="http://placekitten.com/50/50" />
+                            <img src="{{comment.user.photo}}" />
                         </div>
                         <div class="commentText">
+                            <p class=""><b>{{comment.user.name}}</b></p>
                             <p class="">{{comment.text}}</p> <span class="date sub-text">{{comment.commentdate}}</span>
                         </div>
+                        <md-divider></md-divider>
                     </li>
                 </ul>
                 <form class="form-inline" role="form">
