@@ -2,78 +2,99 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-6 col-md-3">
-                <div class="panel panel-success PersonalPanel">
-                    <div class="panel-heading">
-                        <div class="panel-title"><b><i class=" fa fa-compass"></i> {{pUserProfileInfo.username}}</b></div>
-                    </div>
-                    <div class="panel-body">
-                    <img class="img-rounded center-block" height="200" width="235" ng-src={{pUserProfileInfo.photo}}>
-                    <div class="text-justify">
-                        <h3><b>{{pUserProfileInfo.name}}</b></h3>
-                        <p class="text-justify">{{pUserProfileInfo.description}}</p>
-                        <a ng-if="pUserProfileInfo._id != UserSessionId._id && isfollowing == 'false'" class="btn btn-success center-block" role="button" ng-click="followUser()"><b>Seguir</b></a>
-                        <a ng-if="pUserProfileInfo._id != UserSessionId._id && isfollowing == 'true'" class="btn btn-danger center-block" role="button" ng-click="stopfollowUser()"><b>Dejar de Seguir</b></a>
-                        <p><div ng-if="FollowError" class="alert alert-danger text-center" role="alert">{{FollowError}}</div></p>
-                        <p><div ng-if="FollowSucces" class="alert alert-success text-center" role="alert">{{FollowSucces}}</div></p>
-                    </div>
-                    </div>
-                    </div>
+                <md-card>
+                    <img ng-src="{{pUserProfileInfo.photo}}" class="md-card-image" alt="Washed Out">
+                    <md-card-title>
+                        <md-card-title-text>
+                            <span class="md-headline">{{pUserProfileInfo.username}}</span>
+                        </md-card-title-text>
+                    </md-card-title>
+                    <md-card-content>
+                        <p>
+                            {{pUserProfileInfo.description}}
+                        </p>
+                    </md-card-content>
+                    <md-card-actions layout="column" layout-align="start">
+                        <md-button ng-if="pUserProfileInfo._id != UserSessionId._id && isfollowing == 'false'"  class="md-raised" style="background-color: limegreen; color: white" ng-click="followUser()"><b>Seguir</b></md-button>
+                        <md-button ng-if="pUserProfileInfo._id != UserSessionId._id && isfollowing == 'true'"  class="md-raised md-warn" ng-click="stopfollowUser()"><b>Dejar de Seguir</b></md-button>
+                        <br>
+                        <div ng-if="FollowError" class="alert alert-danger text-center " role="alert">{{FollowError}}</div>
+                        <div ng-if="FollowSucces" class="alert alert-success text-center" role="alert">{{FollowSucces}}</div>
+                    </md-card-actions>
+                </md-card>
                 </div>
             <div class="col-sm-6 col-md-2">
-                <div class="panel panel-success PersonalPanel">
-                    <div class="panel-heading">
-                        <div class="panel-title"><b><i class=" fa fa-diamond"></i> Rango:</b></div>
-                    </div>
-                    <div class="panel-body">
+                <md-card>
+                    <md-card-header class="customColor">
+                        <md-card-header-text>
+                            <span class="panel-title"><b><i class=" fa fa-diamond"></i> Rango:</b></span>
+                        </md-card-header-text>
+                    </md-card-header>
+                    <md-card-content>
                         <img ng-if="AdventuresLength >=0 && AdventuresLength <3" class="img-responsive center-block" height="65px" width="65px" src="../images/CAmpista.png">
                         <img ng-if="AdventuresLength >= 3 && AdventuresLength <10" class="img-responsive center-block" height="65px" width="65px" src="../images/Navegante.png">
                         <img ng-if="AdventuresLength >= 10 && AdventuresLength<20" class="img-responsive center-block" height="65px" width="65px" src="../images/Montañero.png">
                         <img ng-if="AdventuresLength >= 20 " class="img-responsive center-block" height="65px" width="65px" src="../images/Aventurero.png">
-                    </div>
-                </div>
+                    </md-card-content>
+                </md-card>
             </div>
             <div class="col-sm-6 col-md-3">
-                <div class="panel panel-success PersonalPanel">
-                    <div class="panel-heading">
-                        <div class="panel-title"><b><i class=" fa fa-users"></i> Siguiendo | Seguidores</b></div>
-                    </div>
-                    <div class="panel-body ">
+                <md-card>
+                    <md-card-header class="customColor">
+                        <md-card-header-text>
+                            <div class="panel-title"><b><i class=" fa fa-users"></i> Siguiendo | Seguidores</b></div>
+                        </md-card-header-text>
+                    </md-card-header>
+                    <md-card-content>
                         <h1 class="text-center">{{pUserProfileInfo.following.length}} | {{pUserProfileInfo.followers.length}}</h1>
-                    </div>
-                </div>
+                    </md-card-content>
+                </md-card>
             </div>
             <div class="col-sm-6 col-md-2">
-                <div class="panel panel-success PersonalPanel">
-                    <div class="panel-heading">
-                        <div class="panel-title"><b><i class=" fa fa-tree"></i> Creadas:</b></div>
-                    </div>
-                    <div class="panel-body">
+                <md-card>
+                    <md-card-header class="customColor">
+                        <md-card-header-text>
+                            <div class="panel-title"><b><i class=" fa fa-tree"></i> Creadas:</b></div>
+                        </md-card-header-text>
+                    </md-card-header>
+                    <md-card-content>
                         <h1 class="text-center">{{CreatedAdventures.length}}</h1>
-                    </div>
-                </div>
+                    </md-card-content>
+                </md-card>
             </div>
             <div class="col-sm-6 col-md-2">
-                <div class="panel panel-success PersonalPanel">
-                    <div class="panel-heading">
-                        <div class="panel-title"><b><i class=" fa fa-map-signs"></i> Jugadas:</b></div>
-                    </div>
-                    <div class="panel-body">
-                        <h1 class="text-center">20</h1>
-                    </div>
-                </div>
+                <md-card>
+                    <md-card-header class="customColor">
+                        <md-card-header-text>
+                            <div class="panel-title"><b><i class=" fa fa-map-signs"></i> Jugadas:</b></div>
+                        </md-card-header-text>
+                    </md-card-header>
+                    <md-card-content>
+                        <h1 class="text-center">{{pUserProfileInfo.adventures.played.length}}</h1>
+                    </md-card-content>
+                </md-card>
             </div>
-            <div class="col-sm-6 col-md-9">
-                <div class="panel panel-success PersonalPanel">
-                    <div class="panel-heading">
-                        <div class="panel-title"><b><i class=" fa fa-binoculars"></i> Aventuras Creadas Recientemente:</b></div>
-                    </div>
+            <div class="col-sm-6 col-md-9" layout="column">
+                <md-card>
+                <md-card-header class="customColor">
+                        <md-card-header-text>
+                            <div class="panel-title"><b><i class=" fa fa-binoculars"></i> Aventuras Creadas recientemente:</b></div>
+                        </md-card-header-text>
+                </md-card-header>
                     <!-- List group -->
-                    <ul class="list-group">
-                        <li class="list-group-item" ng-repeat="CreatedAdventure in CreatedAdventures">
-                            <h3>{{CreatedAdventure.name}}</h3>
-                            <p>{{CreatedAdventure.description}}</p>
-                        </li>
-                    </ul>
+                    <md-card-content>
+                        <md-list style="background-color: white">
+                        <md-list-item class="md-2-line" ng-repeat="CreatedAdventure in CreatedAdventures">
+                            <div ng-if="CreatedAdventures.length == 0" class="alert alert-success text-center" role="alert">¡<b>{{pUserProfileInfo.name}}</b> aun no ha creado ninguna aventura animale ha hacerlo!</div>
+                            <div class="md-list-item-text">
+                                <h3>{{CreatedAdventure.name}}</h3>
+                                <p>{{CreatedAdventure.description}}</p>
+                            </div>
+                            <md-divider inset></md-divider>
+                        </md-list-item>
+                        </md-list>
+                    </md-card-content>
+                </md-card>
                 </div>
             </div>
         </div><!--END ROW-->

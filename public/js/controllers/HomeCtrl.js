@@ -7,8 +7,6 @@ angular.module('GeoFinderApp').controller('HomeCtrl',['$scope','$location','$roo
             $rootScope.UserSessionUri = data._id;
             console.log($rootScope.UserSessionId);
             $scope.UserHome = data;
-            console.log($scope.UserHome.adventures.created.length)
-
         })
         .error(function(data) {
             console.log('not logged');

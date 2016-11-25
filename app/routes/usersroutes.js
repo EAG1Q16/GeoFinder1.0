@@ -176,7 +176,7 @@ router.get('/logout', function(req, res){
 router.get('/my/:user_id', function(req, res){
     //La variable pathdeepPopulate se utiliza para no repetir los paths en cada pathdeepPopulate
     //La variable se guarda en la Adventure Zone
-    User.findById(req.params.user_id).deepPopulate(pathdeepPopulate).exec().then(function(err, user){
+    User.findById(req.params.user_id).deepPopulate(pathdeepPopulate).populate('following').exec().then(function(err, user){
         if(err)
             res.send(err)
         res.send(user);
@@ -412,7 +412,11 @@ router.delete('/unfollow/:user_public/:user_logged', function (req, res) {
                     res.status(400).send('Probelmas al dejar de seguir el usuario pruebe mas tarde');
                 }
                 if (user) {
-                    res.send('Has dejado de seguir a este usuario');
+                    User.findById(req.params.user_logged).populate('following').exec().then(function (err, user) {
+                        if(err)
+                            res.send(err)
+                        res.send(user);
+                    });
                 }
             });
 
@@ -420,7 +424,22 @@ router.delete('/unfollow/:user_public/:user_logged', function (req, res) {
     });
 });
 
+//Recomended adventures of your followers
+router.get('/recomendedadv/:user_id', function(req, res){
+    //La variable pathdeepPopulate se utiliza para no repetir los paths en cada pathdeepPopulate
+    //La variable se guarda en la Adventure Zone
+    User.findById(req.params.user_id).populate('following').exec().then(function(err, user){
+        if(err){
+            res.send(err)
+        }
+        if(user){
 
+            for(i = 0; i <= user.following.length; i++){
+
+            }
+        }
+    });
+});
 
 /**
  *

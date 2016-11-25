@@ -2,68 +2,88 @@
     <div class="container">
     <div class="row">
     <div class="col-md-8">
-    <div class="panel panel-success PersonalPanel">
-        <div class="panel-heading">
+    <md-card>
+        <md-card-header class="customColor">
+            <md-card-header-text>
             <div class="panel-title"><b><i class="fa fa-user-circle-o"></i> Información de Usuario:</b></div>
-        </div>
-        <div class="panel-body">
-            <div class="form-group">
-                <label for="usr">Nombre:</label>
-                <div class="input-group">
-                    <input type="text" class="form-control" id="usr" placeholder="{{UserProfileInfo.name}}" ng-model="UpdatedUser.name">
-                    <span class="input-group-btn">
-                <button class="btn btn-warning" type="button" ng-click="UpdateName()">Modificar Nombre</button>
-                </span>
-                </div>
+            </md-card-header-text>
+        </md-card-header>
+        <md-card-content class="layout-padding">
+            <form>
+            <div layout-gt-xs="row">
+            <md-input-container class="md-block" flex-gt-xs>
+                <label style="color: #00ADB5;">{{UserProfileInfo.name}}</label>
+                <input ng-model="UpdatedUser.name" type="text" style="border-color: #00ADB5;">
+            </md-input-container>
+            <md-input-container>
+                    <md-button class="md-raised md-warn md-right" ng-click="UpdateName()" style="background-color: #00ADB5; color: white">Editar</md-button>
+            </md-input-container>
             </div>
-            <div class="form-group">
-                <label for="usrname">Nombre de Usuario:</label>
-                <div class="input-group">
-                <input type="text" class="form-control" id="usrname" placeholder="{{UserProfileInfo.username}}" ng-model="UpdatedUser.username">
-                <span class="input-group-btn">
-                <button class="btn btn-warning" type="button" ng-click="UpdateUsername()">Modificar Usuario</button>
-                </span>
+            </form>
+            <form>
+                <div layout-gt-xs="row">
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <label style="color: #00ADB5;">{{UserProfileInfo.username}}</label>
+                        <input ng-model="UpdatedUser.username" type="text" style="border-color: #00ADB5;">
+                    </md-input-container>
+                    <md-input-container>
+                        <md-button class="md-raised md-warn md-right" ng-click="UpdateUsername()" style="background-color: #00ADB5; color: white">Editar</md-button>
+                    </md-input-container>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="description">Descripción:</label>
-                <div class="input-group">
-                    <input type="text" class="form-control" id="description" placeholder="{{UserProfileInfo.description}}" ng-model="UpdatedUser.description">
-                    <span class="input-group-btn">
-                <button class="btn btn-warning" type="button" ng-click="UpdateDescription()">Modificar Biografía</button>
-                </span>
+            </form>
+            <form>
+                <div layout-gt-xs="row">
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <label style="color: #00ADB5;">{{UserProfileInfo.description}}</label>
+                        <input ng-model="UpdatedUser.description" type="text" style="border-color: #00ADB5;">
+                    </md-input-container>
+                    <md-input-container>
+                        <md-button class="md-raised md-warn md-right" ng-click="UpdateDescription()" style="background-color: #00ADB5; color: white">Editar</md-button>
+                    </md-input-container>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="foto">Enlace de la Foto:</label>
-                <div class="input-group">
-                <input type="text" class="form-control" id="foto" placeholder="{{UserProfileInfo.photo}}" ng-model="UpdatedUser.photo">
-                    <span class="input-group-btn">
-                <button class="btn btn-warning" type="button" ng-click="UpdatePhoto()">Modificar Imagen</button>
-                </span>
+            </form>
+            <form>
+                <div layout-gt-xs="row">
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <label style="color: #00ADB5;">{{UserProfileInfo.photo}}</label>
+                        <input ng-model="UpdatedUser.photo" type="text" style="border-color: #00ADB5;">
+                    </md-input-container>
+                    <md-input-container>
+                        <md-button class="md-raised md-warn md-right" ng-click="UpdatePhoto()" style="background-color: #00ADB5; color: white">Editar</md-button>
+                    </md-input-container>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="pwd">Contraseña:</label>
-                <div class="input-group">
-                <input type="password" class="form-control" id="pwd" placeholder="Contraseña" ng-model="UpdatedUser.password">
-                    <span class="input-group-btn">
-                <button class="btn btn-warning" type="button" ng-click="UpdatePassword()">Modificar Contraseña</button>
-                </span>
+            </form>
+            <form>
+                <div layout-gt-xs="row">
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <label style="color: #00ADB5;">Contraseña:</label>
+                        <input ng-model="UpdatedUser.password" type="password" style="border-color: #00ADB5;">
+                    </md-input-container>
+                    <md-input-container>
+                        <md-button class="md-raised md-warn md-right" ng-click="UpdatePassword()" style="background-color: #00ADB5; color: white">Editar</md-button>
+                    </md-input-container>
                 </div>
-            </div>
-        </div>
-    </div>
+            </form>
+        </md-card-content>
+    </md-card>
     </div>
     <div class="col-md-4">
-                <div class="panel panel-info PersonalPanel">
-                    <div class="panel-heading">
+                <md-card>
+                    <md-card-header class="customColor">
                         <div class="panel-title"><b><i class="fa fa-users"></i> Administrar Seguidores:</b></div>
-                    </div>
-                    <div class="panel-body">
-                        Panel content
-                    </div>
-                </div>
+                    </md-card-header>
+                    <md-card-content>
+                    <!-- List group -->
+                    <md-list style="background-color: white">
+                        <md-list-item class="md-1-line" ng-repeat="FollowingUser in FollowingUsers">
+                           <a ng-href="#/userprofile/{{FollowingUser._id}}"><img class="md-avatar" ng-src="{{FollowingUser.photo}}"></a>
+                           <h4>{{FollowingUser.username}}</h4>
+                           <md-button class="md-raised md-warn md-secondary" ng-click="StopFollowUser(FollowingUser._id)">Dejar de Seguir</md-button>
+                           <md-divider></md-divider>
+                        </md-list-item>
+                    </md-list>
+                    </md-card-content>
+                </md-card>
             </div>
     </div>
     </div>

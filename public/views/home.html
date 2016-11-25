@@ -1,120 +1,86 @@
-<div class="content" ng-controller="HomeCtrl">
+<div ng-controller="HomeCtrl">
 <div ng-if="UserSessionId == undefined"><!-- Init of ng if user is not logged in -->
 <div class="container-fluid jumbotron text-center" id="banner">
     <div class="row center-block">
-    <div>
+        <div class="col-md-12">
     <h1>¡Empieza tu Aventura!</h1>
-    </div>
-    <div>
     <a type="button" class="btn btn-lg btn-success ButtonStyle" ng-href="#/register">Registrate <i class="fa fa-pencil-square-o"></i></a>
-    </div>
-    </div>
-</div>
-    <div class="container-fluid text-center">
-    <div class="row">
-        <div class="col-md-1"></div>
-        <div class="col-md-1"></div>
-        <div class="col-md-3">
-            <h2>Encuentra</h2>
-            <h4 class="text-justify">Busca las mejores aventuras de tu zona</h4>
-        </div>
-        <div class="col-md-3">
-            <h2>Crea</h2>
-            <h4 class="text-justify">Empieza a crear aventuras y compartirlas con los usuarios de todo el mundo, incluso puedes jugarlas tu mismo</h4>
-        </div>
-        <div class="col-md-3">
-            <h2>Juega</h2>
-            <h4 class="text-justify">Selecciona las aventuras que más te gusten en la web y despues juegalas en el móvil</h4>
-        </div>
-        <div class="col-md-1"></div>
-    </div>
-</div>
-
-<div class="container-fluid bg-blue">
-    <div class="container text-center">
-        <div class="row">
-            <div class="col-md-12">
-                <h2>Descarga la Aplicación</h2>
-            </div>
-            <div class="col-md-6">
-                <h4 class="text-justify">lorem ipsum intra</h4>
-            </div>
-            <div class="col-md-4">
-                <h4>Aventura</h4>
-            </div>
         </div>
     </div>
 </div>
-
-<div class="container-fluid text-center">
-        <div class="row">
-            <div class="col-md-4">
-                <h1>Aventura</h1>
-                <p>lorem</p>
-            </div>
-            <div class="col-md-4">
-                <h1>Aventura</h1>
-                <p>lorem ipsum intra</p>
-            </div>
-            <div class="col-md-4">
-                <h1>Aventura</h1>
-                <p>lorem ipsum intra</p>
-            </div>
-        </div>
-</div>
+<div class="container">
+ <div class="row">
+     <div class="col-md-12">
+     <div class="col-md-4">
+         <h3 class="text-center">Descubre <i class="fa fa-binoculars"></i></h3>
+     </div>
+     <div class="col-md-4">
+         <h3 class="text-center">Juega <i class="fa fa-globe"></i></h3>
+     </div>
+     <div class="col-md-4">
+         <h3 class="text-center">Comparte <i class="fa fa-heart"></i></h3>
+     </div>
+     </div>
+ </div>
+ </div>
 </div> <!-- End of ng if user is not logged in -->
 
-<div ng-if="UserSessionId" class="UserHomeLog"><!-- init of ng if user is logged in -->
+<div ng-if="UserSessionId" class="UserHomeLog container"><!-- init of ng if user is logged in -->
     <div class="col-md-12">
     <div class="row">
     <div class="col-sm-6 col-md-3">
-        <div class="panel panel-success PersonalPanel">
-            <div class="panel-heading">
-                <div class="panel-title"><b><i class=" fa fa-compass"></i> {{UserHome.username}}</b></div>
-            </div>
-            <div class="panel-body">
-                <img class="img-rounded center-block" height="200" width="235" ng-src={{UserHome.photo}}>
-                <div class="text-justify">
-                    <h3><b>{{UserHome.name}}</b></h3>
-                    <p>{{UserHome.description}}</p>
-                    <h4 class="text-center">{{UserHome.following.length}} | {{UserHome.followers.length}}</h4>
-                </div>
-            </div>
-        </div>
+        <md-card>
+            <img ng-src="{{UserHome.photo}}" class="md-card-image" alt="Washed Out">
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline">{{UserHome.name}}</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+                <p>{{UserHome.description}}</p>
+            </md-card-content>
+            <md-card-content layout="row" layout-align="space-around" style="background-color: #00ADB5; color: white">
+                <h5><b>Siguiendo:</b> {{UserHome.following.length}}</h5>
+                <md-divider></md-divider>
+                <h5><b>Seguidores:</b> {{UserHome.followers.length}}</h5>
+            </md-card-content>
+        </md-card>
     </div>
     <div class="col-sm-6 col-md-9">
-        <div class="panel panel-success PersonalPanel">
-            <div class="panel-heading">
-                <div class="panel-title"><b><i class=" fa fa-binoculars"></i> Aventuras Recomendadas</b></div>
-            </div>
+        <md-card>
+            <md-card-header class="customColor">
+                <md-card-header-text>
+                    <div class="panel-title"><b><i class=" fa fa-binoculars"></i>Ultimas aventuras</b></div>
+                </md-card-header-text>
+            </md-card-header>
             <!-- List group -->
-            <ul class="list-group">
-                <li class="list-group-item" ng-repeat="">
-                </li>
-            </ul>
-        </div>
+            <md-card-content>
+                <md-list style="background-color: white">
+                    <md-list-item class="md-2-line">
+                    </md-list-item>
+                </md-list>
+            </md-card-content>
+        </md-card>
     </div>
     </div><!-- End of row -->
     </div><!-- End of colmd-12 -->
     <div class="col-md-12">
     <div class="row">
         <div class="col-sm-6 col-md-3">
-            <div class="panel panel-success PersonalPanel">
-                <div class="panel-heading">
+            <md-card>
+                <md-card-header class="customColor">
                     <div class="panel-title"><b><i class=" fa fa-diamond"></i> Rango:</b></div>
-                </div>
-                <div class="panel-body">
-                    <img ng-if="UserHome.adventures.created.length >=0 && UserHome.adventures.length <3" class="img-responsive center-block" height="65px" width="65px" src="../images/CAmpista.png">
-                    <img ng-if="UserHome.adventures.created.length >= 3 && UserHome.adventures.length <10" class="img-responsive center-block" height="65px" width="65px" src="../images/Navegante.png">
-                    <img ng-if="UserHome.adventures.created.length >= 10 && UserHome.adventures.length<20" class="img-responsive center-block" height="65px" width="65px" src="../images/Montañero.png">
-                    <img ng-if="UserHome.adventures.created.length >= 20 " class="img-responsive center-block" height="65px" width="65px" src="../images/Aventurero.png">
-                </div>
-            </div>
+                </md-card-header>
+                <md-content>
+                    <img ng-if="UserHome.adventures.created.length >= 0 && UserHome.adventures.created.length <3" class="img-responsive center-block" height="100px" width="100px" src="../images/CAmpista.png">
+                    <img ng-if="UserHome.adventures.created.length >= 3 && UserHome.adventures.created.length <10" class="img-responsive center-block" height="100px" width="100px" src="../images/Navegante.png">
+                    <img ng-if="UserHome.adventures.created.length >= 10 && UserHome.adventures.created.length<20" class="img-responsive center-block" height="100px" width="100px" src="../images/Montañero.png">
+                    <img ng-if="UserHome.adventures.created.length >= 20 " class="img-responsive center-block" height="100px" width="100px" src="../images/Aventurero.png">
+                </md-content>
+            </md-card>
         </div>
     </div><!-- End of row -->
     </div><!-- End of colmd-12 -->
-
-
 </div><!-- End of ng if user is logged in -->
 </div>
 
