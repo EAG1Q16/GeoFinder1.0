@@ -5,6 +5,11 @@
 angular.module('GeoFinderApp').controller('PublicAdventureProfileCtrl',['$scope','$rootScope','$window','$location','$http','$routeParams', 'uiGmapGoogleMapApi', function($scope, $rootScope, $window, $location, $http, $routeParams, uiGmapGoogleMapApi){
 
     var adventureID = window.location.href.split("/").pop();
+    //Codigo para el indice de las fotos
+    
+    console.log($rootScope.UserSessionId);
+
+
     console.log(adventureID);
     $scope.map = { center: { latitude: 0.1, longitude: 0.1 }, zoom: 2 };
 
@@ -52,14 +57,15 @@ angular.module('GeoFinderApp').controller('PublicAdventureProfileCtrl',['$scope'
         $http.post('/comments/' + $rootScope.UserSessionId._id, $scope.NewComment)
             .success(function (data) {
                 $scope.reccomment = data;
+                console.log("holaaaaaaaaaaaaaaaa");
                 console.log($scope.reccomment);
                 $http.post('/comments/addtoadventure/' + adventureID ,$scope.reccomment)
                     .success(function (data) {
                         console.log("entro en el success");
-                        console.log(data);
                         $scope.comments = data.comments;
-                        console.log($scope.comment.user);
+                        console.log("aqui");
                         
+
                     })
                     .error(function (data) {
                         console.log("Error" + data)
@@ -79,5 +85,15 @@ angular.module('GeoFinderApp').controller('PublicAdventureProfileCtrl',['$scope'
               console.log("Error" + data);
           });
     };
-
+    
+    /*$http.get('/comments/')
+        .success(function (data) {
+            $scope.comments = data;
+            console.log(comments)
+        })
+        .error(function (data) {
+            console.log('Error: ' + data);
+        });
+    */
+    
 }]);
