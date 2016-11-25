@@ -19,6 +19,7 @@ var routes = require('./app/routes/index');
 var users = require('./app/routes/usersroutes');
 var adventures = require('./app/routes/adventuresroutes');
 var hints = require('./app/routes/hintsroutes');
+var comments = require('./app/routes/commentroutes');
 
 //Declarate express
 var app = express();
@@ -88,6 +89,7 @@ app.use('/', routes);
 app.use('/user', users);
 app.use('/adventures', adventures);
 app.use('/hints', hints);
+app.use('/comments', comments);
 
 module.exports = app;
 

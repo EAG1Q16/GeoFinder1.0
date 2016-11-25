@@ -1,15 +1,59 @@
-<div ng-controller="PublicAdventureProfileCtrl">
-<table class="table">
-    <tr class="info">
-        <td>Nombre</td>
-        <td>desc</td>
-        <td>dif</td>
-    </tr>
-    <tr>
-        <td>{{AdventureProfileInfo.name}}</td>
-        <td>{{AdventureProfileInfo.description}}</td>
-        <td>{{AdventureProfileInfo.difficulty}}</td>
-    </tr>
-</table>
+
+<div ng-controller="PublicAdventureProfileCtrl" class="container-fluid">
+
+    <div class="map col-md-7" >
+        <ui-gmap-google-map center='map.center' zoom='map.zoom' options="options">
+            <ui-gmap-marker coords="marker.coords" options="marker.options" idkey="marker.id">
+            </ui-gmap-marker>
+        </ui-gmap-google-map>
+
+    </div>
+
+    <div class="info col-md-5">
+        <div class="panel panel-info PersonalPanel">
+            <div class="panel-heading">
+            <div class=panel-title"><h4><b>Información de la aventura:</b></h4></div>
+            </div>
+            <div class="panel-body">
+            <h4><b> Nombre:</b> {{AdventureProfileInfo.name}}</h4>
+            <h4><b> Descripción:</b> {{AdventureProfileInfo.description}}</h4>
+            <h4><b> Dificultad:</b> {{AdventureProfileInfo.difficulty}}</h4>
+            <h4><b> mas:</b> faltara info de km y asi! y fotooooo!!</h4>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="detailBox">
+            <div class="titleBox">
+                <label><h4>Comentarios:</h4></label>
+
+            </div>
+            <div class="actionBox">
+                <ul class="commentList" ng-repeat="comment in comments">
+                    <li>
+                        <button type="button" class="close" aria-hidden="true"></button>
+                        <button type="button" class="btn btn-danger" ng-if="UserSessionId == comment.user" ng-click="deletecomment(comment._id)">Eliminar</button>
+                        <div class="commenterImage">
+                            <img src="http://placekitten.com/50/50" />
+                        </div>
+                        <div class="commentText">
+                            <p class="">{{comment.text}}</p> <span class="date sub-text">{{comment.commentdate}}</span>
+                        </div>
+                    </li>
+                </ul>
+                <form class="form-inline" role="form">
+                    <div class="form-group">
+                        <input class="form-control" type="text" placeholder="Escribe tu comentario" ng-model="NewComment.text">
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-success" ng-click="addcomment()">Añadir</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 
 </div>
+
+

@@ -22,7 +22,7 @@ router.get('/', function(req, res) {
 
 // GET adventure by ID
 router.get('/id/:adv_id', function(req, res){
-    Adventures.findById(req.params.adv_id, function(err, adventure){
+    Adventures.findById(req.params.adv_id).populate('comments').exec().then(function(err, adventure){
         if(err)
             res.send(err)
         res.send(adventure);
@@ -94,9 +94,11 @@ router.post('/near', function (req, res){
 
     var lat = req.body.latitude;
     var lon = req.body.longitude;
+    var rd = req.body.radius;
 
     console.log(lat);
     console.log(lon);
+    console.log(rd);
 
     Adventures.find(function (err, adventures) {
         Adv = adventures;
@@ -114,7 +116,7 @@ router.post('/near', function (req, res){
             geolib.isPointInCircle(
                 {latitude: lat, longitude: lon},
                 {latitude: c_lat, longitude: c_long},
-                10000)==true){
+                rd)==true){
                 cercanas.push(Adv[i]);
                 console.log(cercanas);
                 //return cercanas;

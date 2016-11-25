@@ -2,10 +2,6 @@
  * Created by Andrea on 06/11/2016.
  */
 angular.module('GeoFinderApp').controller('HeaderCtrl',['$scope','$rootScope','$http','$routeParams',function($scope, $rootScope, $http, $routeParams){
-
-    function clear() {
-        $scope.model = {}; 
-    }
     
 
     $scope.options = [{
@@ -36,7 +32,6 @@ angular.module('GeoFinderApp').controller('HeaderCtrl',['$scope','$rootScope','$
 
 
             $scope.selected = undefined;
-
 
             $scope.onSelect = function ($item, $model, $label) {
                 

@@ -42,18 +42,25 @@ angular.module('GeoFinderApp').controller('AdventuresCtrl',['$scope','$http','$r
 
 
     $scope.searchNearby = function() {
+        console.log($scope.UpdateNear.radius);
+        $scope.rad = $scope.UpdateNear.radius * 1000;
+        console.log("en KM");
+        console.log($scope.rad )
         $window.navigator.geolocation.getCurrentPosition(function (position) {
             $scope.cerca = true;
             $scope.$apply(function () {
                 $scope.lat = position.coords.latitude;
                 $scope.lng = position.coords.longitude;
+                //$scope.radius = radius;
 
                 console.log($scope.lat);
                 console.log($scope.lng);
-
+                
+                
                 $scope.cordenada = {
                     latitude: position.coords.latitude,
-                    longitude: position.coords.longitude
+                    longitude: position.coords.longitude,
+                    radius: $scope.UpdateNear.radius
                 };
 
 
