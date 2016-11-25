@@ -15,11 +15,8 @@
                         </p>
                     </md-card-content>
                     <md-card-actions layout="column" layout-align="start">
-                        <md-button ng-if="pUserProfileInfo._id != UserSessionId._id && isfollowing == 'false'"  class="md-raised" style="background-color: limegreen; color: white" ng-click="followUser()"><b>Seguir</b></md-button>
+                        <md-button ng-if="pUserProfileInfo._id != UserSessionId._id && isfollowing == 'false'"  class="md-raised" style="background-color: #00ADB5; color: white" ng-click="followUser()"><b>Seguir</b></md-button>
                         <md-button ng-if="pUserProfileInfo._id != UserSessionId._id && isfollowing == 'true'"  class="md-raised md-warn" ng-click="stopfollowUser()"><b>Dejar de Seguir</b></md-button>
-                        <br>
-                        <div ng-if="FollowError" class="alert alert-danger text-center " role="alert">{{FollowError}}</div>
-                        <div ng-if="FollowSucces" class="alert alert-success text-center" role="alert">{{FollowSucces}}</div>
                     </md-card-actions>
                 </md-card>
                 </div>

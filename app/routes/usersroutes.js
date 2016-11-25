@@ -427,14 +427,32 @@ router.delete('/unfollow/:user_public/:user_logged', function (req, res) {
 router.get('/recomendedadv/:user_id', function(req, res){
     //La variable pathdeepPopulate se utiliza para no repetir los paths en cada pathdeepPopulate
     //La variable se guarda en la Adventure Zone
-    User.findById(req.params.user_id).populate('following').exec().then(function(err, user){
+    User.findById(req.params.user_id, function (err, user){
         if(err){
-            res.send(err)
+            res.status(400).send(err);
         }
         if(user){
-
-            for(i = 0; i <= user.following.length; i++){
-
+            console.log(user.following.length);
+            var bucle = user.following.length - 1;
+            console.log(user.following);
+            for(i = 0; i <= bucle; i++){
+                console.log(i);
+                console.log(user.following[i]);
+                User.findById(user.following[i]).deepPopulate('adventures.created').exec().then(function (err, user) {
+                    if(err){
+                        console.log('estoy en el error depues del bucle');
+                        console.log(err);
+                        console.log(err.adventures.created);
+                        //var adventures = [err.adventures.created];
+                        //console.log(adventures);
+                    }
+                    if(user){
+                        console.log('he salido a la avendutras jajajja');
+                        console.log(user.adventures.created);
+                       var adventures = [user.adventures.created];
+                        console.log(adventures);
+                    }
+                });
             }
         }
     });
