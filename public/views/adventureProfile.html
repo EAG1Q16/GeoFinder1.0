@@ -10,8 +10,10 @@
     </div>
 
     <div class="info col-md-5">
-        <div class="panel panel-info">
-            <div class=panel-heading"><h3>Información de la aventura:</h3></div>
+        <div class="panel panel-info PersonalPanel">
+            <div class="panel-heading">
+            <div class=panel-title"><h4><b>Información de la aventura:</b></h4></div>
+            </div>
             <div class="panel-body">
             <h4><b> Nombre:</b> {{AdventureProfileInfo.name}}</h4>
             <h4><b> Descripción:</b> {{AdventureProfileInfo.description}}</h4>
@@ -19,51 +21,32 @@
             <h4><b> mas:</b> faltara info de km y asi! y fotooooo!!</h4>
             </div>
         </div>
+    </div>
+    <div class="col-md-5">
         <div class="detailBox">
             <div class="titleBox">
-                <label>Comment Box</label>
-                <button type="button" class="close" aria-hidden="true">&times;</button>
-            </div>
-            <div class="commentBox">
+                <label><h4>Comentarios:</h4></label>
 
-                <p class="taskDescription">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
             </div>
             <div class="actionBox">
-                <ul class="commentList">
+                <ul class="commentList" ng-repeat="comment in comments">
                     <li>
+                        <button type="button" class="close" aria-hidden="true"></button>
+                        <button type="button" class="btn btn-danger" ng-if="UserSessionId == comment.user" ng-click="deletecomment(comment._id)">Eliminar</button>
                         <div class="commenterImage">
                             <img src="http://placekitten.com/50/50" />
                         </div>
                         <div class="commentText">
-                            <p class="">Hello this is a test comment.</p> <span class="date sub-text">on March 5th, 2014</span>
-
-                        </div>
-                    </li>
-                    <li>
-                        <div class="commenterImage">
-                            <img src="http://placekitten.com/45/45" />
-                        </div>
-                        <div class="commentText">
-                            <p class="">Hello this is a test comment and this comment is particularly very long and it goes on and on and on.</p> <span class="date sub-text">on March 5th, 2014</span>
-
-                        </div>
-                    </li>
-                    <li>
-                        <div class="commenterImage">
-                            <img src="http://placekitten.com/40/40" />
-                        </div>
-                        <div class="commentText">
-                            <p class="">Hello this is a test comment.</p> <span class="date sub-text">on March 5th, 2014</span>
-
+                            <p class="">{{comment.text}}</p> <span class="date sub-text">{{comment.commentdate}}</span>
                         </div>
                     </li>
                 </ul>
                 <form class="form-inline" role="form">
                     <div class="form-group">
-                        <input class="form-control" type="text" placeholder="Your comments" />
+                        <input class="form-control" type="text" placeholder="Escribe tu comentario" ng-model="NewComment.text">
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-default">Add</button>
+                        <button class="btn btn-success" ng-click="addcomment()">Añadir</button>
                     </div>
                 </form>
             </div>

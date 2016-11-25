@@ -327,7 +327,8 @@ router.get('/', function(req, res) {
     User.find(function (err, user) {
         if (err)
             res.send(err);
-        res.json(user);
+        if(user)
+            res.json(user);
  
     });
 

@@ -5,10 +5,10 @@ var mongoose = require('mongoose');
 
 var comment = new mongoose.Schema({
     text: String,
-    users: [{type: mongoose.Schema.Types.ObjectId, ref: 'Users'}],
-    adventures: [{type: mongoose.Schema.Types.ObjectId, ref: 'Adventures'}],
+    user: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
+    commentdate: {type:Date, default:Date.now}
 });
 
 
 
-module.exports = mongoose.model('Comments', comments);
+module.exports = mongoose.model('Comments', comment);

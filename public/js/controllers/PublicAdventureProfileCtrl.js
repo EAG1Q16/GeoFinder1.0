@@ -8,11 +8,15 @@ angular.module('GeoFinderApp').controller('PublicAdventureProfileCtrl',['$scope'
     console.log(adventureID);
     $scope.map = { center: { latitude: 0.1, longitude: 0.1 }, zoom: 2 };
 
+    $scope.comments = {};
+    
     // when landing on the page get adventure
     $http.get('/adventures/id/' + adventureID)
         .success(function(data) {
 
             $scope.AdventureProfileInfo = data;
+            $scope.comments = data.comments;
+            console.log($scope.comments);
             console.log($scope.AdventureProfileInfo);
             $scope.map = { center: { latitude: $scope.AdventureProfileInfo.location.coordinates[1], longitude: $scope.AdventureProfileInfo.location.coordinates[0] }, zoom: 16 };
 
@@ -42,5 +46,38 @@ angular.module('GeoFinderApp').controller('PublicAdventureProfileCtrl',['$scope'
         .error(function(data) {
             console.log('Error: ' + data);
         });
+    $scope.NewComment = {};
+
+    $scope.addcomment = function () {
+        $http.post('/comments/' + $rootScope.UserSessionId._id, $scope.NewComment)
+            .success(function (data) {
+                $scope.reccomment = data;
+                console.log($scope.reccomment);
+                $http.post('/comments/addtoadventure/' + adventureID ,$scope.reccomment)
+                    .success(function (data) {
+                        console.log("entro en el success");
+                        console.log(data);
+                        $scope.comments = data.comments;
+                        console.log($scope.comment.user);
+                        
+                    })
+                    .error(function (data) {
+                        console.log("Error" + data)
+                    });
+            })
+            .error(function (data) {
+                console.log("Error" + data);
+            });
+    };
+    
+    $scope.deletecomment = function (cmd_id) {
+      $http.delete('/comments/deletecomment/' + cmd_id + '/' + adventureID)
+          .success(function (data) {
+              $scope.comments = data.comments;
+          })
+          .error(function (data) {
+              console.log("Error" + data);
+          });
+    };
 
 }]);

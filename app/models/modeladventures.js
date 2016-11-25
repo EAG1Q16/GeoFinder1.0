@@ -13,7 +13,8 @@ var adventures = new mongoose.Schema({
         coordinates: []
     },
     hints: [{type: mongoose.Schema.Types.ObjectId, ref: 'Hints'}],
-    image: String
+    image: String,
+    comments: [{type: mongoose.Schema.Types.ObjectId, ref: 'Comments'}]
 });
 
 adventures.index({location: '2dsphere'});

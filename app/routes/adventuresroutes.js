@@ -22,7 +22,7 @@ router.get('/', function(req, res) {
 
 // GET adventure by ID
 router.get('/id/:adv_id', function(req, res){
-    Adventures.findById(req.params.adv_id, function(err, adventure){
+    Adventures.findById(req.params.adv_id).populate('comments').exec().then(function(err, adventure){
         if(err)
             res.send(err)
         res.send(adventure);
