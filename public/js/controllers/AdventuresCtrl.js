@@ -45,7 +45,7 @@ angular.module('GeoFinderApp').controller('AdventuresCtrl',['$scope','$http','$r
         console.log($scope.UpdateNear.radius);
         $scope.rad = $scope.UpdateNear.radius * 1000;
         console.log("en KM");
-        console.log($scope.rad )
+        console.log($scope.rad);
         $window.navigator.geolocation.getCurrentPosition(function (position) {
             $scope.cerca = true;
             $scope.$apply(function () {
@@ -60,7 +60,7 @@ angular.module('GeoFinderApp').controller('AdventuresCtrl',['$scope','$http','$r
                 $scope.cordenada = {
                     latitude: position.coords.latitude,
                     longitude: position.coords.longitude,
-                    radius: $scope.UpdateNear.radius
+                    radius: $scope.rad
                 };
 
 

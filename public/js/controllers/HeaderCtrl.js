@@ -34,13 +34,12 @@ angular.module('GeoFinderApp').controller('HeaderCtrl',['$scope','$rootScope','$
             $scope.selected = undefined;
 
             $scope.onSelect = function ($item, $model, $label) {
-                
                 window.location.href = "#/userprofile/" + $model._id;
-                $scope.$item = $item;
-                $scope.$model = $model;
-                $scope.$label = $label;
+                //$scope.$item = $item;
+                //$scope.$model = $model;
+                //$scope.$label = $label;
                 console.log($model);
-                $scope.userSelected = $model.username;
+                //$scope.userSelected = $model.username;
 
                 
             };
@@ -68,6 +67,7 @@ angular.module('GeoFinderApp').controller('HeaderCtrl',['$scope','$rootScope','$
                 .error(function(data) {
                     console.log('Error: ' + data);
                 });
+
             $scope.selected = undefined;
 
 
