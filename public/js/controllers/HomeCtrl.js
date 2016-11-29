@@ -6,6 +6,16 @@ angular.module('GeoFinderApp').controller('HomeCtrl',['$scope','$location','$roo
             $rootScope.UserSessionId = data;
             $rootScope.UserSessionUri = data._id;
             $scope.UserHome = data;
+
+            // is logges in get users following adventures
+            $http.get('/user/recomendedadv/' + $rootScope.UserSessionUri)
+                .success(function(data) {
+                    $scope.FollowingAdvs = data.following;
+                    console.log($scope.FollowingAdvs);
+                })
+                .error(function(data) {
+                    console.log('not logged');
+                });
         })
         .error(function(data) {
             console.log('not logged');

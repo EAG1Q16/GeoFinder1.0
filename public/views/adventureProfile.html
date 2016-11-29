@@ -1,32 +1,64 @@
-
-<div ng-controller="PublicAdventureProfileCtrl" class="container-fluid">
-
-    <div class="map col-md-7" >
+<div class="AdventureP" ng-controller="PublicAdventureProfileCtrl">
+<div class="container">
+    <div class="row">
+    <div class="col-md-12">
+    <div class="map col-md-8" >
         <ui-gmap-google-map center='map.center' zoom='map.zoom' options="options">
             <ui-gmap-marker coords="marker.coords" options="marker.options" idkey="marker.id">
             </ui-gmap-marker>
         </ui-gmap-google-map>
-
     </div>
-
-    <div class="info col-md-5">
-        <div class="panel panel-info PersonalPanel">
-            <div class="panel-heading">
-            <div class=panel-title"><h4><b>Información de la aventura:</b></h4></div>
-            </div>
-            <div class="panel-body">
-            <h4><b> Nombre:</b> {{AdventureProfileInfo.name}}</h4>
-            <h4><b> Descripción:</b> {{AdventureProfileInfo.description}}</h4>
-            <h4><b> Dificultad:</b> {{AdventureProfileInfo.difficulty}}</h4>
-            <h4><b> mas:</b> faltara info de km y asi! y fotooooo!!</h4>
-            </div>
+    <div class="col-md-4">
+        <div class="row">
+        <div class="col-md-12">
+        <div class="row">
+        <div class="col-md-12">
+            <md-card>
+                <img style="max-height: 200px" ng-src="{{AdventureProfileInfo.image}}" class="md-card-image">
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline">{{AdventureProfileInfo.name}}</span>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+                    <p>{{AdventureProfileInfo.description}}</p>
+                </md-card-content>
+                <md-card-actions>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-8">
+                                <div class="row">
+                                <div class="col-md-12">
+                                <div class="col-md-4">
+                                    <h5><b>{{AdventureProfileInfo.difficulty}}</b></h5>
+                                </div>
+                                <div class="col-md-8">
+                                    <h5><b>Favs:</b> 0</h5>
+                                </div>
+                                </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 center-block" ng-if="false">
+                                <md-button class="md-icon-button" aria-label="Favorite">
+                                    <i style="color: lightslategrey" class="fa fa-heart"></i>
+                                </md-button>
+                            </div>
+                            <div class="col-md-4 center-block" ng-if="true">
+                                <md-button class="md-icon-button" aria-label="Favorite">
+                                    <i style="color: red" class="fa fa-heart"></i>
+                                </md-button>
+                            </div>
+                        </div>
+                    </div>
+                </md-card-actions>
+            </md-card>
         </div>
-    </div>
-    <div class="col-md-5">
+        </div>
+        <div class="row">
+        <div class="col-md-12">
         <div class="detailBox">
             <div class="titleBox">
                 <label><h4>Comentarios:</h4></label>
-
             </div>
             <div class="actionBox">
                 <ul class="commentList">
@@ -53,8 +85,12 @@
             </div>
         </div>
     </div>
-
-
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+</div>
 </div>
 
 

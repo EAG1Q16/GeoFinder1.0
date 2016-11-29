@@ -1,89 +1,124 @@
-
-<div class="adventures row container-fluid">
-    <br>
-    <br>
-    <br>
-    <br>
-    <div class="filter col-md-4" style="position: fixed">
-        <div class="PersonalPanel panel panel-default ">
-            <div class="panel-heading">Filtros:</div>
-            <div class="panel-body">
-
-                <br>
-                <br>
-                <br>
-
-                <div class="input-group col-md-12">
+<div class="container-fluid cener-block AllAdventures">
+    <div class="row">
+    <div class="col-md-12">
+    <div class="filter col-md-4" style=" position: fixed">
+    <div class="row">
+        <div class="col-md-12">
+        <md-card>
+            <md-card-content>
+                <div class="row">
+                <div class="col-md-12">
+                <h5>Buscar por nombre:</h5>
+                <form class="col-md-12 input-group">
                     <input type="text" class="form-control InputStyle" size="60" placeholder="Filtra las aventuras"
                            ng-model="search.$" required>
                 <span class="input-group-btn">
-                <button type="button" class="btn btn-info ButtonStyle">Buscar!</button>
-                </span><br>
+                <button type="button" class="btn btn-info form-control">Buscar</button>
+                </span>
+                </form>
                 </div>
-                <div class="text-center">
-                    <h5>Filtra tu busqueda por dificultad:</h5>
+                </div> <!-- row filter name -->
+                <div class="row"> <!-- row filter dificulty -->
+                <div class="col-md-12">
+                    <h5>Buscar por dificultad:</h5>
                     <form action="Dificultad">
-
                         <md-radio-group ng-model="search.difficulty" id="difficulty-radiobutton">
-                            <md-radio-button value="Facil" class="md-primary">Fácil</md-radio-button>
+                            <md-radio-button value="Fácil" class="md-primary">Fácil</md-radio-button>
                             <md-radio-button value="Media" class="md-primary">Media </md-radio-button>
-                            <md-radio-button value="Dificil" class="md-primary">Díficil</md-radio-button>
+                            <md-radio-button value="Díficil" class="md-primary">Díficil</md-radio-button>
                         </md-radio-group>
                         <md-radio-group ng-model="search">
                             <md-radio-button ng-click="getTodas()" class="md-primary" >Todas</md-radio-button>
                         </md-radio-group>
                     </form>
                 </div>
-                <br>
-                <div class="text-center">
-                    <h5>Busca tus aventuras mas cercanas:</h5>
+                </div> <!-- row dificulty -->
+                <div class="row">
+                <div class="col-md-12">
+                    <h5>Aventuras cercanas:</h5>
+                    <form class="input-group">
                     <input type="text" class="form-control" placeholder="Filtra por radio en Km" ng-model="UpdateNear.radius" id="radius">
+                    <span class="input-group-btn"><button class="btn btn-success form-control" ng-click="searchNearby()">Buscar</button></span>
+                    </form>
+                    <div class="center-block text-center">
                     <br>
-                    <p>
-                        <button class="btn btn-success" ng-click="searchNearby()">Buscar aventuras cercanas</button>
-                    </p><br>
-                    <h5>O filtra entre todas las aventuras:</h5>
-                    <p>
-                        <button class="btn btn-warning" ng-click="getTodas()">Buscar aventuras</button>
-                    </p>
+                    <md-button class="md-raised md-primary" style="background-color: #00ADB5; color: white;" ng-click="getTodas()">Ver Todas</md-button>
+                    </div>
                 </div>
-                <br>
-                <br>
-            </div>
+                </div> <!-- row other -->
+            </md-card-content>
+        </md-card>
+        </div>
+        </div>
+    </div> <!-- colum of searcher -->
+    <div class="col-sm-4 col-md-4"></div> <!-- colum separator -->
+    <div class="col-md-8">
+        <div class="row">
+        <div class="col-md-12">
+        <md-card ng-if="!cerca" ng-repeat="adventure in adventures | filter:search">
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline">{{adventure.name}}</span>
+                        <span class="md-subhead">{{adventure.description}}</span>
+                    </md-card-title-text>
+                    <md-card-title-media>
+                        <div class="card-media">
+                            <img class="img-rounded" style="max-height: 170px; max-width: 400px" ng-src="{{adventure.image}}">
+                        </div>
+                    </md-card-title-media>
+                </md-card-title>
+                <md-card-actions style="background-color: #00ADB5; color: white">
+                    <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-10">
+                            <div class="col-md-3">
+                        <h5><b>Dificultad:</b> {{adventure.difficulty}}</h5>
+                            </div>
+                            <div class="col-md-7">
+                        <h5><b>Favs:</b> 0</h5>
+                        </div>
+                        </div>
+                        <div class="col-md-2">
+                        <md-button href="#/adventureprofile/{{adventure._id}}">Detalles</md-button>
+                        </div>
+                    </div>
+                    </div>
+                </md-card-actions>
+        </md-card>
+        <md-card ng-if="cerca" ng-repeat="adventure in probando | filter:search">
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline">{{adventure.name}}</span>
+                    <span class="md-subhead">{{adventure.description}}</span>
+                </md-card-title-text>
+                <md-card-title-media>
+                    <div class="card-media">
+                        <img class="img-rounded" style="max-height: 170px; max-width: 400px" ng-src="{{adventure.image}}">
+                    </div>
+                </md-card-title-media>
+            </md-card-title>
+            <md-card-actions style="background-color: #00ADB5; color: white">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-10">
+                            <div class="col-md-3">
+                                <h5><b>Dificultad:</b> {{adventure.difficulty}}</h5>
+                            </div>
+                            <div class="col-md-7">
+                                <h5><b>Favs:</b> 0</h5>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <md-button href="#/adventureprofile/{{adventure._id}}">Detalles</md-button>
+                        </div>
+                    </div>
+                </div>
+            </md-card-actions>
+        </md-card>
+        </div>
         </div>
     </div>
-    <div class="col-md-4"></div>
-    <div class="showadventures col-md-8">
-
-        <div class="col-md-12">
-        <div id="ff" class="PersonalPanel panel panel-default" ng-if="!cerca" ng-repeat="adventure in adventures | filter:search">
-            <td>{{adventure.name}}</td>
-            <td>{{adventure.description}}</td>
-            <td>{{adventure.difficulty}}</td>
-            <td>{{adventure.initialPoint}}</td>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-        </div>
-        <div class="PersonalPanel panel panel-default" ng-if="cerca" ng-repeat="adventure in probando | filter:search">
-
-            <td>{{adventure.name}}</td>
-            <td>{{adventure.description}}</td>
-            <td>{{adventure.difficulty}}</td>
-            <td>{{adventure.initialPoint}}</td>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-        </div>
-        </div>
+    </div>
     </div>
 </div>
-<br>
-<br>
 

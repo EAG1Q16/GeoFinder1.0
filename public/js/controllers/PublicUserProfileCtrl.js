@@ -2,6 +2,15 @@
  * Created by tonim on 14/11/2016.
  */
 angular.module('GeoFinderApp').controller('PublicUserProfileCtrl',['$scope','$rootScope','$window','$location','$http','$routeParams', function($scope, $rootScope, $window, $location, $http, $routeParams){
+    // when landing on the page get user session
+    $http.get('/user/sessionid')
+        .success(function(data) {
+            $rootScope.UserSessionId = data;
+            $rootScope.UserSessionUri = data._id;
+        })
+        .error(function(data) {
+            console.log('not logged');
+        });
 
     var puserID = window.location.href.split("/").pop();
 
@@ -16,6 +25,7 @@ angular.module('GeoFinderApp').controller('PublicUserProfileCtrl',['$scope','$ro
         .error(function(data) {
             console.log('Error: ' + data);
         });
+
     // when landing on the page search if user is followed
         $http.get('/user/isfollowing/' + puserID +'/'+ $rootScope.UserSessionUri)
             .success(function(data) {
