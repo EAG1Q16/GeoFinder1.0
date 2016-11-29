@@ -1,7 +1,17 @@
 /**
  * Created by mbmarkus on 3/11/16.
  */
-angular.module('GeoFinderApp').controller('AdventuresCtrl',['$scope','$http','$routeParams','$window',function($scope, $http, $routeParams,$window){
+angular.module('GeoFinderApp').controller('AdventuresCtrl',['$scope','$http','$routeParams','$window','$rootScope',function($scope, $http, $routeParams,$window, $rootScope){
+    // when landing on the page get user session
+    $http.get('/user/sessionid')
+        .success(function(data) {
+            $rootScope.UserSessionId = data;
+            $rootScope.UserSessionUri = data._id;
+        })
+        .error(function(data) {
+            console.log('not logged');
+        });
+
     $scope.NewAdventure = {};
 
     $scope.cerca = false;
