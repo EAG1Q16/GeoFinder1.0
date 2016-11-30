@@ -4,9 +4,19 @@
 
 angular.module('GeoFinderApp').controller('PublicAdventureProfileCtrl',['$scope','$rootScope','$window','$location','$http','$routeParams', 'uiGmapGoogleMapApi', function($scope, $rootScope, $window, $location, $http, $routeParams, uiGmapGoogleMapApi){
 
+    // when landing on the page get user
+    $http.get('/user/sessionid')
+        .success(function(data) {
+            $rootScope.UserSessionId = data;
+            $rootScope.UserSessionUri = data._id;
+        })
+        .error(function(data) {
+            console.log('not logged');
+        });
+
     var adventureID = window.location.href.split("/").pop();
     //Codigo para el indice de las fotos
-    
+
     console.log($rootScope.UserSessionId);
 
 
@@ -56,6 +66,7 @@ angular.module('GeoFinderApp').controller('PublicAdventureProfileCtrl',['$scope'
     $scope.addcomment = function () {
         $http.post('/comments/' + $rootScope.UserSessionId._id, $scope.NewComment)
             .success(function (data) {
+                $scope.NewComment = {};
                 $scope.reccomment = data;
                 console.log("holaaaaaaaaaaaaaaaa");
                 console.log($scope.reccomment);

@@ -1,7 +1,11 @@
 @import url(//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css);
 
 .detailBox {
-    border:1px solid #bbb;
+    padding-left: 2%;
+    box-shadow: 2px 3px 2px darkgrey;
+    max-width: 339px;
+
+
 }
 .titleBox {
     background-color:#00ADB5;
@@ -23,16 +27,16 @@
     background-color: white;
 }
 .commentBox .form-group:first-child, .actionBox .form-group:first-child {
-    width:80%;
+    width:75%;
 }
 .commentBox .form-group:nth-child(2), .actionBox .form-group:nth-child(2) {
-    width:18%;
+    width:22%;
 }
 .actionBox{
     background-color: white;
 }
 .actionBox .form-group * {
-    width:100%;
+    width: 100%;
 }
 .taskDescription {
     margin-top:10px;

@@ -2,21 +2,30 @@
  * Created by tonim on 03/11/2016.
  */
 angular.module('GeoFinderApp').controller('ProfileCtrl',['$scope','$rootScope','$location','$http','$routeParams', function($scope, $rootScope, $location, $http, $routeParams){
-    console.log('Rootscope en profile' + $rootScope.UserSessionId);
-    $scope.UpdatedUser = {};
 
-    // when landing on the page get user
-   $http.get('/user/my/' + $rootScope.UserSessionId._id)
+    // when landing on the page get user session
+    $http.get('/user/sessionid')
         .success(function(data) {
-            $scope.UserProfileInfo = data;
-            $scope.FollowingUsers = data.following;
-            console.log($scope.UserProfileInfo);
-            console.log($scope.FollowingUsers);
+            $rootScope.UserSessionId = data;
+            $rootScope.UserSessionUri = data._id;
+            // when landing on the page get user
+            $http.get('/user/my/' + $rootScope.UserSessionId._id)
+                .success(function(data) {
+                    $scope.UserProfileInfo = data;
+                    $scope.FollowingUsers = data.following;
+                    console.log($scope.UserProfileInfo);
+                    console.log($scope.FollowingUsers);
 
+                })
+                .error(function(data) {
+                    console.log('Error: ' + data);
+                });
         })
         .error(function(data) {
-            console.log('Error: ' + data);
+            console.log('not logged');
         });
+
+   $scope.UpdatedUser = {};
 
    $scope.UpdateName = function() {
        console.log('modificamos usuario');

@@ -39,7 +39,7 @@
              </md-card-title>
              <md-card-content>
                  <p>
-                     lorem
+                     lorem6
                  </p>
              </md-card-content>
              <md-card-actions layout="column" layout-align="start">
@@ -71,61 +71,77 @@
 </div> <!-- End of ng if user is not logged in -->
 
 <div ng-if="UserSessionId" class="UserHomeLog container"><!-- init of ng if user is logged in -->
-    <div class="col-md-12">
     <div class="row">
-    <div class="col-sm-6 col-md-3">
-        <md-card>
-            <img ng-src="{{UserHome.photo}}" class="md-card-image" alt="Washed Out">
-            <md-card-title>
-                <md-card-title-text>
-                    <span class="md-headline">{{UserHome.name}}</span>
-                </md-card-title-text>
-            </md-card-title>
-            <md-card-content>
-                <p>{{UserHome.description}}</p>
-            </md-card-content>
-            <md-card-content layout="row" layout-align="space-around" style="background-color: #00ADB5; color: white">
-                <h5><b>Siguiendo:</b> {{UserHome.following.length}}</h5>
-                <md-divider></md-divider>
-                <h5><b>Seguidores:</b> {{UserHome.followers.length}}</h5>
-            </md-card-content>
-        </md-card>
-    </div>
-    <div class="col-sm-6 col-md-9">
-        <md-card>
-            <md-card-header class="customColor">
-                <md-card-header-text>
-                    <div class="panel-title"><b><i class=" fa fa-binoculars"></i>Ultimas aventuras</b></div>
-                </md-card-header-text>
-            </md-card-header>
-            <!-- List group -->
-            <md-card-content>
-                <md-list style="background-color: white">
-                    <md-list-item class="md-2-line">
-                    </md-list-item>
-                </md-list>
-            </md-card-content>
-        </md-card>
-    </div>
-    </div><!-- End of row -->
-    </div><!-- End of colmd-12 -->
     <div class="col-md-12">
-    <div class="row">
-        <div class="col-sm-6 col-md-3">
-            <md-card>
-                <md-card-header class="customColor">
-                    <div class="panel-title"><b><i class=" fa fa-diamond"></i> Rango:</b></div>
-                </md-card-header>
-                <md-content>
-                    <img ng-if="UserHome.adventures.created.length >= 0 && UserHome.adventures.created.length <3" class="img-responsive center-block" height="100px" width="100px" src="../images/CAmpista.png">
-                    <img ng-if="UserHome.adventures.created.length >= 3 && UserHome.adventures.created.length <10" class="img-responsive center-block" height="100px" width="100px" src="../images/Navegante.png">
-                    <img ng-if="UserHome.adventures.created.length >= 10 && UserHome.adventures.created.length<20" class="img-responsive center-block" height="100px" width="100px" src="../images/Montañero.png">
-                    <img ng-if="UserHome.adventures.created.length >= 20 " class="img-responsive center-block" height="100px" width="100px" src="../images/Aventurero.png">
-                </md-content>
-            </md-card>
+    <div class="col-md-3">
+        <div class="row">
+            <div class="col-md-12">
+                <md-card>
+                    <img ng-src="{{UserHome.photo}}" class="md-card-image" alt="Washed Out">
+                    <md-card-title>
+                        <md-card-title-text>
+                            <span class="md-headline">{{UserHome.name}}</span>
+                        </md-card-title-text>
+                    </md-card-title>
+                    <md-card-content>
+                        <p>{{UserHome.description}}</p>
+                    </md-card-content>
+                    <md-card-content layout="row" layout-align="space-around" style="background-color: #00ADB5; color: white">
+                        <h5><b>Siguiendo:</b> {{UserHome.following.length}}</h5>
+                        <md-divider></md-divider>
+                        <h5><b>Seguidores:</b> {{UserHome.followers.length}}</h5>
+                    </md-card-content>
+                </md-card>
+            </div>
         </div>
-    </div><!-- End of row -->
+        <div class="row">
+            <div class="col-md-12">
+                <md-card>
+                    <md-card-header class="customColor">
+                        <div class="panel-title"><b><i class=" fa fa-diamond"></i> Rango:</b></div>
+                    </md-card-header>
+                    <md-content>
+                        <img ng-if="UserHome.adventures.created.length >= 0 && UserHome.adventures.created.length <3" class="img-responsive center-block" height="100px" width="100px" src="../images/CAmpista.png">
+                        <img ng-if="UserHome.adventures.created.length >= 3 && UserHome.adventures.created.length <10" class="img-responsive center-block" height="100px" width="100px" src="../images/Navegante.png">
+                        <img ng-if="UserHome.adventures.created.length >= 10 && UserHome.adventures.created.length<20" class="img-responsive center-block" height="100px" width="100px" src="../images/Montañero.png">
+                        <img ng-if="UserHome.adventures.created.length >= 20 " class="img-responsive center-block" height="100px" width="100px" src="../images/Aventurero.png">
+                    </md-content>
+                </md-card>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-9">
+        <div class="row">
+            <div class="col-md-12">
+                <md-card>
+                    <md-card-header class="customColor">
+                        <md-card-header-text>
+                            <div class="panel-title"><b><i class=" fa fa-binoculars"></i>Ultimas aventuras</b></div>
+                        </md-card-header-text>
+                    </md-card-header>
+                    <!-- List group -->
+                    <md-card-content>
+                        <md-list style="background-color: white">
+                            <div class="LimitHeight">
+                            <div ng-repeat="FollowingAdv in FollowingAdvs">
+                                <md-list-item class="md-2-line" ng-repeat="adventure in FollowingAdv.adventures.created">
+                                    <div class="md-list-item-text">
+                                        <h3>{{adventure.name}}</h3>
+                                        <p>{{adventure.description}}</p>
+                                    </div>
+                                    <md-divider inset></md-divider>
+                                </md-list-item>
+                            </div>
+                            </div>
+                        </md-list>
+                    </md-card-content>
+                </md-card>
+            </div>
+        </div>
+    </div>
     </div><!-- End of colmd-12 -->
+    </div><!-- End of row-->
 </div><!-- End of ng if user is logged in -->
 </div>
 

@@ -17,6 +17,9 @@ var adventures = new mongoose.Schema({
     hints: [{type: mongoose.Schema.Types.ObjectId, ref: 'Hints'}],
     image: String,
     comments: [{type: mongoose.Schema.Types.ObjectId, ref: 'Comments'}],
+    registerdate: {
+        type : Date, default: Date.now
+    }
 });
 
 adventures.plugin(deepPopulate, null);
