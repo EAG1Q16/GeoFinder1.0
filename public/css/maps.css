@@ -1,14 +1,14 @@
 /*----------Maps Style-----------*/
 .angular-google-map-container {
-    height: 80vh;
+    height: 90vh;
 }
-#LateralMenu{
-    padding-top: 20px;
+.PanelColor {
+    border-color: #00ADB5;
 }
-
-.PaddingBodyMap{
+.Padding {
     padding-top: 3%;
 }
+
 /**
 [ng-app="GeoFinder"] {
     height: 100vh;
