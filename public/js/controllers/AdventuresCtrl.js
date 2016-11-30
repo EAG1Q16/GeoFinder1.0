@@ -106,7 +106,7 @@ angular.module('GeoFinderApp').controller('AdventuresCtrl',['$scope','$http','$r
         });
     };
 
-    $scope.getTodas=function () {
+    $scope.getTodas = function () {
         $http.get('/adventures')
             .success(function(data) {
                 $scope.adventures = data;

@@ -146,6 +146,7 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
                 console.log(markersAdventures);
             })
             .error(function (data) {
+                console.log(data);
             })
 
             $scope.map.markerAdventures = markersAdventures;
