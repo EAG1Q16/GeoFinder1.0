@@ -74,7 +74,7 @@ angular.module('GeoFinderApp').controller('AdventuresCtrl',['$scope','$http','$r
                 };
 
 
-                $http.post('adventures/near', $scope.cordenada)
+                $http.post('/adventures/near/', $scope.cordenada)
                     .success(function (data) {
                         $scope.probando = (data);
                         //console.log("cercanas"+ $scope.probando[0].name);
