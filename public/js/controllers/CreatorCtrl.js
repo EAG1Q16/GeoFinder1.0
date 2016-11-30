@@ -124,32 +124,35 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
 
     $scope.PrintMarkersAdventuresMap = function (option) {
 
-        var markersAdventures = [];
-        $http.get('/adventures/')
-            .success(function (data) {
-                angular.forEach(data, function (value, key) {
-                    markersAdventures.push(
-                        {
-                            id: value._id,
-                            latitude: value.location.coordinates[1],
-                            longitude: value.location.coordinates[0],
-                            showWindow: false,
-                            options: {
-                                animation: 0,
-                                title: value.name,
-                                labelAnchor: "26 0",
-                                labelClass: "marker-labels"
+        if(option){
+            var markersAdventures = [];
+            $http.get('/adventures/')
+                .success(function (data) {
+                    angular.forEach(data, function (value, key) {
+                        markersAdventures.push(
+                            {
+                                id: value._id,
+                                latitude: value.location.coordinates[1],
+                                longitude: value.location.coordinates[0],
+                                showWindow: false,
+                                options: {
+                                    animation: 0,
+                                    title: value.name,
+                                    labelAnchor: "26 0",
+                                    labelClass: "marker-labels"
+                                }
                             }
-                        }
-                    );
-                });
-                console.log(markersAdventures);
-            })
-            .error(function (data) {
-                console.log(data);
-            })
+                        );
+                    });
+                    console.log(markersAdventures);
+                })
+                .error(function (data) {
+                    console.log(data);
+                })
 
             $scope.map.markerAdventures = markersAdventures;
+        }
+
     };
 
     $scope.UndoPrintMarkersAdventuresMap = function () {
