@@ -7,7 +7,7 @@ var mongoose = require('mongoose');
 var Hints = require('../models/modelhints');
 var router = express.Router();
 
-// GET adventures in list
+// GET hints in list
 router.get('/', function(req, res) {
 
     Hints.find(function (err, hints) {
@@ -18,7 +18,7 @@ router.get('/', function(req, res) {
 
 });
 
-// GET adventure by ID
+// GET hints by ID
 router.get('/id/:hint_id', function(req, res){
     Hints.findById(req.params.hint_id, function(err, hint){
         if(err)

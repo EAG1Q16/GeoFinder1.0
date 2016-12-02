@@ -42,10 +42,10 @@ GeoFinderApp.config(['$routeProvider', function($routeProvider){
         .otherwise({
             redirectTo: '/index'
         })
-    .when('/maps', {
-        templateUrl: './views/maps.html',
-        controller: 'MapsCtrl'
-    })
+    .when('/creator', {
+        templateUrl: './views/creator.html',
+        controller: 'CreatorCtrl'
+        })
         .otherwise({
             redirectTo: '/index'
         })

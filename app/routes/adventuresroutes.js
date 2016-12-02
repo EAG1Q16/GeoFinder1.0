@@ -90,7 +90,7 @@ router.post('/ahintdadv/', function(req, res) {
 });
 
 
-router.post('/near', function (req, res){
+router.post('/near/', function (req, res){
 
     var lat = req.body.latitude;
     var lon = req.body.longitude;
@@ -101,31 +101,36 @@ router.post('/near', function (req, res){
     console.log(rd);
 
     Adventures.find(function (err, adventures) {
-        Adv = adventures;
         console.log("Adv");
-        console.log(Adv.length);
+        console.log(adventures.length);
         //console.log(Adv);
         var cercanas = [];
-        for(i=0;i<Adv.length;i++){
-           // console.log("enbuscadelascordenadasperdidas");
-            var c_long = Adv[i].location.coordinates[0];
-            var c_lat = Adv[i].location.coordinates[1];
-            //console.log(c_lat);
-            //console.log(c_long);
-            if(
-            geolib.isPointInCircle(
-                {latitude: lat, longitude: lon},
-                {latitude: c_lat, longitude: c_long},
-                rd)==true){
-                cercanas.push(Adv[i]);
-                console.log(cercanas);
-                //return cercanas;
-                //res.send(cercanas);
-                //cercanas=[];
-                }else {console.log('false')}
-            
-        }
+        adventures.forEach(function (adventure, index)
+        {
+            if(typeof(adventure.location.coordinates[0] || adventure.location.coordinates[0]) == 'undefined')
+            {
+                console.log("Aventura ID: " + adventure._id + ", Nombre: " +adventure.name
+                    + " con indice: " + index + " tiene un defecto en su forma o esta mal creada");
+            }
+            else
+            {
+                var c_long = adventure.location.coordinates[0];
+                var c_lat = adventure.location.coordinates[1];
+                var test = geolib.isPointInCircle({latitude: lat, longitude: lon},
+                    {latitude: c_lat, longitude: c_long},
+                    rd);
 
+                if(test == true)
+                {
+                    cercanas.push(adventure);
+                    //return cercanas;
+                    //res.send(cercanas);
+                    //cercanas=[];
+                }
+                else
+                    console.log('false');
+            };
+        });
         res.send(cercanas);
     });
 

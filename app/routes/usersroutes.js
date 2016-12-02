@@ -180,7 +180,8 @@ router.get('/my/:user_id', function(req, res){
     User.findById(req.params.user_id).deepPopulate(pathdeepPopulate).populate('following').exec().then(function(err, user){
         if(err)
             res.send(err)
-        res.send(user);
+        if(user)
+            res.send(user);
     });
 });
 
@@ -196,7 +197,10 @@ router.put('/update/name/:user_id', function(req, res) {
             User.findById(req.params.user_id, function(err, user) {
                 if(err)
                     res.send(err)
-                res.send(user);
+                if(user)
+                    console.log("hola usuariooooo");
+                    console.log(user);
+                    res.send(user);
             });
         });
 });
