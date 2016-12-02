@@ -537,8 +537,7 @@ router.post('/afavadv/:adv_id', function(req, res) {
 });
 
 // Unassign Fav Adventure <--> User
-router.delete('/uafavadv/:adv_id/user_id', function (req, res) {
-
+router.delete('/uafavadv/:adv_id/:user_id', function (req, res) {
     var query = {_id: req.params.user_id};
     var update = {$pull : {"adventures.favs" : req.params.adv_id}};
     var options = {};
@@ -548,7 +547,6 @@ router.delete('/uafavadv/:adv_id/user_id', function (req, res) {
             res.send(err);
         }
         if(user){
-            console.log('hola he pasado el primer update')
             var query = {_id: req.params.adv_id};
             var update = {$inc : {"favs": -1}};
             Adventures.findOneAndUpdate(query, update, options, function(err, adv) {
@@ -567,6 +565,26 @@ router.delete('/uafavadv/:adv_id/user_id', function (req, res) {
             });
         }
     });
+});
+
+//Is a fav adventure right now?
+router.get('/isadvfav/:adv_id/:user_id', function (req, res) {
+    if (req.params.user_id == 'undefined'){
+        res.send('notlogged');
+    }
+    else{
+        var query = {_id: req.params.user_id, "adventures.favs": req.params.adv_id};
+        User.findOne(query, function (err, userisfollowing) {
+            console.log(err);
+            console.log(userisfollowing);
+            if (userisfollowing) {
+                res.send('true');
+            }
+            else {
+                res.send('false');
+            }
+        });
+    }
 });
 
 

@@ -4,6 +4,8 @@
 
 angular.module('GeoFinderApp').controller('PublicAdventureProfileCtrl',['$scope','$rootScope','$window','$location','$http','$routeParams', 'uiGmapGoogleMapApi', function($scope, $rootScope, $window, $location, $http, $routeParams, uiGmapGoogleMapApi){
 
+    var adventureID = window.location.href.split("/").pop();
+
     // when landing on the page get user
     $http.get('/user/sessionid')
         .success(function(data) {
@@ -14,11 +16,16 @@ angular.module('GeoFinderApp').controller('PublicAdventureProfileCtrl',['$scope'
             console.log('not logged');
         });
 
-    var adventureID = window.location.href.split("/").pop();
-    //Codigo para el indice de las fotos
-
-    console.log($rootScope.UserSessionId);
-
+    // when landing on the page search if user is followed
+    $http.get('/user/isadvfav/' + adventureID +'/'+ $rootScope.UserSessionUri)
+        .success(function(data) {
+            console.log(data);
+            $scope.isfollowing = data;
+            console.log($scope.isfollowing);
+        })
+        .error(function(data) {
+            console.log('Error: ' + data);
+        });
 
     console.log(adventureID);
     $scope.map = { center: { latitude: 0.1, longitude: 0.1 }, zoom: 2 };
@@ -101,6 +108,15 @@ angular.module('GeoFinderApp').controller('PublicAdventureProfileCtrl',['$scope'
         $http.post('/user/afavadv/' + adventureID, $rootScope.UserSessionId)
             .success(function(data){
                 $scope.AdventureProfileInfo = data;
+                $http.get('/user/isadvfav/' + adventureID +'/'+ $rootScope.UserSessionUri)
+                    .success(function(data) {
+                        console.log(data);
+                        $scope.isfollowing = data;
+                        console.log($scope.isfollowing);
+                    })
+                    .error(function(data) {
+                        console.log('Error: ' + data);
+                    });
 
             })
             .error(function(data) {
@@ -112,6 +128,15 @@ angular.module('GeoFinderApp').controller('PublicAdventureProfileCtrl',['$scope'
         $http.delete('/user/uafavadv/' + adventureID +'/'+ $rootScope.UserSessionId._id)
             .success(function(data){
                 $scope.AdventureProfileInfo = data;
+                $http.get('/user/isadvfav/' + adventureID +'/'+ $rootScope.UserSessionUri)
+                    .success(function(data) {
+                        console.log(data);
+                        $scope.isfollowing = data;
+                        console.log($scope.isfollowing);
+                    })
+                    .error(function(data) {
+                        console.log('Error: ' + data);
+                    });
 
             })
             .error(function(data) {
