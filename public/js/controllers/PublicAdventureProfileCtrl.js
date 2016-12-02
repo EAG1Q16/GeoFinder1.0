@@ -4,20 +4,28 @@
 
 angular.module('GeoFinderApp').controller('PublicAdventureProfileCtrl',['$scope','$rootScope','$window','$location','$http','$routeParams', 'uiGmapGoogleMapApi', function($scope, $rootScope, $window, $location, $http, $routeParams, uiGmapGoogleMapApi){
 
+    var adventureID = window.location.href.split("/").pop();
+
     // when landing on the page get user
     $http.get('/user/sessionid')
         .success(function(data) {
             $rootScope.UserSessionId = data;
             $rootScope.UserSessionUri = data._id;
+            // when landing on the page search if user is followed
+            $http.get('/user/isadvfav/' + adventureID +'/'+ $rootScope.UserSessionUri)
+                .success(function(data) {
+                    console.log(data);
+                    $scope.isfollowing = data;
+                    console.log($scope.isfollowing);
+                })
+                .error(function(data) {
+                    console.log('Error: ' + data);
+                });
         })
         .error(function(data) {
             console.log('not logged');
         });
 
-    var adventureID = window.location.href.split("/").pop();
-    //Codigo para el indice de las fotos
-
-    console.log($rootScope.UserSessionId);
 
 
     console.log(adventureID);
@@ -96,15 +104,45 @@ angular.module('GeoFinderApp').controller('PublicAdventureProfileCtrl',['$scope'
               console.log("Error" + data);
           });
     };
-    
-    /*$http.get('/comments/')
-        .success(function (data) {
-            $scope.comments = data;
-            console.log(comments)
-        })
-        .error(function (data) {
-            console.log('Error: ' + data);
-        });
-    */
+
+    $scope.FavAdventure = function() {
+        $http.post('/user/afavadv/' + adventureID, $rootScope.UserSessionId)
+            .success(function(data){
+                $scope.AdventureProfileInfo = data;
+                $http.get('/user/isadvfav/' + adventureID +'/'+ $rootScope.UserSessionUri)
+                    .success(function(data) {
+                        console.log(data);
+                        $scope.isfollowing = data;
+                        console.log($scope.isfollowing);
+                    })
+                    .error(function(data) {
+                        console.log('Error: ' + data);
+                    });
+
+            })
+            .error(function(data) {
+                console.log('Error' + data);
+            });
+    };
+
+    $scope.UnFavAdventure = function() {
+        $http.delete('/user/uafavadv/' + adventureID +'/'+ $rootScope.UserSessionId._id)
+            .success(function(data){
+                $scope.AdventureProfileInfo = data;
+                $http.get('/user/isadvfav/' + adventureID +'/'+ $rootScope.UserSessionUri)
+                    .success(function(data) {
+                        console.log(data);
+                        $scope.isfollowing = data;
+                        console.log($scope.isfollowing);
+                    })
+                    .error(function(data) {
+                        console.log('Error: ' + data);
+                    });
+
+            })
+            .error(function(data) {
+                console.log('Error' + data);
+            });
+    };
     
 }]);

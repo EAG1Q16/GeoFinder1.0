@@ -15,10 +15,12 @@ var adventures = new mongoose.Schema({
         coordinates: []
     },
     hints: [{type: mongoose.Schema.Types.ObjectId, ref: 'Hints'}],
-    image: String,
+    image: {type: String, default: 'http://media.treehugger.com/assets/images/2016/07/green-forest-trees.jpg.662x0_q70_crop-scale.jpg'},
     comments: [{type: mongoose.Schema.Types.ObjectId, ref: 'Comments'}],
     registerdate: {
         type : Date, default: Date.now
+    },
+    favs:{type: Number, default: 0
     }
 });
 

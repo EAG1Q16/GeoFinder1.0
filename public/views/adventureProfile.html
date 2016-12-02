@@ -26,25 +26,28 @@
                 <md-card-actions>
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="col-md-8">
+                            <div class="col-md-7">
                                 <div class="row">
                                 <div class="col-md-12">
                                 <div class="col-md-4">
                                     <h5><b>{{AdventureProfileInfo.difficulty}}</b></h5>
                                 </div>
                                 <div class="col-md-8">
-                                    <h5><b>Favs:</b> 0</h5>
+                                    <h5><b>Favs:</b> {{AdventureProfileInfo.favs}}</h5>
                                 </div>
                                 </div>
                                 </div>
                             </div>
-                            <div class="col-md-4 center-block" ng-if="false">
-                                <md-button class="md-icon-button" aria-label="Favorite">
+                            <div class="col-md-2">
+                                <h5><a href="https://twitter.com/share" class="twitter-share-button" data-text="Esta aventura es trepidante" data-url="https://www.geofinder.tech/#/adventureprofile/{{AdventureProfileInfo._id}}" data-hashtags="GeoFinder" data-show-count="false">Tweet</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></h5>
+                            </div>
+                            <div class="col-md-2" ng-if="isfollowing == 'false'">
+                                <md-button class="md-icon-button" aria-label="Favorite" ng-click="FavAdventure()">
                                     <i style="color: lightslategrey" class="fa fa-heart"></i>
                                 </md-button>
                             </div>
-                            <div class="col-md-4 center-block" ng-if="true">
-                                <md-button class="md-icon-button" aria-label="Favorite">
+                            <div class="col-md-2" ng-if="isfollowing == 'true'">
+                                <md-button class="md-icon-button" aria-label="Favorite" ng-click="UnFavAdventure()">
                                     <i style="color: red" class="fa fa-heart"></i>
                                 </md-button>
                             </div>
