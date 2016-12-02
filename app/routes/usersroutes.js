@@ -162,7 +162,7 @@ router.post('/login',
     passport.authenticate('local'),
     function(req, res) {
         console.log('hi my friend');
-        res.send(req.user.id);
+        res.send(req.user);
     });
 
 router.get('/logout', function(req, res){
@@ -321,6 +321,7 @@ function isLoggedIn(req, res, next) {
 
 //route for get the seesion id in the front
 router.get('/sessionid', isLoggedIn, function(req, res) {
+    console.log('entro en el get de sesion id');
     console.log('profile:' + req.user);
     res.send(req.user);
 });
