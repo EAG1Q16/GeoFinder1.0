@@ -58,6 +58,22 @@ angular.module('GeoFinderApp').controller('ProfileCtrl',['$scope','$rootScope','
             });
    };
 
+    $scope.UpdateEmail = function() {
+        console.log('modificamos usuario');
+        console.log($scope.UpdatedUser.email);
+        $http.put('/user/update/email/' + $rootScope.UserSessionId._id, $scope.UpdatedUser)
+            .success(function(data){
+                console.log(data);
+                $scope.UserProfileInfo = data;
+                console.log($scope.UserProfileInfo);
+                $scope.UpdatedUser = {};
+            })
+            .error(function(data) {
+                console.log('Error' + data);
+                $scope.UpdatedUser = {};
+            });
+    };
+
     $scope.UpdateDescription = function() {
         console.log($scope.UpdatedUser.description);
         $http.put('/user/update/description/' + $rootScope.UserSessionId._id, $scope.UpdatedUser)

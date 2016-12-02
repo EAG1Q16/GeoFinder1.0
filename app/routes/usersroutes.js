@@ -5,6 +5,7 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 var User = require('../models/modeluser');
+var Adventures = require('../models/modeladventures');
 var LocalStrategy = require('passport-local').Strategy;
 var TwitterStrategy = require('passport-twitter').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
@@ -162,7 +163,7 @@ router.post('/login',
     passport.authenticate('local'),
     function(req, res) {
         console.log('hi my friend');
-        res.send(req.user.id);
+        res.send(req.user);
     });
 
 router.get('/logout', function(req, res){
@@ -290,6 +291,22 @@ router.put('/update/password/:user_id', function(req, res) {
             res.status(400).send('Error en el password');
         }
     });
+});
+
+//Modify the emailof a user
+router.put('/update/email/:user_id', function(req, res) {
+    User.update({_id : req.params.user_id
+        },{$set:{email: req.body.email
+        }},
+        function(err, user) {
+            if (err)
+                res.send(err);
+            User.findById(req.params.user_id, function(err, user) {
+                if(err)
+                    res.send(err)
+                res.send(user);
+            });
+        });
 });
 
 router.get('/twitter', passport.authenticate('twitter'));
@@ -484,37 +501,67 @@ router.delete('/uacreatedadv/', function (req, res) {
 });
 
 // Assign Fav Adventure <--> User
-router.post('/afavadv/', function(req, res) {
-    var query = {_id: req.body.user_id};
-    var update = {$addToSet : {"adventures.favs" : req.body.adventure_id}};
+router.post('/afavadv/:adv_id', function(req, res) {
+    console.log(req.body._id);
+    console.log(req.params.adv_id);
+    var query = {_id: req.body._id};
+    var update = {$addToSet : {"adventures.favs" : req.params.adv_id}};
     var options = {};
 
     User.findOneAndUpdate(query, update, options, function(err, user) {
         if (err) {
             res.send(err);
         }
-        console.log(user);
-    });
-
-    User.find({_id: req.body.user_id}).deepPopulate(pathdeepPopulate).exec().then(function (err, user) {
-        if(err)
-            res.send(err)
-        res.send(user);
+        if(user){
+            var query = {_id: req.params.adv_id};
+            var update = {$inc : {"favs": 1}};
+            Adventures.findOneAndUpdate(query, update, options, function(err, adv) {
+                if (err) {
+                    res.send(err);
+                }
+                if(adv){
+                    Adventures.findById(adv._id).deepPopulate(['adventures.comments', 'comments.user']).exec().then(function (err, adventure) {
+                        if(err)
+                            res.send(err)
+                        if(adventure)
+                        res.send(adventure);
+                    });
+                }
+            });
+        }
     });
 });
 
 // Unassign Fav Adventure <--> User
-router.delete('/uafavadv/', function (req, res) {
+router.delete('/uafavadv/:adv_id/user_id', function (req, res) {
 
-    var query = {_id: req.body.user_id};
-    var update = {$pull : {"adventures.favs" : req.body.adventure_id}};
+    var query = {_id: req.params.user_id};
+    var update = {$pull : {"adventures.favs" : req.params.adv_id}};
     var options = {};
 
     User.findOneAndUpdate(query, update, options, function(err, user) {
         if (err) {
             res.send(err);
         }
-        res.send("Unfav:" + req.body.adventure_id);
+        if(user){
+            console.log('hola he pasado el primer update')
+            var query = {_id: req.params.adv_id};
+            var update = {$inc : {"favs": -1}};
+            Adventures.findOneAndUpdate(query, update, options, function(err, adv) {
+                if (err) {
+                    res.send(err);
+                }
+                if(adv){
+                    console.log('Hola he pasado el segundo update');
+                    Adventures.findById(adv._id).deepPopulate(['adventures.comments', 'comments.user']).exec().then(function (err, adventure) {
+                        if(err)
+                            res.send(err)
+                        if(adventure)
+                            res.send(adventure);
+                    });
+                }
+            });
+        }
     });
 });
 

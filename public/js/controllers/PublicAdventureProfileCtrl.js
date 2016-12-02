@@ -95,15 +95,27 @@ angular.module('GeoFinderApp').controller('PublicAdventureProfileCtrl',['$scope'
               console.log("Error" + data);
           });
     };
-    
-    /*$http.get('/comments/')
-        .success(function (data) {
-            $scope.comments = data;
-            console.log(comments)
-        })
-        .error(function (data) {
-            console.log('Error: ' + data);
-        });
-    */
+
+    $scope.FavAdventure = function() {
+        $http.post('/user/afavadv/' + adventureID, $rootScope.UserSessionId)
+            .success(function(data){
+                $scope.AdventureProfileInfo = data;
+
+            })
+            .error(function(data) {
+                console.log('Error' + data);
+            });
+    };
+
+    $scope.UnFavAdventure = function() {
+        $http.delete('/user/uafavadv/' + adventureID +'/'+ $rootScope.UserSessionId._id)
+            .success(function(data){
+                $scope.AdventureProfileInfo = data;
+
+            })
+            .error(function(data) {
+                console.log('Error' + data);
+            });
+    };
     
 }]);
