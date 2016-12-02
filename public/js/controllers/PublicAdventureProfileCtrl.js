@@ -11,21 +11,22 @@ angular.module('GeoFinderApp').controller('PublicAdventureProfileCtrl',['$scope'
         .success(function(data) {
             $rootScope.UserSessionId = data;
             $rootScope.UserSessionUri = data._id;
+            // when landing on the page search if user is followed
+            $http.get('/user/isadvfav/' + adventureID +'/'+ $rootScope.UserSessionUri)
+                .success(function(data) {
+                    console.log(data);
+                    $scope.isfollowing = data;
+                    console.log($scope.isfollowing);
+                })
+                .error(function(data) {
+                    console.log('Error: ' + data);
+                });
         })
         .error(function(data) {
             console.log('not logged');
         });
 
-    // when landing on the page search if user is followed
-    $http.get('/user/isadvfav/' + adventureID +'/'+ $rootScope.UserSessionUri)
-        .success(function(data) {
-            console.log(data);
-            $scope.isfollowing = data;
-            console.log($scope.isfollowing);
-        })
-        .error(function(data) {
-            console.log('Error: ' + data);
-        });
+
 
     console.log(adventureID);
     $scope.map = { center: { latitude: 0.1, longitude: 0.1 }, zoom: 2 };

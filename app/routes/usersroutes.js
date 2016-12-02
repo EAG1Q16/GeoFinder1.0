@@ -177,7 +177,7 @@ router.get('/logout', function(req, res){
 router.get('/my/:user_id', function(req, res){
     //La variable pathdeepPopulate se utiliza para no repetir los paths en cada pathdeepPopulate
     //La variable se guarda en la Adventure Zone
-    User.findById(req.params.user_id).deepPopulate(pathdeepPopulate).populate('following').exec().then(function(err, user){
+    User.findById(req.params.user_id).deepPopulate(pathdeepPopulate).populate(['following','followers']).exec().then(function(err, user){
         if(err)
             res.send(err)
         if(user)
