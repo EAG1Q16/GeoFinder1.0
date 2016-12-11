@@ -3,6 +3,7 @@
  */
 
 var mongoose = require('mongoose');
+var deepPopulate = require('mongoose-deep-populate')(mongoose);
 
 var hints = new mongoose.Schema({
     index: Number,
@@ -19,7 +20,9 @@ var hints = new mongoose.Schema({
             sense: String
         }
 });
+hints.plugin(deepPopulate, null);
 
 hints.index({location: '2dsphere'});
+
 
 module.exports = mongoose.model('Hints', hints);
