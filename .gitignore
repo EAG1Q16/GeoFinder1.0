@@ -3,3 +3,4 @@
 node_modules
 public/libs
 app/routes/auth.js
+app/uploads

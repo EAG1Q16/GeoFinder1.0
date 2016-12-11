@@ -114,29 +114,38 @@
     <div class="col-md-9">
         <div class="row">
             <div class="col-md-12">
-                <md-card>
-                    <md-card-header class="customColor">
-                        <md-card-header-text>
-                            <div class="panel-title"><b><i class=" fa fa-binoculars"></i>Ultimas aventuras</b></div>
-                        </md-card-header-text>
-                    </md-card-header>
-                    <!-- List group -->
-                    <md-card-content>
-                        <md-list style="background-color: white">
-                            <div class="LimitHeight">
-                            <div ng-repeat="FollowingAdv in FollowingAdvs">
-                                <md-list-item class="md-2-line" ng-repeat="adventure in FollowingAdv.adventures.created">
-                                    <div class="md-list-item-text">
-                                        <h3>{{adventure.name}}</h3>
-                                        <p>{{adventure.description}}</p>
+                <div ng-repeat="FollowingAdv in FollowingAdvs">
+                    <md-card ng-repeat="adventure in FollowingAdv.adventures.created">
+                        <md-card-title>
+                            <md-card-title-text>
+                                <span class="md-headline">{{adventure.name}}</span>
+                                <span class="md-subhead">{{adventure.description}}</span>
+                            </md-card-title-text>
+                            <md-card-title-media>
+                                <div class="card-media">
+                                    <img class="img-rounded" style="max-height: 170px; max-width: 400px" ng-src="{{adventure.image}}">
+                                </div>
+                            </md-card-title-media>
+                        </md-card-title>
+                        <md-card-actions style="background-color: #00ADB5; color: white">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="col-md-10">
+                                        <div class="col-md-3">
+                                            <h5><b>Dificultad:</b> {{adventure.difficulty}}</h5>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <h5><b>Favs:</b> {{adventure.favs}}</h5>
+                                        </div>
                                     </div>
-                                    <md-divider inset></md-divider>
-                                </md-list-item>
+                                    <div class="col-md-2">
+                                        <md-button href="#/adventureprofile/{{adventure._id}}">Detalles</md-button>
+                                    </div>
+                                </div>
                             </div>
-                            </div>
-                        </md-list>
-                    </md-card-content>
-                </md-card>
+                        </md-card-actions>
+                    </md-card>
+                </div>
             </div>
         </div>
     </div>

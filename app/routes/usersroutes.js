@@ -10,6 +10,14 @@ var LocalStrategy = require('passport-local').Strategy;
 var TwitterStrategy = require('passport-twitter').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 var config = require('./auth');
+var multer = require('multer');
+var upload = multer({dest: __dirname+'/../uploads'});
+var cloudinary  = require('cloudinary');
+cloudinary.config({
+    cloud_name: config.cloudinary.cloud_name,
+    api_key: config.cloudinary.api_key,
+    api_secret: config.cloudinary.api_secret
+});
 
 
 router.post('/signup', function(req, res) {
@@ -238,6 +246,27 @@ router.put('/update/photo/:user_id', function(req, res) {
             });
         });
 });
+
+//Modify the photo of a user
+router.post('/update/image/:user_id', upload.single('myFile'), function(req, res) {
+    cloudinary.uploader.upload(req.file.path, function(result) {
+        console.log(result);
+        User.update({_id : req.params.user_id
+            },{$set:{photo: result.url
+            }},
+            function(err, user) {
+                if (err)
+                    res.send(err);
+
+                User.findById(req.params.user_id, function(err, user) {
+                    if(err)
+                        res.send(err)
+                    res.redirect('/#/profile');
+                });
+            });
+    });
+});
+
 
 //Modify the username of a user
 router.put('/update/username/:user_id', function(req, res) {
