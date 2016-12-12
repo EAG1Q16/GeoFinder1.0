@@ -16,9 +16,12 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "^1.5.8",
+    "angular": "1.5.8",
     "bootstrap": "^3.3.7",
-    "angular-route": "^1.5.8",
+    "angular-route": "1.5.8",
+    "angular-aria": "1.5.8",
+    "angular-animate": "1.5.8",
+    "angular-messages": "1.5.8",
     "components-font-awesome": "^4.6.3",
     "angular-bootstrap": "^2.2.0",
     "angular-google-maps": "^2.4.0",
