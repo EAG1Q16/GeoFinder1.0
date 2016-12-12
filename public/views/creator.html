@@ -28,7 +28,7 @@
                                         </md-switch>
                                         <hr>
                                         <h5>Mostrar todas las Aventuras</h5>
-                                        <md-switch class="md-no-ink md-primary" ng-model="PrintAllMarkers" ng-true-value="true" ng-false-value="false" ng-change="PrintMarkersAdventuresMap(PrintAllMarkers)">
+                                        <button ng-click="PrintMarkersAdventuresMap()">Print Adventures</button>
                                         </md-switch>
                                         <hr>
                                     </md-content>
@@ -64,35 +64,32 @@
                                         </div>
                                     </md-content>
                                 </md-tab>
-                                <md-tab label="Crear Pista">
+                                <md-tab label="Crear Pista" ng-disabled="StatusHint" md-active="!StatusHint">
                                     <md-content class="md-padding">
-                                        <h1 class="md-display-2">Tab Three</h1>
-                                        <p>Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum tellus. Curabitur posuere molestie dictum. Morbi eget congue risus, quis rhoncus quam. Suspendisse vitae hendrerit erat, at posuere mi. Cras eu fermentum nunc. Sed id ante eu orci commodo volutpat non ac est. Praesent ligula diam, congue eu enim scelerisque, finibus commodo lectus.</p>
+                                        <div class="row center-block">
+                                            <form>
+                                                <div class="form-group">
+                                                    <label for="texthint-input">Texto de la Pista</label>
+                                                    <input class="form-control" type="text" ng-model="NewHint.text" id="texthint-input">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="imagehint-input">URI de la Imagen</label>
+                                                    <input class="form-control" type="text" ng-model="NewHint.image" id="imagehint-input">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="locationhint-input">Punto (Lon, Lat)</label>
+                                                    <textarea class="form-control" rows="3" ng-model="NewHint.location_coordinates" id="locationhint-input"></textarea>
+                                                </div>
+                                                <br>
+                                                <button type="button" class="btn btn-success btn-block" ng-click="CreateHint(SelectedAdv)">Crear Pista</button>
+                                                <br>
+                                            </form>
+                                        </div>
                                     </md-content>
                                 </md-tab>
                             </md-tabs>
                         </md-content>
                     </div>
-                    <!--
-                    <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
-                        <md-content layout-padding>
-                            <div class="row center-block">
-                                <div class="col-md-12" id="LateralMenu">
-
-
-                                    <div class="row center-block">
-                                        <h5>Print Todas las Adventuras</h5>
-                                        <button ng-click="PrintMarkersAdventuresMap()">Print Adventures</button>
-                                    </div>
-                                    <div class="row center-block">
-                                        <h4>Zoom mapa: {{map.zoom}}</h4>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </md-content>
-                    </md-sidenav>
-                    -->
                 </div>
             </div>
         </div>
@@ -102,8 +99,50 @@
                     <ui-gmap-google-map center='map.center' zoom='map.zoom' options="options">
                         <ui-gmap-marker coords="marker.coords" options="marker.options" events="marker.events" idkey="marker.id">
                         </ui-gmap-marker>
-
-                        <ui-gmap-marker ng-repeat="m in map.markerAdventures" coords='m' icon='m.icon' idKey="m.id" options="m.options"></ui-gmap-marker>
+                        <ui-gmap-marker ng-repeat="m in map.markerAdventures" coords='m' click="!m.showWindow" icon='m.icon' idKey="m._id" options="m.options">
+                            <ui-gmap-window ng-cloak>
+                                <div class="scrollFix">
+                                        <md-card class="mdcard">
+                                        <md-card-title>
+                                            <md-card-title-text>
+                                                <span class="md-headline">{{m.name}}</span>
+                                                <span class="md-subhead">
+                                                    {{m.description}}
+                                                    <br>
+                                                    {{m.latitude}},{{m.longitude}}
+                                                </span>
+                                            </md-card-title-text>
+                                            <md-card-title-media>
+                                                <div class="card-media">
+                                                    <img style="max-height: 100px; max-width: 100px" ng-src="{{m.image}}">
+                                                </div>
+                                            </md-card-title-media>
+                                        </md-card-title>
+                                        <md-card-actions style="background-color: #00ADB5; color: white">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <h5><b>Dificultad:</b> {{m.difficulty}}</h5>
+                                                    <button href=#/adventureprofile/{{m._id}}" type="button" class="btn btn-default">Detalles</button>
+                                                    <button ng-click="$parent.ActivHintCreator(true); $parent.SelAdventureforHint(idKey);" type="button" class="btn btn-warning">Añadir Pista</button>
+                                                    <button type="button" class="btn btn-danger">Eliminar Aventura</button>
+                                                </div>
+                                            </div>
+                                        </md-card-actions>
+                                        </md-card>
+                                </div>
+                            </ui-gmap-window>
+                        </ui-gmap-marker>
+                        <!--
+                        <ui-gmap-marker ng-repeat="h in map.markerHints" coords='h' click="!h.showWindow" icon='h.icon' idKey="h._id" options="h.options">
+                            <ui-gmap-window ng-cloak>
+                                <div class="scrollFix">
+                                  Pista: {{h.index}}
+                                  Name: {{h.text}}
+                                  Loc: {{m.latitude}},{{m.longitude}}
+                                </div>
+                            </ui-gmap-window>
+                        </ui-gmap-marker>
+                        -->
                     </ui-gmap-google-map>
                     <div ng-if="ErrorMsg" class="alert alert-danger text-center" role="alert">{{ErrorMsg}}</div>
                     <div ng-if="SuccessMsg" class="alert alert-success text-center" role="alert">{{SuccessMsg}}</div>
