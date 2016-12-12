@@ -64,6 +64,13 @@
                     </md-input-container>
                 </div>
             </form>
+            <form id="uploadForm" method="post" action="{{ImageUri}}" enctype="multipart/form-data">
+                <div layout-gt-xs="row">
+                    <input type="file" name="myFile" id="fileInput" class="ng-hide ">
+                    <md-button class="md-raised md-warn md-righ" ng-click="upload()">Seleccionar Archivo</md-button>
+                    <md-button type="submit" class="md-raised md-warn md-right">Subir</md-button>
+                </div>
+            </form>
             <form>
                 <div layout-gt-xs="row">
                     <md-input-container class="md-block" flex-gt-xs>

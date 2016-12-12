@@ -12,7 +12,7 @@ var geolib = new require('geolib');
 // GET adventures in list
 router.get('/', function(req, res) {
 
-    Adventures.find({}).deepPopulate(['adventures.comments', 'comments.user']).exec().then(function (err, adventures) {
+    Adventures.find({}).deepPopulate(['adventures.comments', 'comments.user', 'hints']).exec().then(function (err, adventures) {
         if (err)
             res.send(err);
         res.send(adventures);
@@ -22,7 +22,7 @@ router.get('/', function(req, res) {
 
 // GET adventure by ID
 router.get('/id/:adv_id', function(req, res){
-    Adventures.findById(req.params.adv_id).deepPopulate(['adventures.comments', 'comments.user']).exec().then(function(err, adventure){
+    Adventures.findById(req.params.adv_id).deepPopulate(['adventures.comments', 'comments.user', 'hints']).exec().then(function(err, adventure){
         if(err)
             res.send(err)
         res.send(adventure);
@@ -68,9 +68,12 @@ router.delete('/removeadventure/', function(req, res) {
  *  Hints Zone
  *
  */
-
+//La variable pathdeepPopulate se utiliza para no repetir los paths en cada pathdeepPopulate
+var pathdeepPopulate = ['adventures.created', 'adventures.favs', 'adventures.played', 'hints'];
 // Assign Hint <--> Adventure
 router.post('/ahintdadv/', function(req, res) {
+    console.log(req.body);
+
     var query = {_id: req.body.adventure_id};
     var update = {$addToSet : {"hints" : req.body.hint_id}};
     var options = {};

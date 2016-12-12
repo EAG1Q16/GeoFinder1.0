@@ -8,6 +8,7 @@ angular.module('GeoFinderApp').controller('ProfileCtrl',['$scope','$rootScope','
         .success(function(data) {
             $rootScope.UserSessionId = data;
             $rootScope.UserSessionUri = data._id;
+            $scope.ImageUri = '/user/update/image/' + $rootScope.UserSessionUri;
             // when landing on the page get user
             $http.get('/user/my/' + $rootScope.UserSessionId._id)
                 .success(function(data) {
@@ -129,6 +130,10 @@ angular.module('GeoFinderApp').controller('ProfileCtrl',['$scope','$rootScope','
             .error(function(data) {
                 console.log('Error' + data);
             });
+    };
+
+    $scope.upload = function () {
+        angular.element(document.querySelector('#fileInput')).click();
     };
 
 }]);

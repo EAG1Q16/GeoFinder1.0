@@ -14,7 +14,6 @@ var expressValidator = require('express-validator');
 
 
 
-
 //Indexing routes
 var routes = require('./app/routes/index');
 var users = require('./app/routes/usersroutes');
