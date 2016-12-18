@@ -23,7 +23,7 @@ angular.module('GeoFinderApp').controller('HeaderCtrl',['$scope','$rootScope','$
             $http.get('/user')
                 .success(function(data) {
                     $scope.users = data;
-                    console.log(data);
+                    console.log("searcher: ",data);
 
                 })
                 .error(function(data) {
@@ -31,17 +31,21 @@ angular.module('GeoFinderApp').controller('HeaderCtrl',['$scope','$rootScope','$
                 });
 
 
-            $scope.selected = undefined;
+//            $scope.selected = undefined;
 
             $scope.onSelect = function ($item, $model, $label) {
                 window.location.href = "#/userprofile/" + $model._id;
                 //$scope.$item = $item;
                 //$scope.$model = $model;
                 //$scope.$label = $label;
-                console.log($model);
-                //$scope.userSelected = $model.username;
+                console.log("ON_SELECTED: ",$model);
+                console.log("ON_SELECTED_ITEM: ",$item);
 
-                
+
+//                $scope.userSelected="";
+
+                $scope.userSelected="";
+                console.log("on_SELECTED:", $scope.userSelected);
             };
 
             $scope.modelOptions = {
@@ -99,6 +103,9 @@ angular.module('GeoFinderApp').controller('HeaderCtrl',['$scope','$rootScope','$
     $scope.cambio = (function () {
 
         searcher();
+        console.log('CAMBIO: USER_SELECTED',$scope.userSelected);
+
+        //$scope.userSelected="";
 
     });
 
