@@ -1,14 +1,14 @@
 <div ng-controller="CreatorCtrl2">
     <div class="row">
-        <div class="col-md-12" id="lleno">
+        <div class="col-md-12">
             <md-toolbar class="md-menu-toolbar">
                 <div layout="row">
-                    <md-toolbar-filler layout="" layout-align="center center">
+                    <md-toolbar-filler layout="" layout-align="center center" style="background-color: black">
                         <md-icon md-svg-icon="call:chat"></md-icon>
                     </md-toolbar-filler>
 
                     <div>
-                        <h2 class="md-toolbar-tools">Untitled document</h2>
+                        <h2 class="md-toolbar-tools">Creator</h2>
                         <md-menu-bar>
                             <md-menu>
                                 <button ng-click="$mdOpenMenu()">
@@ -177,9 +177,13 @@
                     </div>
                 </div>
             </md-toolbar>
-            <md-content class="page-container">
-                <ng-map ng-style={{style}} zoom="11" center="[40.74, -74.18]" default-style="false"></ng-map>
+            <md-content id="lleno" class="page-container">
+                <ng-map style="height: 500px" zoom="16" center="current-location" default-style="false">
+                </ng-map>
             </md-content>
+            <div class="row">
+
+            </div>
         </div>
     </div>
 </div>

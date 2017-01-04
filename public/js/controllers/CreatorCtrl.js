@@ -23,7 +23,7 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
     $scope.windowOptions = {
         visible: false
     };
-    $scope.StatusHint = true;
+    $scope.StatusHint = false;
     $scope.SelectedAdv = null;
 
 

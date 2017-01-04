@@ -1,4 +1,8 @@
 /*----------Maps Style-----------*/
+.angular-google-map-container {
+    height: 90vh;
+}
+
 .menuBardemoBasicUsage .page-container {
     padding: 32px; }
 
