@@ -34,30 +34,20 @@ angular.module('GeoFinderApp').controller('HeaderCtrl',['$scope','$rootScope','$
                 });
 
 
-//            $scope.selected = undefined;
+            $scope.selected = undefined;
 
             $scope.onSelect = function ($item, $model, $label) {
                 window.location.href = "#/userprofile/" + $model._id;
                 //$scope.$item = $item;
                 //$scope.$model = $model;
                 //$scope.$label = $label;
-<<<<<<< HEAD
-                console.log("ON_SELECTED: ",$model);
-                console.log("ON_SELECTED_ITEM: ",$item);
 
-
-//                $scope.userSelected="";
-
-                $scope.userSelected="";
-                console.log("on_SELECTED:", $scope.userSelected);
-=======
                 console.log($model);
                 //$scope.userSelected = $model.username;
                 $scope.userSelected = {
                     used : ''
                 };
-
->>>>>>> 35489e0c8c5a953c682456918e3fd0d61c5150ff
+                
             };
 
             $scope.modelOptions = {
