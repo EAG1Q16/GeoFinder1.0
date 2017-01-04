@@ -26,7 +26,7 @@ angular.module('GeoFinderApp').controller('HeaderCtrl',['$scope','$rootScope','$
             $http.get('/user')
                 .success(function(data) {
                     $scope.users = data;
-                    console.log(data);
+                    console.log("searcher: ",data);
 
                 })
                 .error(function(data) {
@@ -41,12 +41,13 @@ angular.module('GeoFinderApp').controller('HeaderCtrl',['$scope','$rootScope','$
                 //$scope.$item = $item;
                 //$scope.$model = $model;
                 //$scope.$label = $label;
+
                 console.log($model);
                 //$scope.userSelected = $model.username;
                 $scope.userSelected = {
                     used : ''
                 };
-
+                
             };
 
             $scope.modelOptions = {
@@ -109,6 +110,9 @@ angular.module('GeoFinderApp').controller('HeaderCtrl',['$scope','$rootScope','$
             'used': ''
         };
         searcher();
+        console.log('CAMBIO: USER_SELECTED',$scope.userSelected);
+
+        //$scope.userSelected="";
 
     });
 

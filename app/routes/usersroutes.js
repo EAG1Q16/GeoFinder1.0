@@ -367,6 +367,7 @@ function isLoggedIn(req, res, next) {
 
 //route for get the seesion id in the front
 router.get('/sessionid', isLoggedIn, function(req, res) {
+    console.log('entro en el get de sesion id');
     console.log('profile:' + req.user);
     res.send(req.user);
 });
