@@ -137,8 +137,63 @@ router.post('/near/', function (req, res){
         res.send(cercanas);
     });
 
-
 });
 
+
+router.get('/hintnear/:id', function (req, res){
+    var id = req.params.id;
+    Adventures.find({_id: id}).deepPopulate(pathdeepPopulate).exec().then(function (err, user) {
+        if(err)
+            res.send(err)
+        if(user)
+            res.send(user);
+    });
+
+    /*var lat = req.body.latitude;
+    var lon = req.body.longitude;
+    var rd = req.body.radius;
+
+    console.log(lat);
+    console.log(lon);
+    console.log(rd);
+
+    Adventures.find(function (err, adventures) {
+        console.log("Adv");
+        console.log(adventures.length);
+        //console.log(Adv);
+        var cercanas = [];
+        adventures.forEach(function (adventure, index)
+        {
+            if(typeof(adventure.location.coordinates[0] || adventure.location.coordinates[0]) == 'undefined')
+            {
+                console.log("Aventura ID: " + adventure._id + ", Nombre: " +adventure.name
+                    + " con indice: " + index + " tiene un defecto en su forma o esta mal creada");
+            }
+            else
+            {
+                var c_long = adventure.location.coordinates[0];
+                var c_lat = adventure.location.coordinates[1];
+                var test = geolib.isPointInCircle({latitude: lat, longitude: lon},
+                    {latitude: c_lat, longitude: c_long},
+                    rd);
+
+                if(test == true)
+                {
+                    cercanas.push(adventure);
+                    //return cercanas;
+                    //res.send(cercanas);
+                    //cercanas=[];
+                }
+                else
+                    console.log('false');
+            };
+        });
+        res.send(cercanas);
+    });*/
+
+
+
+
+});
 
 module.exports = router;

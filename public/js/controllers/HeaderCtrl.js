@@ -2,7 +2,10 @@
  * Created by Andrea on 06/11/2016.
  */
 angular.module('GeoFinderApp').controller('HeaderCtrl',['$scope','$rootScope','$http','$routeParams',function($scope, $rootScope, $http, $routeParams){
-    
+
+    $scope.userSelected = {
+        used : ''
+    };
 
     $scope.options = [{
         id: 1,
@@ -38,6 +41,7 @@ angular.module('GeoFinderApp').controller('HeaderCtrl',['$scope','$rootScope','$
                 //$scope.$item = $item;
                 //$scope.$model = $model;
                 //$scope.$label = $label;
+<<<<<<< HEAD
                 console.log("ON_SELECTED: ",$model);
                 console.log("ON_SELECTED_ITEM: ",$item);
 
@@ -46,6 +50,14 @@ angular.module('GeoFinderApp').controller('HeaderCtrl',['$scope','$rootScope','$
 
                 $scope.userSelected="";
                 console.log("on_SELECTED:", $scope.userSelected);
+=======
+                console.log($model);
+                //$scope.userSelected = $model.username;
+                $scope.userSelected = {
+                    used : ''
+                };
+
+>>>>>>> 35489e0c8c5a953c682456918e3fd0d61c5150ff
             };
 
             $scope.modelOptions = {
@@ -82,7 +94,10 @@ angular.module('GeoFinderApp').controller('HeaderCtrl',['$scope','$rootScope','$
                 $scope.$model = $model;
                 $scope.$label = $label;
                 console.log($model);
-                $scope.userSelected = $model.name;
+                $scope.userSelected.used = $model.name;
+                $scope.userSelected = {
+                    used : ''
+                };
 
 
             };
@@ -101,7 +116,9 @@ angular.module('GeoFinderApp').controller('HeaderCtrl',['$scope','$rootScope','$
 
 
     $scope.cambio = (function () {
-
+        $scope.userSelected = {
+            'used': ''
+        };
         searcher();
         console.log('CAMBIO: USER_SELECTED',$scope.userSelected);
 
