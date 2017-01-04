@@ -171,60 +171,47 @@ router.post('/near/', function (req, res){
 });
 
 
-router.get('/hintnear/:id', function (req, res){
+router.get('/hints/:id', function (req, res){
     var id = req.params.id;
-    Adventures.find({_id: id}).deepPopulate(pathdeepPopulate).exec().then(function (err, user) {
+
+});
+
+router.post('/hintnear/', function (req, res){
+
+    var lat = req.body.latitude;
+    var lon = req.body.longitude;
+    var id =req.body.advid;
+
+     console.log(lat);
+     console.log(lon);
+    console.log(id);
+
+    Adventures.find({_id: id}).deepPopulate(pathdeepPopulate).exec().then(function (err, adventure) {
         if(err)
             res.send(err)
-        if(user)
-            res.send(user);
-    });
+        if(adventure){
+                //var cercanas = [];
 
-    /*var lat = req.body.latitude;
-    var lon = req.body.longitude;
-    var rd = req.body.radius;
-
-    console.log(lat);
-    console.log(lon);
-    console.log(rd);
-
-    Adventures.find(function (err, adventures) {
-        console.log("Adv");
-        console.log(adventures.length);
-        //console.log(Adv);
-        var cercanas = [];
-        adventures.forEach(function (adventure, index)
-        {
-            if(typeof(adventure.location.coordinates[0] || adventure.location.coordinates[0]) == 'undefined')
-            {
-                console.log("Aventura ID: " + adventure._id + ", Nombre: " +adventure.name
-                    + " con indice: " + index + " tiene un defecto en su forma o esta mal creada");
-            }
-            else
-            {
                 var c_long = adventure.location.coordinates[0];
                 var c_lat = adventure.location.coordinates[1];
                 var test = geolib.isPointInCircle({latitude: lat, longitude: lon},
                     {latitude: c_lat, longitude: c_long},
-                    rd);
+                    20);
 
                 if(test == true)
                 {
-                    cercanas.push(adventure);
+                    //cercanas.push(adventure);
                     //return cercanas;
                     //res.send(cercanas);
                     //cercanas=[];
+                    console.log("Estas en la primera pista");
                 }
                 else
-                    console.log('false');
-            };
-        });
-        res.send(cercanas);
-    });*/
+                    console.log('Dirigete a la localización de la aventura');
+                //res.send(cercanas);
 
-
-
-
+        }
+    });
 });
 
 module.exports = router;
