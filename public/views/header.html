@@ -13,8 +13,8 @@
         <div class="row">
         <form class="navbar-form" role="search">
             <div  class='container-fluid typeahead-demo'>
-                <input ng-if="!flag" type="text" placeholder="Busca usuarios" ng-model="userSelected" typeahead-on-select="onSelect($item, $model, $label)" ng-model-options="modelOptions"  uib-typeahead="user for user in users | filter:{username:$viewValue} | limitTo:5" typeahead-template-url="/uib/template/typeahead/typeahead-match.html" typeahead-popup-template-url="/uib/template/typeahead/typeahead-popup.html" class="form-control">
-                <input ng-if="flag" type="text" placeholder="Busca aventuras" ng-model="userSelected" typeahead-on-select="onSelect($item, $model, $label)" ng-model-options="modelOptions"  uib-typeahead="adventure for adventure in adventures | filter:{name:$viewValue} | limitTo:5" typeahead-template-url="/uib/template/typeahead/typeahead-match2.html" typeahead-popup-template-url="/uib/template/typeahead/typeahead-popup.html" class="form-control">
+                <input ng-if="!flag" type="text" placeholder="Busca usuarios" ng-model="userSelected.used" typeahead-on-select="onSelect($item, $model, $label)" ng-model-options="modelOptions"  uib-typeahead="user for user in users | filter:{username:$viewValue} | limitTo:5" typeahead-template-url="/uib/template/typeahead/typeahead-match.html" typeahead-popup-template-url="/uib/template/typeahead/typeahead-popup.html" class="form-control">
+                <input ng-if="flag" type="text" placeholder="Busca aventuras" ng-model="userSelected.used" typeahead-on-select="onSelect($item, $model, $label)" ng-model-options="modelOptions"  uib-typeahead="adventure for adventure in adventures | filter:{name:$viewValue} | limitTo:5" typeahead-template-url="/uib/template/typeahead/typeahead-match2.html" typeahead-popup-template-url="/uib/template/typeahead/typeahead-popup.html" class="form-control">
                 <select class="form-control" ng-change="cambio()" ng-options="option as option.name for option in options track by option.id" ng-model="sel"></select>
             </div>
         </form>
@@ -32,7 +32,7 @@
             </div>
             <div class="col-md-6">
             <li class="nav navbar-nav navbar-right dropdown" ng-if="UserSessionId">
-                <a style="color: white" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img class="img-rounded img-size-header" ng-src="{{UserSessionId.photo}}"><span class="caret"></span></a>
+                <a style="color: white" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img class="img-rounded img-size-header" style="height: 40px; width: 40px" ng-src="{{UserSessionId.photo}}"><span class="caret"></span></a>
                 <ul class="dropdown-menu nav navbar-nav navbar-right">
                     <li><a ng-href="#/creator"><i class="fa fa-plus" aria-hidden="true"></i> Crear Aventura</a></li>
                     <li><a ng-href="#/adventures"><i class="fa fa-search" aria-hidden="true"></i> Buscar Aventuras</a></li>
