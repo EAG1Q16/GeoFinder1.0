@@ -1,154 +1,185 @@
-<div class="row container-fluid center-block Padding" ng-controller="CreatorCtrl">
-    <div class="col-md-12">
-        <div class="row">
-        <div class="col-md-3">
-            <div class="row">
-                <div class="col-md-12">
-                    <div ng-cloak>
-                        <md-content>
-                            <md-tabs md-dynamic-height md-border-bottom>
-                                <md-tab label="Vista">
-                                    <md-content class="md-padding">
-                                        <span class="md-subhead">Localización</span>
-                                        <br>
-                                        <br>
-                                        <md-input-container class="md-block">
-                                            <label>Latitud</label>
-                                            <input type="number" ng-model="marker.coords.latitude" step="0.0001"/>
-                                        </md-input-container>
-                                        <md-input-container class="md-block">
-                                            <label>Longitud</label>
-                                            <input type="number" ng-model="marker.coords.longitude" step="0.0001"/>
-                                        </md-input-container>
-                                        <hr>
-                                        <h5>Estilo de Vista</h5>
-                                        <md-switch class="md-no-ink md-primary" ng-model="stylemap"  aria-label="Switch No Ink" ng-true-value="'Day'" ng-false-value="'Night'"
-                                        ng-switch="SwitchStyleMap(stylemap)">
-                                            <h5>{{ stylemap }}</h5>
-                                        </md-switch>
-                                        <hr>
-                                        <h5>Mostrar todas las Aventuras</h5>
-                                        <button ng-click="ShowAdventuresonMap()">Print Adventures</button>
-                                        </md-switch>
-                                        <hr>
-                                    </md-content>
-                                </md-tab>
-                                <md-tab label="Crear Aventura">
-                                    <md-content class="md-padding">
-                                        <div class="row center-block">
-                                            <form>
-                                                <div class="form-group">
-                                                    <label for="name-input">Nombre Aventura</label>
-                                                    <input class="form-control" type="text" ng-model="NewAdventure.name" id="name-input">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="description-input">Descripción</label>
-                                                    <input class="form-control" type="text" ng-model="NewAdventure.description" id="description-input">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="difficulty-radiobutton">Dificultad Aventura</label>
-                                                    <md-radio-group ng-model="NewAdventure.difficulty" id="difficulty-radiobutton">
-                                                        <md-radio-button value="Fácil" class="md-primary">Fácil</md-radio-button>
-                                                        <md-radio-button value="Media" class="md-primary">Media </md-radio-button>
-                                                        <md-radio-button value="Díficil" class="md-primary">Díficil</md-radio-button>
-                                                    </md-radio-group>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="initialPoint-input">Punto Inicial (Lon, Lat)</label>
-                                                    <textarea class="form-control" rows="3" ng-model="NewAdventure.location_coordinates" id="initialPoint-input"></textarea>
-                                                </div>
-                                                <br>
-                                                <button type="button" class="btn btn-success btn-block" ng-click="CreateAdventure()">Crear Aventura</button>
-                                                <br>
-                                            </form>
-                                        </div>
-                                    </md-content>
-                                </md-tab>
-                                <md-tab label="Crear Pista" ng-disabled="StatusHint" md-active="!StatusHint">
-                                    <md-content class="md-padding">
-                                        <div class="row center-block">
-                                            <form>
-                                                <div class="form-group">
-                                                    <label for="texthint-input">Texto de la Pista</label>
-                                                    <input class="form-control" type="text" ng-model="NewHint.text" id="texthint-input">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="imagehint-input">URI de la Imagen</label>
-                                                    <input class="form-control" type="text" ng-model="NewHint.image" id="imagehint-input">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="locationhint-input">Punto (Lon, Lat)</label>
-                                                    <textarea class="form-control" rows="3" ng-model="NewHint.location_coordinates" id="locationhint-input"></textarea>
-                                                </div>
-                                                <br>
-                                                <button type="button" class="btn btn-success btn-block" ng-click="CreateHint(SelectedAdv)">Crear Pista</button>
-                                                <br>
-                                            </form>
-                                        </div>
-                                    </md-content>
-                                </md-tab>
-                            </md-tabs>
-                        </md-content>
+<div ng-controller="CreatorCtrl2">
+    <div class="row">
+        <div class="col-md-12" id="lleno">
+            <md-toolbar class="md-menu-toolbar">
+                <div layout="row">
+                    <md-toolbar-filler layout="" layout-align="center center">
+                        <md-icon md-svg-icon="call:chat"></md-icon>
+                    </md-toolbar-filler>
+
+                    <div>
+                        <h2 class="md-toolbar-tools">Untitled document</h2>
+                        <md-menu-bar>
+                            <md-menu>
+                                <button ng-click="$mdOpenMenu()">
+                                    File
+                                </button>
+                                <md-menu-content>
+                                    <md-menu-item>
+                                        <md-button ng-click="ctrl.sampleAction('share', $event)">
+                                            Share...
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-divider></md-menu-divider>
+                                    <md-menu-item>
+                                        <md-menu>
+                                            <md-button ng-click="$mdOpenMenu()">New</md-button>
+                                            <md-menu-content>
+                                                <md-menu-item><md-button ng-click="ctrl.sampleAction('New Document', $event)">Document</md-button></md-menu-item>
+                                                <md-menu-item><md-button ng-click="ctrl.sampleAction('New Spreadsheet', $event)">Spreadsheet</md-button></md-menu-item>
+                                                <md-menu-item><md-button ng-click="ctrl.sampleAction('New Presentation', $event)">Presentation</md-button></md-menu-item>
+                                                <md-menu-item><md-button ng-click="ctrl.sampleAction('New Form', $event)">Form</md-button></md-menu-item>
+                                                <md-menu-item><md-button ng-click="ctrl.sampleAction('New Drawing', $event)">Drawing</md-button></md-menu-item>
+                                            </md-menu-content>
+                                        </md-menu>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button ng-click="ctrl.sampleAction('Open', $event)">
+                                            Open...
+                                            <span class="md-alt-text"> {{ 'M-O' | keyboardShortcut }}</span>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button disabled="disabled" ng-click="ctrl.sampleAction('Rename', $event)">
+                                            Rename
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-divider></md-menu-divider>
+                                    <md-menu-item>
+                                        <md-button ng-click="ctrl.sampleAction('Print', $event)">
+                                            Print
+                                            <span class="md-alt-text">{{ 'M-P' | keyboardShortcut }}</span>
+                                        </md-button>
+                                    </md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
+                            <md-menu>
+                                <button ng-click="$mdOpenMenu()">
+                                    Edit
+                                </button>
+                                <md-menu-content>
+                                    <md-menu-item class="md-indent">
+                                        <md-icon md-svg-icon="undo"></md-icon>
+                                        <md-button ng-click="ctrl.sampleAction('undo', $event)">
+                                            Undo
+                                            <span class="md-alt-text">{{ 'M-Z' | keyboardShortcut }}</span>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item class="md-indent">
+                                        <md-icon md-svg-icon="redo"></md-icon>
+                                        <md-button ng-click="ctrl.sampleAction('redo', $event)">
+                                            Redo
+                                            <span class="md-alt-text">{{ 'M-Y' | keyboardShortcut }}</span>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-divider></md-menu-divider>
+                                    <md-menu-item class="md-indent">
+                                        <md-icon md-svg-icon="content-cut"></md-icon>
+                                        <md-button ng-click="ctrl.sampleAction('cut', $event)">
+                                            Cut
+                                            <span class="md-alt-text">{{ 'M-X' | keyboardShortcut }}</span>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item class="md-indent">
+                                        <md-icon md-svg-icon="content-copy"></md-icon>
+                                        <md-button ng-click="ctrl.sampleAction('copy', $event)">
+                                            Copy
+                                            <span class="md-alt-text">{{ 'M-C' | keyboardShortcut }}</span>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item class="md-indent">
+                                        <md-icon md-svg-icon="content-paste"></md-icon>
+                                        <md-button ng-click="ctrl.sampleAction('paste', $event)">
+                                            Paste
+                                            <span class="md-alt-text">{{ 'M-P' | keyboardShortcut }}</span>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-divider></md-menu-divider>
+                                    <md-menu-item class="md-indent">
+                                        <md-button ng-click="ctrl.sampleAction('Find and replace', $event)">
+                                            Find and replace...
+                                            <span class="md-alt-text">{{ 'M-S-H' | keyboardShortcut }}</span>
+                                        </md-button>
+                                    </md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
+                            <md-menu>
+                                <button ng-click="$mdOpenMenu()">
+                                    View
+                                </button>
+                                <md-menu-content>
+                                    <md-menu-item type="checkbox" ng-model="ctrl.settings.printLayout">Print layout</md-menu-item>
+                                    <md-menu-item class="md-indent">
+                                        <md-menu>
+                                            <md-button ng-click="$mdOpenMenu()">Mode</md-button>
+                                            <md-menu-content width="3">
+                                                <md-menu-item type="radio" ng-model="ctrl.settings.presentationMode" value="'presentation'">Presentation</md-menu-item>
+                                                <md-menu-item type="radio" ng-model="ctrl.settings.presentationMode" value="'edit'">Edit</md-menu-item>
+                                                <md-menu-item type="radio" ng-model="ctrl.settings.presentationMode" value="'modifiable'">Modifiable</md-menu-item>
+                                            </md-menu-content>
+                                        </md-menu>
+                                    </md-menu-item>
+                                    <md-menu-divider></md-menu-divider>
+                                    <md-menu-item type="checkbox" ng-model="ctrl.settings.showRuler">Show ruler</md-menu-item>
+                                    <md-menu-item type="checkbox" ng-model="ctrl.settings.showEquationToolbar">Show equation toolbar</md-menu-item>
+                                    <md-menu-item type="checkbox" ng-model="ctrl.settings.showSpellingSuggestions">Show spelling suggestions</md-menu-item>
+                                    <md-menu-divider></md-menu-divider>
+                                    <md-menu-item type="checkbox" ng-model="ctrl.settings.compactControls">Compact controls</md-menu-item>
+                                    <md-menu-item type="checkbox" ng-model="ctrl.settings.fullScreen">Full screen</md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
+                            <md-menu>
+                                <button ng-click="$mdOpenMenu()">
+                                    Format
+                                </button>
+                                <md-menu-content>
+                                    <md-menu-item>
+                                        <md-button ng-click="ctrl.sampleAction('bold', $event)">
+                                            Bold
+                                            <span class="md-alt-text"> {{ 'M-B' | keyboardShortcut }}</span>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button ng-click="ctrl.sampleAction('italic', $event)">
+                                            Italic
+                                            <span class="md-alt-text">{{ 'M-I' | keyboardShortcut }}</span>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button ng-click="ctrl.sampleAction('underline', $event)">
+                                            Underline
+                                            <span class="md-alt-text">{{ 'M-U' | keyboardShortcut }}</span>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button ng-click="ctrl.sampleAction('strikethrough', $event)">
+                                            Strikethrough
+                                            <span class="md-alt-text">{{ 'A-S-5' | keyboardShortcut }}</span>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button ng-click="ctrl.sampleAction('superscript', $event)">
+                                            Superscript
+                                            <span class="md-alt-text">{{ 'M-.' | keyboardShortcut }}</span>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button ng-click="ctrl.sampleAction('subscript', $event)">
+                                            Subscript
+                                            <span class="md-alt-text">{{ 'M-,' | keyboardShortcut }}</span>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-divider></md-menu-divider>
+                                    <md-menu-item><md-button ng-click="ctrl.toggleSetting('clearFormatting')">Clear Formatting</md-button></md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
+                        </md-menu-bar>
                     </div>
                 </div>
-            </div>
+            </md-toolbar>
+            <md-content class="page-container">
+                <ng-map ng-style={{style}} zoom="11" center="[40.74, -74.18]" default-style="false"></ng-map>
+            </md-content>
         </div>
-        <div class="col-md-9">
-            <div class="row">
-                <div class="col-md-12">
-                    <ui-gmap-google-map center='map.center' zoom='map.zoom' options="options">
-                        <ui-gmap-marker coords="marker.coords" options="marker.options" events="marker.events" idkey="marker.id">
-                        </ui-gmap-marker>
-                        <ui-gmap-marker ng-repeat="m in map.markerAdventures" coords='m' click="!m.showWindow" icon='m.icon' idKey="m._id" options="m.options">
-                            <ui-gmap-window ng-cloak>
-                                <div class="scrollFix">
-                                        <md-card class="mdcard">
-                                        <md-card-title>
-                                            <md-card-title-text>
-                                                <span class="md-headline">{{m.name}}</span>
-                                                <span class="md-subhead">
-                                                    {{m.description}}
-                                                    <br>
-                                                    {{m.latitude}},{{m.longitude}}
-                                                </span>
-                                            </md-card-title-text>
-                                            <md-card-title-media>
-                                                <div class="card-media">
-                                                    <img style="max-height: 100px; max-width: 100px" ng-src="{{m.image}}">
-                                                </div>
-                                            </md-card-title-media>
-                                        </md-card-title>
-                                        <md-card-actions style="background-color: #00ADB5; color: white">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <h5><b>Dificultad:</b> {{m.difficulty}}</h5>
-                                                    <button href=#/adventureprofile/{{m._id}}" type="button" class="btn btn-default">Detalles</button>
-                                                    <button ng-click="$parent.ActivHintCreator(true); $parent.SelAdventureforHint(idKey);" type="button" class="btn btn-warning">Añadir Pista</button>
-                                                    <button type="button" class="btn btn-danger">Eliminar Aventura</button>
-                                                </div>
-                                            </div>
-                                        </md-card-actions>
-                                        </md-card>
-                                </div>
-                            </ui-gmap-window>
-                        </ui-gmap-marker>
-                        <!--
-                        <ui-gmap-marker ng-repeat="h in map.markerHints" coords='h' click="!h.showWindow" icon='h.icon' idKey="h._id" options="h.options">
-                            <ui-gmap-window ng-cloak>
-                                <div class="scrollFix">
-                                  Pista: {{h.index}}
-                                  Name: {{h.text}}
-                                  Loc: {{m.latitude}},{{m.longitude}}
-                                </div>
-                            </ui-gmap-window>
-                        </ui-gmap-marker>
-                        -->
-                    </ui-gmap-google-map>
-                    <div ng-if="ErrorMsg" class="alert alert-danger text-center" role="alert">{{ErrorMsg}}</div>
-                    <div ng-if="SuccessMsg" class="alert alert-success text-center" role="alert">{{SuccessMsg}}</div>
-                </div>
-            </div>
-        </div>
-    </div>
     </div>
 </div>
