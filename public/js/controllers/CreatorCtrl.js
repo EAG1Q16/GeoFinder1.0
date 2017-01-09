@@ -2,8 +2,7 @@
  * Created by mbmarkus on 4/11/16.
  */
 angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','$http','uiGmapGoogleMapApi',
-    '$timeout', function($scope, $rootScope, $http, GoogleMapApi, $timeout){
-
+    '$timeout','uiGmapIsReady', function($scope, $rootScope, $http, GoogleMapApi, $timeout, uiGmapIsReady){
 
     /**
      * Init zone
@@ -24,8 +23,15 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
         visible: false
     };
     $scope.StatusHint = false;
-    $scope.SelectedAdv = null;
+    $scope.SelectedAdv = {};
 
+    uiGmapIsReady.promise(1).then(function(instances) {
+        var mapInstance = instances[0].map;
+        google.maps.event.addListener(mapInstance, 'click', function() {
+        });
+        google.maps.event.addListener(mapInstance, 'idle', function() {
+        });
+    });
 
     /**
      * Map zone
@@ -43,16 +49,29 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
             $scope.$apply(function(){
                 $scope.map = { center: { latitude: position.coords.latitude, longitude: position.coords.longitude }, zoom: 16 };
 
-                $scope.$watchCollection("marker.coords", function(newVal, oldVal) {
-                    $scope.map.center.latitude = $scope.marker.coords.latitude;
-                    $scope.map.center.longitude = $scope.marker.coords.longitude;
+                $scope.map.createMarker = {
+                    id: 1,
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                    options: {
+                        labelContent: '----Puntero----',
+                        labelAnchor: "26 0",
+                        labelClass: "marker-labels",
+                        draggable: true
+                    }
+                };
 
-                    $scope.NewAdventure.location_coordinates = [$scope.marker.coords.longitude, $scope.marker.coords.latitude];
-                    $scope.NewHint.location_coordinates = [$scope.marker.coords.longitude, $scope.marker.coords.latitude];
+
+                $scope.$watchCollection("map.createMarker", function(newVal, oldVal) {
+                    $scope.map.center.latitude = position.coords.latitude;
+                    $scope.map.center.longitude = position.coords.longitude;
+
+                    $scope.NewAdventure.location_coordinates = [$scope.map.createMarker.longitude, $scope.map.createMarker.latitude];
+                    $scope.NewHint.location_coordinates = [$scope.map.createMarker.longitude, $scope.map.createMarker.latitude];
+
                     console.log($scope.NewAdventure.location_coordinates);
                     if (_.isEqual(newVal, oldVal))
                         return;
-                    $scope.coordsUpdates++;
                 });
 
             });
@@ -63,6 +82,7 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
     }
 
     $scope.ShowAdventuresonMap = function (){
+        $scope.map.markersHints
         var markersAdventures = [];
         $http.get('/adventures/')
             .success(function (data) {
@@ -113,6 +133,45 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
         $scope.map.markerAdventures = markersAdventures;
     };
 
+        $scope.ShowHintofAdventureonMap = function (){
+            //Borrado Markers Mapa
+            $scope.map.markerAdventures = [];
+            var markersHints = [];
+            $http.get('/adventures/id/'+ $scope.SelectedAdv._id)
+                .success(function (data) {
+                    angular.forEach(data.hints, function (value, key) {
+                        markersHints.push(
+                            {
+                                index: value.index,
+                                indication: {
+                                    distance: value.indication.distance,
+                                    sense: value.indication.sense
+                                },
+                                text: value.text,
+                                image: value.image,
+                                _id: value._id,
+                                latitude: value.location.coordinates[1],
+                                longitude: value.location.coordinates[0],
+                                showWindow: false,
+                                options: {
+                                    icon: '/images/MapIcons/extended-icons5_77.png',
+                                    animation: 0,
+                                    title: value.text,
+                                    labelAnchor: "26 0",
+                                    labelClass: "marker-labels"
+                                }
+                            }
+                        );
+                    });
+                    console.log(markersHints);
+                })
+                .error(function (data) {
+                    console.log(data);
+                })
+
+            $scope.map.markersHints = markersHints;
+        };
+
     $scope.SwitchStyleMap = function (style){
         switch(style){
             case "Night":
@@ -137,11 +196,16 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
         if ($rootScope.UserSessionId._id != null) {
 
             $scope.NewAdventure.location_type = 'Point';
+            $scope.NewAdventure.hint = {
+                direction : 'Test N',
+                text: $scope.NewAdventure.hinttext,
+                image: $scope.NewAdventure.hintimage
+            };
             $http.post('/adventures/createadventure/', $scope.NewAdventure)
                 .success(function (data) {
                     console.log(data);
                     //Reprint Coordinates
-                    $scope.NewAdventure.location_coordinates = [$scope.marker.coords.longitude, $scope.marker.coords.latitude];
+                    $scope.NewAdventure.location_coordinates = [$scope.map.createMarker.longitude, $scope.map.createMarker.latitude];
                     $scope.SuccessMsg = "Adventura creada";
                     $timeout(function () {
                         $scope.SuccessMsg = null;
@@ -153,6 +217,7 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
 
                     $http.post('/user/acreatedadv/', Newassign)
                         .success(function (data) {
+                            $scope.SelectedAdv._id = data;
                             $scope.NewAdventure = {}; //clear the form
                         })
                         .error(function (data) {
@@ -177,13 +242,12 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
         if ($rootScope.UserSessionId._id != null) {
 
             $scope.NewHint.location_type = 'Point';
-            $scope.NewHint._id = advid;
+            $scope.NewHint._id = $scope.SelectedAdv._id;
 
             $http.post('/hints/createhint/', $scope.NewHint)
                 .success(function (data) {
                     console.log(data);
                     //Reprint Coordinates
-                    $scope.NewHint.location_coordinates = [$scope.marker.coords.longitude, $scope.marker.coords.latitude];
                     $scope.SuccessMsg = "Pista creada";
                     $timeout(function () {
                         $scope.SuccessMsg = null;
@@ -191,13 +255,14 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
 
                     var Newassign = {};
                     Newassign.hint_id = data._id;
-                    Newassign.adventure_id = advid;
+                    Newassign.adventure_id = $scope.SelectedAdv._id;
 
                     console.log(Newassign);
 
                     $http.post('/adventures/ahintdadv/', Newassign)
                         .success(function (data) {
                             $scope.NewHint = {}; //clear the form
+                            $scope.ShowHintofAdventureonMap();
                         })
                         .error(function (data) {
                             console.log('Error:' + data);
@@ -221,6 +286,67 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
 
     $scope.SelAdventureforHint = function (id) {
         console.log(id);
-        $scope.SelectedAdv = id;
+        $scope.SelectedAdv =
+            {
+                _id: id
+            };
+    };
+
+    $scope.map = {
+            show: true,
+            control: {},
+            version: "uknown",
+            heatLayerCallback: function (layer) {
+                //set the heat layers backend data
+                var mockHeatLayer = new MockHeatLayer(layer);
+            },
+            center: {
+                latitude: 45,
+                longitude: -73
+            },
+            showTraffic: true,
+            showBicycling: false,
+            showWeather: false,
+            showHeat: false,
+            options: {
+                streetViewControl: false,
+                panControl: false,
+                maxZoom: 20,
+                minZoom: 3
+            },
+            zoom: 3,
+            dragging: false,
+            bounds: {},
+            clickedMarker: {
+                id: 0,
+                options:{
+                }
+            },
+            events: {
+                //This turns of events and hits against scope from gMap events this does speed things up
+                // adding a blacklist for watching your controller scope should even be better
+                blacklist: ['drag', 'dragend','dragstart','zoom_changed', 'center_changed'],
+                click: function (mapModel, eventName, originalEventArgs) {
+                    // 'this' is the directive's scope
+                    $log.info("user defined event: " + eventName, mapModel, originalEventArgs);
+
+                    var e = originalEventArgs[0];
+                    console.log(e);
+                    var lat = e.latLng.lat(),
+                        lon = e.latLng.lng();
+                    $scope.map.clickedMarker = {
+                        id: 0,
+                        options: {
+                            labelContent: 'You clicked here ' + 'lat: ' + lat + ' lon: ' + lon,
+                            labelClass: "marker-labels",
+                            labelAnchor: "50 0"
+                        },
+                        latitude: lat,
+                        longitude: lon
+                    };
+                    //scope apply required because this event handler is outside of the angular domain
+                    //$scope.$evalAsync();
+                }
+            }
     };
 }]);

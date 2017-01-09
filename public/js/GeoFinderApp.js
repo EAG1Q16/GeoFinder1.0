@@ -2,7 +2,7 @@
  * Created by tonim on 05/10/2016.
  */
 
-var GeoFinderApp = angular.module('GeoFinderApp', ['ngRoute','uiGmapgoogle-maps','ui.bootstrap','ngMaterial', 'ngMap']);
+var GeoFinderApp = angular.module('GeoFinderApp', ['ngRoute','uiGmapgoogle-maps','ui.bootstrap','ngMaterial']);
 
 GeoFinderApp.config(['$routeProvider', function($routeProvider){
 
@@ -43,8 +43,8 @@ GeoFinderApp.config(['$routeProvider', function($routeProvider){
             redirectTo: '/index'
         })
     .when('/creator', {
-        templateUrl: './views/creator2.html',
-        controller: 'CreatorCtrl2'
+        templateUrl: './views/creator.html',
+        controller: 'CreatorCtrl'
         })
         .otherwise({
             redirectTo: '/index'

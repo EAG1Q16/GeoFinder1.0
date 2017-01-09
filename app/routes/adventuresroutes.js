@@ -56,7 +56,7 @@ router.post('/createadventure/', function(req, res) {
             indication:
                 {
                     distance: 0,
-                    sense: req.body.hint.direction.exact
+                    sense: req.body.hint.direction
                 }
         }, function(err, hint) {
             if (err)
