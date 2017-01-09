@@ -41,13 +41,6 @@ router.post('/createhint/', function(req, res) {
         var direction = null;
         console.log(adventure);
 
-        //Indicación de los indices
-        if (adventure.hints.length <= 0) {
-            new_index = 0;
-            a_long = adventure.location.coordinates[0];
-            a_lat = adventure.location.coordinates[1];
-        }
-        else {
             Hints.findById(adventure.hints[adventure.hints.length - 1], function(err, hint){
                 if(err)
                     res.send(err)
@@ -98,7 +91,6 @@ router.post('/createhint/', function(req, res) {
                     });
                 });
             });
-        }
     });
 });
 

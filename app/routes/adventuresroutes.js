@@ -43,12 +43,43 @@ router.post('/createadventure/', function(req, res) {
     }, function(err, adv) {
         if (err)
             res.send(err);
-        Adventures.findById(adv._id, function (err, advent) {
+
+        Hints.create({
+            index:0,
+            text:req.body.hint.text,
+            image:req.body.hint.image,
+            location:
+                {
+                    type: 'Point',
+                    coordinates: req.body.location_coordinates
+                },
+            indication:
+                {
+                    distance: 0,
+                    sense: req.body.hint.direction
+                }
+        }, function(err, hint) {
             if (err)
                 res.send(err);
-            res.send(advent);
+
+            var query = {_id: adv._id};
+            var update = {$addToSet : {"hints" : hint._id}};
+            var options = {};
+
+            Adventures.findOneAndUpdate(query, update, options, function(err) {
+                if (err) {
+                    res.send(err);
+                }
+                Adventures.findById(adv._id, function (err, advent) {
+                    if (err)
+                        res.send(err);
+                    res.send(advent);
+                });
+            });
+
         });
     });
+
 });
 
 
@@ -137,8 +168,50 @@ router.post('/near/', function (req, res){
         res.send(cercanas);
     });
 
+});
+
+
+router.get('/hints/:id', function (req, res){
+    var id = req.params.id;
 
 });
 
+router.post('/hintnear/', function (req, res){
+
+    var lat = req.body.latitude;
+    var lon = req.body.longitude;
+    var id =req.body.advid;
+
+     console.log(lat);
+     console.log(lon);
+    console.log(id);
+
+    Adventures.find({_id: id}).deepPopulate(pathdeepPopulate).exec().then(function (err, adventure) {
+        if(err)
+            res.send(err)
+        if(adventure){
+                //var cercanas = [];
+
+                var c_long = adventure.location.coordinates[0];
+                var c_lat = adventure.location.coordinates[1];
+                var test = geolib.isPointInCircle({latitude: lat, longitude: lon},
+                    {latitude: c_lat, longitude: c_long},
+                    20);
+
+                if(test == true)
+                {
+                    //cercanas.push(adventure);
+                    //return cercanas;
+                    //res.send(cercanas);
+                    //cercanas=[];
+                    console.log("Estas en la primera pista");
+                }
+                else
+                    console.log('Dirigete a la localización de la aventura');
+                //res.send(cercanas);
+
+        }
+    });
+});
 
 module.exports = router;
