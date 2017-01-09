@@ -43,12 +43,43 @@ router.post('/createadventure/', function(req, res) {
     }, function(err, adv) {
         if (err)
             res.send(err);
-        Adventures.findById(adv._id, function (err, advent) {
+
+        Hints.create({
+            index:0,
+            text:req.body.hint.text,
+            image:req.body.hint.image,
+            location:
+                {
+                    type: 'Point',
+                    coordinates: req.body.location_coordinates
+                },
+            indication:
+                {
+                    distance: 0,
+                    sense: req.body.hint.direction
+                }
+        }, function(err, hint) {
             if (err)
                 res.send(err);
-            res.send(advent);
+
+            var query = {_id: adv._id};
+            var update = {$addToSet : {"hints" : hint._id}};
+            var options = {};
+
+            Adventures.findOneAndUpdate(query, update, options, function(err) {
+                if (err) {
+                    res.send(err);
+                }
+                Adventures.findById(adv._id, function (err, advent) {
+                    if (err)
+                        res.send(err);
+                    res.send(advent);
+                });
+            });
+
         });
     });
+
 });
 
 

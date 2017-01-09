@@ -1,24 +1,49 @@
-<div class="row container-fluid center-block Padding" ng-controller="CreatorCtrl">
+<!-- CSS Milagroso para el mapa: https://github.com/angular-ui/angular-google-maps/issues/309#issuecomment-258463291 -->
+<style type="text/css">
+    .map-wrapper {
+        position: relative;
+        height: calc(101vh - 3em - 64px);
+    }
+    html {
+        overflow-y: hidden;
+        overflow-x: hidden;
+    }
+    body {
+        background-color: #fafafa !important;
+    }
+
+    .angular-google-map-container {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+    }
+    .Padding{
+        padding-top: 1%;
+    }
+</style>
+
+<div class="row container-fluid Padding" ng-controller="CreatorCtrl">
     <div class="col-md-12">
-        <div class="row">
+        <div class="row" id="blank">
         <div class="col-md-3">
             <div class="row">
-                <div class="col-md-12">
                     <div ng-cloak>
                         <md-content>
-                            <md-tabs md-dynamic-height md-border-bottom>
-                                <md-tab label="Vista">
+                            <md-tabs md-dynamic-height md-border-bottom layout-fill>
+                                <md-tab label="Vista" md-active>
                                     <md-content class="md-padding">
                                         <span class="md-subhead">Localización</span>
                                         <br>
                                         <br>
                                         <md-input-container class="md-block">
                                             <label>Latitud</label>
-                                            <input type="number" ng-model="marker.coords.latitude" step="0.0001"/>
+                                            <input type="number" ng-model="map.createMarker.latitude" step="0.00001"/>
                                         </md-input-container>
                                         <md-input-container class="md-block">
                                             <label>Longitud</label>
-                                            <input type="number" ng-model="marker.coords.longitude" step="0.0001"/>
+                                            <input type="number" ng-model="map.createMarker.longitude" step="0.00001"/>
                                         </md-input-container>
                                         <hr>
                                         <h5>Estilo de Vista</h5>
@@ -28,23 +53,34 @@
                                         </md-switch>
                                         <hr>
                                         <h5>Mostrar todas las Aventuras</h5>
-                                        <button ng-click="PrintMarkersAdventuresMap()">Print Adventures</button>
+                                        <button ng-click="ShowAdventuresonMap()">Print Adventures</button>
                                         </md-switch>
                                         <hr>
                                     </md-content>
                                 </md-tab>
-                                <md-tab label="Crear Aventura">
+                                <md-tab label="Aventuras">
                                     <md-content class="md-padding">
                                         <div class="row center-block">
+                                            <button ng-click="ShowAdventuresonMap()">Print Adventures</button>
                                             <form>
                                                 <div class="form-group">
                                                     <label for="name-input">Nombre Aventura</label>
                                                     <input class="form-control" type="text" ng-model="NewAdventure.name" id="name-input">
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="description-input">Descripción</label>
+                                                    <label for="description-input">Descripción Aventura</label>
                                                     <input class="form-control" type="text" ng-model="NewAdventure.description" id="description-input">
                                                 </div>
+                                                <hr>
+                                                <div class="form-group">
+                                                    <label for="textadvhint-input">Texto Hint</label>
+                                                    <input class="form-control" type="text" ng-model="NewAdventure.hinttext" id="textadvhint-input">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="imageadvthint-input">Imagen Hint</label>
+                                                    <input class="form-control" type="text" ng-model="NewAdventure.hintimage" id="imageadvthint-input">
+                                                </div>
+                                                <hr>
                                                 <div class="form-group">
                                                     <label for="difficulty-radiobutton">Dificultad Aventura</label>
                                                     <md-radio-group ng-model="NewAdventure.difficulty" id="difficulty-radiobutton">
@@ -64,9 +100,10 @@
                                         </div>
                                     </md-content>
                                 </md-tab>
-                                <md-tab label="Crear Pista" ng-disabled="StatusHint" md-active="!StatusHint">
+                                <md-tab label="Pistas">
                                     <md-content class="md-padding">
                                         <div class="row center-block">
+                                            <button ng-click="ShowHintofAdventureonMap()">Print Hints de {{SelectedAdv._id}} </button>
                                             <form>
                                                 <div class="form-group">
                                                     <label for="texthint-input">Texto de la Pista</label>
@@ -90,15 +127,20 @@
                             </md-tabs>
                         </md-content>
                     </div>
-                </div>
             </div>
         </div>
         <div class="col-md-9">
             <div class="row">
-                <div class="col-md-12">
-                    <ui-gmap-google-map center='map.center' zoom='map.zoom' options="options">
-                        <ui-gmap-marker coords="marker.coords" options="marker.options" events="marker.events" idkey="marker.id">
+                <div class="col-md-12 map-wrapper">
+                    <ui-gmap-google-map center='map.center' zoom='map.zoom' options="options" events="map.events">
+                        <!-- Marker central -->
+                        <ui-gmap-marker coords="map.clickedMarker"  idKey="map.clickedMarker.id" options="map.clickedMarker.options">
                         </ui-gmap-marker>
+                        <!-- Marker create -->
+                        <ui-gmap-marker coords="map.createMarker"  idKey="map.createMarker.id" options="map.createMarker.options">
+                        </ui-gmap-marker>
+                        <!--- Markers Aventuras -->
+
                         <ui-gmap-marker ng-repeat="m in map.markerAdventures" coords='m' click="!m.showWindow" icon='m.icon' idKey="m._id" options="m.options">
                             <ui-gmap-window ng-cloak>
                                 <div class="scrollFix">
@@ -132,8 +174,8 @@
                                 </div>
                             </ui-gmap-window>
                         </ui-gmap-marker>
-                        <!--
-                        <ui-gmap-marker ng-repeat="h in map.markerHints" coords='h' click="!h.showWindow" icon='h.icon' idKey="h._id" options="h.options">
+
+                        <ui-gmap-marker ng-repeat="h in map.markersHints" coords='h' click="!h.showWindow" icon='h.icon' idKey="h._id" options="h.options">
                             <ui-gmap-window ng-cloak>
                                 <div class="scrollFix">
                                   Pista: {{h.index}}
@@ -142,7 +184,6 @@
                                 </div>
                             </ui-gmap-window>
                         </ui-gmap-marker>
-                        -->
                     </ui-gmap-google-map>
                     <div ng-if="ErrorMsg" class="alert alert-danger text-center" role="alert">{{ErrorMsg}}</div>
                     <div ng-if="SuccessMsg" class="alert alert-success text-center" role="alert">{{SuccessMsg}}</div>
