@@ -151,16 +151,18 @@ router.post('/hintnear/', function (req, res){
     var lon = req.body.longitude;
     var id =req.body.advid;
 
-     console.log(lat);
-     console.log(lon);
+    console.log(lat);
+    console.log(lon);
     console.log(id);
 
-    Adventures.find({_id: id}).deepPopulate(pathdeepPopulate).exec().then(function (err, adventure) {
+    Adventures.findById(id).populate('hints').exec().then(function (adventure, err) {
+        console.log('err',err);
+        console.log('aventura',adventure);
         if(err)
             res.send(err)
         if(adventure){
                 //var cercanas = [];
-
+                console.log('Entro en el iiiiif');
                 var c_long = adventure.location.coordinates[0];
                 var c_lat = adventure.location.coordinates[1];
                 var test = geolib.isPointInCircle({latitude: lat, longitude: lon},
@@ -173,11 +175,18 @@ router.post('/hintnear/', function (req, res){
                     //return cercanas;
                     //res.send(cercanas);
                     //cercanas=[];
-                    console.log("Estas en la primera pista");
+                    console.log('Estas en la primera pista');
+                    ///loacalizacion comparada con pista siguiente
+                    console.log('hints');
+                    console.log(hints);
+                    console.log(hints.location);
+                    
+                    
+
                 }
                 else
                     console.log('Dirigete a la localización de la aventura');
-                //res.send(cercanas);
+                    res.send('Dirígete a la localización de la aventura');
 
         }
     });
