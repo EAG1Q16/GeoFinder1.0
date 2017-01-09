@@ -30,14 +30,20 @@ GeoFinderApp.config(['$routeProvider', function($routeProvider){
         })
     .when('/profile', {
             templateUrl: './views/profile.html',
-            controller: 'ProfileCtrl'
+            controller: 'ProfileCtrl',
+            resolve:{
+                factory: checkRouting
+            }
         })
         .otherwise({
             redirectTo: '/index'
         })
     .when('/adventures', {
         templateUrl: './views/adventures.html',
-        controller: 'AdventuresCtrl'
+        controller: 'AdventuresCtrl',
+        resolve:{
+            factory: checkRouting
+        }
     })
         .otherwise({
             redirectTo: '/index'
@@ -45,6 +51,9 @@ GeoFinderApp.config(['$routeProvider', function($routeProvider){
     .when('/creator', {
         templateUrl: './views/creator.html',
         controller: 'CreatorCtrl'
+        //resolve:{
+        //    factory: checkRouting
+        //}
         })
         .otherwise({
             redirectTo: '/index'
@@ -64,20 +73,45 @@ GeoFinderApp.config(['$routeProvider', function($routeProvider){
             redirectTo: '/index'
     })
     .when('/useradventures', {
-            templateUrl: './views/useradventures.html'
+            templateUrl: './views/useradventures.html',
+        resolve:{
+            factory: checkRouting
+        }
     })
         .otherwise({
             redirectTo: '/index'
     })
     .when('/ranking', {
         templateUrl: './views/ranking.html',
-        controller: 'RankingCtrl'
+        controller: 'RankingCtrl',
+        resolve:{
+            factory: checkRouting
+        }
     })
-        .otherwise({
+    .otherwise({
             redirectTo: '/index'
-        });
+    })
+    .when('/unauthorized', {
+            templateUrl: './views/notlogged.html'
+    })
+    .otherwise({
+            redirectTo: '/index'
+    });
     
 }]);
+
+var checkRouting = function ($q, $rootScope, $location, $http) {
+    // when landing on the page get user session
+    $http.get('/user/sessionid')
+        .success(function(data) {
+                return true;
+        })
+        .error(function(data) {
+            $location.path("/unauthorized");
+            return false;
+        });
+
+};
 
 
 

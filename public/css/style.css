@@ -132,3 +132,7 @@ body {
   color: #ffffff;
   border-color: #00ADB5;
 }
+
+/*--------Error page--*/
+.ErrorPage {
+  padding-top: 60px}

@@ -136,4 +136,22 @@ angular.module('GeoFinderApp').controller('ProfileCtrl',['$scope','$rootScope','
         angular.element(document.querySelector('#fileInput')).click();
     };
 
+    $scope.uploadFile = function(){
+
+        var file = $scope.myFile;
+        //var uploadUrl = "/multer";
+        var fd = new FormData();
+        fd.append('file', file);
+
+        $http.post('/user/update/image/' + $rootScope.UserSessionUri,fd, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        })
+            .success(function(){
+                console.log("success!!");
+            })
+            .error(function(){
+                console.log("error!!");
+            });
+    };
 }]);
