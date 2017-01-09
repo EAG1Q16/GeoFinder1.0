@@ -62,10 +62,17 @@ GeoFinderApp.config(['$routeProvider', function($routeProvider){
     })
         .otherwise({
             redirectTo: '/index'
-        })
-        .when('/useradventures', {
+    })
+    .when('/useradventures', {
             templateUrl: './views/useradventures.html'
-        })
+    })
+        .otherwise({
+            redirectTo: '/index'
+    })
+    .when('/ranking', {
+        templateUrl: './views/ranking.html',
+        controller: 'RankingCtrl'
+    })
         .otherwise({
             redirectTo: '/index'
         });

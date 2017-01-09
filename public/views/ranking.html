@@ -1,0 +1,93 @@
+<div class="container-fluid cener-block AllAdventures">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="filter col-md-4" style=" position: fixed">
+                <div class="row">
+                    <div class="col-md-12">
+                        <md-card>
+                            <md-card-content>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h5>Buscar por nombre:</h5>
+                                        <form class="col-md-12 input-group">
+                                            <input type="text" class="form-control InputStyle" size="60" placeholder="Filtrar aventureros" ng-model="search.name" required>
+                                        </form>
+                                    </div>
+                                </div> <!-- row filter name -->
+                                <div class="row"> <!-- row filter dificulty -->
+                                    <div class="col-md-12">
+                                        <h5>Buscar por rango:</h5>
+                                        <form>
+                                            <md-radio-group id="range-radiobutton">
+                                                <md-radio-button value="hola" ng-click="Campista()" class="md-primary">Campista</md-radio-button>
+                                                <md-radio-button value="saludos" ng-click="Navegante()" class="md-primary">Navegante</md-radio-button>
+                                                <md-radio-button value="amiho" ng-click="Montanero()" class="md-primary">Montañero</md-radio-button>
+                                                <md-radio-button value="miho" ng-click="Aventurero()" class="md-primary">Aventurero</md-radio-button>
+                                            </md-radio-group>
+                                        </form>
+                                    </div>
+                                </div> <!-- row dificulty -->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h5>Filtrar por puntuación:</h5>
+                                        <form class="form-group">
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                <input type="number" class="form-control" id="low" ng-model="range.min">
+                                                </div>
+                                                <div class="col-md-1">
+                                                <h5><b>-</b></h5>
+                                                </div>
+                                                <div class="col-md-5">
+                                                <input type="number" class="form-control" id="high" ng-model="range.max">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div> <!-- row other -->
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <md-button class="md-raised md-primary" style="background-color: #00ADB5; color: white;" ng-click="getAll()">Ver Todas</md-button>
+                                    </div>
+                                </div> <!-- row filter name -->
+                            </md-card-content>
+                        </md-card>
+                    </div>
+                </div>
+            </div> <!-- colum of searcher -->
+            <div class="col-sm-4 col-md-4"></div> <!-- colum separator -->
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-12">
+                        <md-card ng-repeat="user in users | orderBy: '-score' | filter: search" ng-if="user.score >=range.min && user.score < range.max">
+                            <a style="color: inherit" ng-href="#/userprofile/{{user._id}}"><md-card-content>
+                            <div class="row">
+                            <div class="col-md-12">
+                                <div class="col-md-2">
+                                    <img class="img-circle" style="height: 100px; width: 100px" ng-src="{{user.photo}}">
+                                </div>
+                                <div class="col-md-8">
+                                    <h3>{{user.name}}</h3>
+                                </div>
+                                <div class="col-md-2">
+                                    <img ng-if="user.score >=0 && user.score <150" class="img-responsive" height="65px" width="65px" src="../images/CAmpista.png">
+                                    <img ng-if="user.score >= 150 && user.score <300" class="img-responsive center-block" height="65px" width="65px" src="../images/Navegante.png">
+                                    <img ng-if="user.score >= 300 && user.score <450" class="img-responsive center-block" height="65px" width="65px" src="../images/Montañero.png">
+                                    <img ng-if="user.score >= 450 " class="img-responsive center-block" height="65px" width="65px" src="../images/Aventurero.png">
+                                </div>
+                                <div class="col-md-8">
+                                    <h5>{{user.description}}</h5>
+                                </div>
+                                <div class="col-md-2">
+                                    <h5><b>Puntos:</b> {{user.score}}</h5>
+                                </div>
+                            </div>
+                            </div>
+                            </md-card-content></a>
+                        </md-card>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
