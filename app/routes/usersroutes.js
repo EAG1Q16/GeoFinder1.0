@@ -285,7 +285,7 @@ router.put('/update/photo/:user_id', function(req, res) {
 });
 
 //Modify the photo of a user
-router.post('/update/image/:user_id', upload.single('myFile'), function(req, res) {
+router.post('/update/image/:user_id', upload.single('file'), function(req, res) {
     cloudinary.uploader.upload(req.file.path, function(result) {
         console.log(result);
         User.update({_id : req.params.user_id
@@ -294,11 +294,10 @@ router.post('/update/image/:user_id', upload.single('myFile'), function(req, res
             function(err, user) {
                 if (err)
                     res.send(err);
-
                 User.findById(req.params.user_id, function(err, user) {
                     if(err)
                         res.send(err)
-                    res.redirect('/#/profile');
+                    res.send(user);
                 });
             });
     });

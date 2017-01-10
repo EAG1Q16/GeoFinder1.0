@@ -132,26 +132,43 @@ angular.module('GeoFinderApp').controller('ProfileCtrl',['$scope','$rootScope','
             });
     };
 
-    $scope.upload = function () {
-        angular.element(document.querySelector('#fileInput')).click();
+    $scope.replaceElement = function () {
+        angular.element(document.querySelector('#InputFile')).click();
     };
 
     $scope.uploadFile = function(){
 
         var file = $scope.myFile;
-        //var uploadUrl = "/multer";
         var fd = new FormData();
         fd.append('file', file);
+        console.log('mi fichero',file);
+        console.log('fd que nosek es',fd);
 
         $http.post('/user/update/image/' + $rootScope.UserSessionUri,fd, {
             transformRequest: angular.identity,
             headers: {'Content-Type': undefined}
         })
-            .success(function(){
+            .success(function(data){
                 console.log("success!!");
+                $rootScope.UserSessionId = data;
+                $scope.UserProfileInfo = data;
             })
-            .error(function(){
+            .error(function(err){
                 console.log("error!!");
             });
+    };
+}]).directive('fileModel', ['$parse', function ($parse) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            var model = $parse(attrs.fileModel);
+            var modelSetter = model.assign;
+
+            element.bind('change', function(){
+                scope.$apply(function(){
+                    modelSetter(scope, element[0].files[0]);
+                });
+            });
+        }
     };
 }]);
