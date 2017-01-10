@@ -8,10 +8,14 @@
                     </md-card-header>
                     <md-card-content>
                         <!-- List group -->
-                        <md-list style="background-color: white">
-                            <md-list-item class="md-1-line">
-                            </md-list-item>
-                        </md-list>
+                        <md-list-item class="md-3-line md-long-text" ng-repeat="creada in creadas" href="#/adventureprofile/{{creada._id}}">
+                            <img ng-src="{{creada.image}}" class="md-avatar">
+                            <div class="md-list-item-text">
+                                <h3><b>{{ creada.name }}</b></h3>
+                                <p>{{ creada.description }}</p>
+                                <p><small>Dificultad: {{creada.difficulty}}</small></p>
+                            </div>
+                        </md-list-item>
                     </md-card-content>
                 </md-card>
             </div>
@@ -22,10 +26,20 @@
                 </md-card-header>
                 <md-card-content>
                     <!-- List group -->
-                    <md-list style="background-color: white">
-                        <md-list-item class="md-1-line">
+                        <md-list-item class="md-3-line" ng-repeat="favorita in favoritas" href="#/adventureprofile/{{favorita._id}}">
+                            <img ng-src="{{favorita.image}}?25" class="md-avatar">
+                            <div class="md-list-item-text" layout="column">
+                                <h3><b>{{ favorita.name }}</b></h3>
+                                <p>{{ favorita.description }}</p>
+                                <p><small>Dificultad: {{favorita.difficulty}}</small></p>
+                            </div>
+                            <md-button class="md-secondary md-icon-button" ng-click="" ng-if="" >
+                                <md-icon style="color: red" class="fa fa-heart"></md-icon>
+                            </md-button>
+                            <md-button class="md-secondary md-icon-button" ng-click="" ng-if="" >
+                                <md-icon class="fa fa-heart"></md-icon>
+                            </md-button>
                         </md-list-item>
-                    </md-list>
                 </md-card-content>
                 </md-card>
             </div>
@@ -36,10 +50,14 @@
                     </md-card-header>
                     <md-card-content>
                         <!-- List group -->
-                        <md-list style="background-color: white">
-                            <md-list-item class="md-1-line">
-                            </md-list-item>
-                        </md-list>
+                        <md-list-item class="md-3-line" ng-repeat="judada in jugadas" href="#/adventureprofile/{{jugada._id}}">
+                            <img ng-src="{{jugada.image}}" class="md-avatar" style="align-content: flex-start">
+                            <div class="md-list-item-text" layout="column" style="padding-left:16em">
+                                <h3><b>{{ jugada.name }}</b></h3>
+                                <p>{{ jugada.description }}</p>
+                                <p><small>Dificultad: {{jugada.difficulty}}</small></p>
+                            </div>
+                        </md-list-item>
                     </md-card-content>
                 </md-card>
             </div>

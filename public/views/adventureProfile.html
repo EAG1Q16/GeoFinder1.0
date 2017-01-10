@@ -1,98 +1,101 @@
 <div class="AdventureP" ng-controller="PublicAdventureProfileCtrl">
 <div class="container">
     <div class="row">
-    <div class="col-md-12">
-    <div class="map col-md-8" >
-        <ui-gmap-google-map center='map.center' zoom='map.zoom' options="options">
-            <ui-gmap-marker coords="marker.coords" options="marker.options" idkey="marker.id">
-            </ui-gmap-marker>
-        </ui-gmap-google-map>
-    </div>
-    <div class="col-md-4">
-        <div class="row">
         <div class="col-md-12">
-        <div class="row">
-        <div class="col-md-12">
-            <md-card>
-                <img style="max-height: 200px" ng-src="{{AdventureProfileInfo.image}}" class="md-card-image">
-                <md-card-title>
-                    <md-card-title-text>
-                        <span class="md-headline">{{AdventureProfileInfo.name}}</span>
-                    </md-card-title-text>
-                </md-card-title>
-                <md-card-content>
-                    <p>{{AdventureProfileInfo.description}}</p>
-                </md-card-content>
-                <md-card-actions>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="col-md-7">
-                                <div class="row">
+            <div class="map col-md-8" >
+                <ui-gmap-google-map center='map.center' zoom='map.zoom' options="options">
+                    <ui-gmap-marker coords="marker.coords" options="marker.options" idkey="marker.id">
+                    </ui-gmap-marker>
+                </ui-gmap-google-map>
+            </div>
+            <div class="col-md-4">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <md-card>
+                        <img style="max-height: 200px" ng-src="{{AdventureProfileInfo.image}}" class="md-card-image">
+                        <md-card-title>
+                            <md-card-title-text>
+                                <span class="md-headline">{{AdventureProfileInfo.name}}</span>
+                            </md-card-title-text>
+                        </md-card-title>
+                        <md-card-content>
+                            <p>{{AdventureProfileInfo.description}}</p>
+                        </md-card-content>
+                        <md-card-actions>
+                            <div class="row">
                                 <div class="col-md-12">
-                                <div class="col-md-4">
-                                    <h5><b>{{AdventureProfileInfo.difficulty}}</b></h5>
-                                </div>
-                                <div class="col-md-8">
-                                    <h5><b>Favs:</b> {{AdventureProfileInfo.favs}}</h5>
-                                </div>
-                                </div>
+                                    <div class="col-md-7">
+                                        <div class="row">
+                                        <div class="col-md-12">
+                                        <div class="col-md-4">
+                                            <h5><b>{{AdventureProfileInfo.difficulty}}</b></h5>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <h5><b>Favs:</b> {{AdventureProfileInfo.favs}}</h5>
+                                        </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <h5><a href="https://twitter.com/share" class="twitter-share-button" data-text="Esta aventura es trepidante" data-url="https://www.geofinder.tech/#/adventureprofile/{{AdventureProfileInfo._id}}" data-hashtags="GeoFinder" data-show-count="false">Tweet</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></h5>
+                                    </div>
+                                    <div class="col-md-2" ng-if="isfollowing == 'false'">
+                                        <md-button class="md-icon-button" aria-label="Favorite" ng-click="FavAdventure()">
+                                            <i style="color: lightslategrey" class="fa fa-heart"></i>
+                                        </md-button>
+                                    </div>
+                                    <div class="col-md-2" ng-if="isfollowing == 'true'">
+                                        <md-button class="md-icon-button" aria-label="Favorite" ng-click="UnFavAdventure()">
+                                            <i style="color: red" class="fa fa-heart"></i>
+                                        </md-button>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-2">
-                                <h5><a href="https://twitter.com/share" class="twitter-share-button" data-text="Esta aventura es trepidante" data-url="https://www.geofinder.tech/#/adventureprofile/{{AdventureProfileInfo._id}}" data-hashtags="GeoFinder" data-show-count="false">Tweet</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></h5>
+                        </md-card-actions>
+                    </md-card>
                             </div>
-                            <div class="col-md-2" ng-if="isfollowing == 'false'">
-                                <md-button class="md-icon-button" aria-label="Favorite" ng-click="FavAdventure()">
-                                    <i style="color: lightslategrey" class="fa fa-heart"></i>
-                                </md-button>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="detailBox">
+                    <div class="titleBox">
+                        <label><h4>Comentarios:</h4></label>
+                    </div>
+                    <div class="actionBox">
+                        <ul class="commentList">
+                            <li ng-repeat="comment in comments">
+                                <button type="button" class="btn btn-custom glyphicon glyphicon-remove close" ng-show="UserSessionId._id == comment.user._id" ng-click="deletecomment(comment._id)"></button>
+                                <div class="commenterImage">
+                                    <img src="{{comment.user.photo}}" />
+                                </div>
+                                <div class="commentText">
+                                    <p class=""><b>{{comment.user.name}}</b></p>
+                                    <p class="">{{comment.text}}</p> <span class="date sub-text">{{comment.commentdate}}</span>
+                                </div>
+                                <md-divider></md-divider>
+                            </li>
+                        </ul>
+                        <form class="form-inline" role="form">
+                            <div class="form-group">
+                                <input class="form-control" type="text" placeholder="Escribe tu comentario" ng-model="NewComment.text">
                             </div>
-                            <div class="col-md-2" ng-if="isfollowing == 'true'">
-                                <md-button class="md-icon-button" aria-label="Favorite" ng-click="UnFavAdventure()">
-                                    <i style="color: red" class="fa fa-heart"></i>
-                                </md-button>
+                            <div class="form-group">
+                                <button class="btn btn-success" ng-click="addcomment()">Añadir</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
                             </div>
                         </div>
                     </div>
-                </md-card-actions>
-            </md-card>
-        </div>
-        </div>
-        <div class="row">
-        <div class="col-md-12">
-        <div class="detailBox">
-            <div class="titleBox">
-                <label><h4>Comentarios:</h4></label>
+                </div>
             </div>
-            <div class="actionBox">
-                <ul class="commentList">
-                    <li ng-repeat="comment in comments">
-                        <button type="button" class="btn btn-custom glyphicon glyphicon-remove close" ng-show="UserSessionId._id == comment.user._id" ng-click="deletecomment(comment._id)"></button>
-                        <div class="commenterImage">
-                            <img src="{{comment.user.photo}}" />
-                        </div>
-                        <div class="commentText">
-                            <p class=""><b>{{comment.user.name}}</b></p>
-                            <p class="">{{comment.text}}</p> <span class="date sub-text">{{comment.commentdate}}</span>
-                        </div>
-                        <md-divider></md-divider>
-                    </li>
-                </ul>
-                <form class="form-inline" role="form">
-                    <div class="form-group">
-                        <input class="form-control" type="text" placeholder="Escribe tu comentario" ng-model="NewComment.text">
-                    </div>
-                    <div class="form-group">
-                        <button class="btn btn-success" ng-click="addcomment()">Añadir</button>
-                    </div>
-                </form>
-            </div>
         </div>
     </div>
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>
+    <canvas class="chart chart-radar" ></canvas>
+
 </div>
 </div>
 

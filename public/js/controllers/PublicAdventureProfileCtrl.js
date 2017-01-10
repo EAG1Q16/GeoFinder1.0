@@ -6,6 +6,12 @@ angular.module('GeoFinderApp').controller('PublicAdventureProfileCtrl',['$scope'
 
     var adventureID = window.location.href.split("/").pop();
 
+    $scope.labels =["Java", "Hadoop", "Hive", "PIG", "MapReduce", "Git"];
+
+    $scope.data = [
+        [28, 48, 40, 19, 96, 100]
+    ];
+
     // when landing on the page get user
     $http.get('/user/sessionid')
         .success(function(data) {
@@ -26,8 +32,6 @@ angular.module('GeoFinderApp').controller('PublicAdventureProfileCtrl',['$scope'
             console.log('not logged');
         });
 
-
-
     console.log(adventureID);
     $scope.map = { center: { latitude: 0.1, longitude: 0.1 }, zoom: 2 };
 
@@ -41,6 +45,9 @@ angular.module('GeoFinderApp').controller('PublicAdventureProfileCtrl',['$scope'
             $scope.comments = data.comments;
             console.log($scope.comments);
             console.log($scope.AdventureProfileInfo);
+            angular.forEach($scope.comments, function (comment, key) {
+                comment.commentdate = moment(comment.commentdate, "").fromNow();
+            })
             $scope.map = { center: { latitude: $scope.AdventureProfileInfo.location.coordinates[1], longitude: $scope.AdventureProfileInfo.location.coordinates[0] }, zoom: 16 };
 
             $scope.marker = {
@@ -82,6 +89,9 @@ angular.module('GeoFinderApp').controller('PublicAdventureProfileCtrl',['$scope'
                     .success(function (data) {
                         console.log("entro en el success");
                         $scope.comments = data.comments;
+                        angular.forEach($scope.comments, function (comment, key) {
+                            comment.commentdate = moment(comment.commentdate, "").fromNow();
+                        })
                         console.log("aqui");
                         
 
@@ -99,6 +109,9 @@ angular.module('GeoFinderApp').controller('PublicAdventureProfileCtrl',['$scope'
       $http.delete('/comments/deletecomment/' + cmd_id + '/' + adventureID)
           .success(function (data) {
               $scope.comments = data.comments;
+              angular.forEach($scope.comments, function (comment, key) {
+                  comment.commentdate = moment(comment.commentdate, "").fromNow();
+              })
           })
           .error(function (data) {
               console.log("Error" + data);
@@ -144,5 +157,5 @@ angular.module('GeoFinderApp').controller('PublicAdventureProfileCtrl',['$scope'
                 console.log('Error' + data);
             });
     };
-    
+
 }]);
