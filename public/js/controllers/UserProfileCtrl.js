@@ -137,12 +137,10 @@ angular.module('GeoFinderApp').controller('ProfileCtrl',['$scope','$rootScope','
     };
 
     $scope.uploadFile = function(){
-
         var file = $scope.myFile;
         var fd = new FormData();
         fd.append('file', file);
         console.log('mi fichero',file);
-        console.log('fd que nosek es',fd);
 
         $http.post('/user/update/image/' + $rootScope.UserSessionUri,fd, {
             transformRequest: angular.identity,
