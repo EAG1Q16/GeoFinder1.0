@@ -1,10 +1,9 @@
 @import url(//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css);
 
 .detailBox {
-    padding-left: 2%;
+    padding-left: 1.5%;
     box-shadow: 2px 3px 2px darkgrey;
-    max-width: 339px;
-
+    max-width: calc(99% - 1.5px);
 
 }
 .titleBox {

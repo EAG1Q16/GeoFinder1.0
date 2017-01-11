@@ -1,13 +1,51 @@
+<style type="text/css">
+    .map-wrapper {
+        position: relative;
+        height: calc(70vh - 3em - 59px);
+    }
+    .angular-google-map-container {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+    }
+</style>
+
 <div class="AdventureP" ng-controller="PublicAdventureProfileCtrl">
-<div class="container">
+<div class="container-fluid">
     <div class="row">
     <div class="col-md-12">
-    <div class="map col-md-8" >
+    <div class="col-md-8">
+        <div class="map-wrapper row">
         <ui-gmap-google-map center='map.center' zoom='map.zoom' options="options">
             <ui-gmap-marker coords="marker.coords" options="marker.options" idkey="marker.id">
             </ui-gmap-marker>
         </ui-gmap-google-map>
-    </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <md-card>
+                    <md-card-content>
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                            <canvas id="radar" class="chart chart-radar"
+                            chart-data="data" chart-options="options" chart-labels="labels">
+                            </canvas>
+                            </div>
+                         </div>
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                                <canvas id="doughnut" class="chart chart-doughnut"
+                                        chart-data="data" chart-labels="labels">
+                                </canvas>
+                            </div>
+                        </div>
+                    </md-card-content>
+                </md-card>
+            </div>
+            </div>
+        </div>
     <div class="col-md-4">
         <div class="row">
         <div class="col-md-12">
@@ -93,6 +131,7 @@
     </div>
     </div>
     </div>
+</div>
 </div>
 </div>
 

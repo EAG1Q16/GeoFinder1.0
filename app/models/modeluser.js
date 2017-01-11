@@ -49,7 +49,17 @@ var UserSchema = mongoose.Schema({
         created: [{type: mongoose.Schema.Types.ObjectId, ref: 'Adventures'}],
         played: [{type: mongoose.Schema.Types.ObjectId, ref: 'Adventures'}],
         favs: [{type: mongoose.Schema.Types.ObjectId, ref: 'Adventures'}],
+    },
+    score:{
+        type: Number, default: 0
+    },
+    referalid: {
+        type: String
     }
+
+
+
+
 });
 
 //La última coma puesta en favs es importante para que detecte que favs es un array.
