@@ -2,7 +2,7 @@
  * Created by tonim on 05/10/2016.
  */
 
-var GeoFinderApp = angular.module('GeoFinderApp', ['ngRoute', 'uiGmapgoogle-maps','ui.bootstrap','ngMaterial']);
+var GeoFinderApp = angular.module('GeoFinderApp', ['ngRoute','uiGmapgoogle-maps','ui.bootstrap','ngMaterial','chart.js']);
 
 GeoFinderApp.config(['$routeProvider', function($routeProvider){
 
