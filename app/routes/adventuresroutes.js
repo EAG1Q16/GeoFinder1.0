@@ -182,44 +182,53 @@ router.post('/hintnear/', function (req, res){
     var lon = req.body.longitude;
     var id =req.body.advid;
 
-    console.log(lat);
-    console.log(lon);
-    console.log(id);
+    //console.log(lat);
+    //console.log(lon);
+    //console.log(id);
 
     Adventures.findById(id).populate('hints').exec().then(function (adventure, err) {
-        console.log('err',err);
-        console.log('aventura',adventure);
+        //console.log('err',err);
+        //console.log('aventura',adventure);
         if(err)
             res.send(err)
         if(adventure){
-                //var cercanas = [];
+                var pistas;
                 console.log('Entro en el iiiiif');
-                var c_long = adventure.location.coordinates[0];
+               /* var c_long = adventure.location.coordinates[0];
                 var c_lat = adventure.location.coordinates[1];
                 var test = geolib.isPointInCircle({latitude: lat, longitude: lon},
                     {latitude: c_lat, longitude: c_long},
                     20);
 
                 if(test == true)
-                {
-                    //cercanas.push(adventure);
-                    //return cercanas;
-                    //res.send(cercanas);
-                    //cercanas=[];
-                    console.log('Estas en la primera pista');
-                    ///loacalizacion comparada con pista siguiente
-                    console.log('hints');
-                    console.log(hints);
-                    console.log(hints.location);
-                    
+                {*/
+                    var hintadv = adventure.hints;
+                    //console.log('hintadv',hintadv);
                     
 
+                    for (var i = 0; i < hintadv.length; i++){
+                        console.log('fooooooooor');
+                        var c_long = hintadv[i].location.coordinates[0];
+                        var c_lat = hintadv[i].location.coordinates[1];
+                        var test1 = geolib.isPointInCircle({latitude: lat, longitude: lon},
+                            {latitude: c_lat, longitude: c_long},
+                            20);
+
+                        if (test1 == true) {
+                            pistas = hintadv[i];
+                            console.log(pistas);
+                            res.send(pistas);
+                        }
+                        else {
+                            console.log('false');
+                        }
+                    }
                 }
-                else
+               /* else
                     console.log('Dirigete a la localización de la aventura');
-                    res.send('Dirígete a la localización de la aventura');
+                    res.send('Dirígete a la localización de la aventura');*/
 
-        }
+        //}
     });
 });
 
