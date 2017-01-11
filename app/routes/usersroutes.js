@@ -13,6 +13,7 @@ var config = require('./auth');
 var multer = require('multer');
 var upload = multer({dest: __dirname+'/../uploads'});
 var cloudinary  = require('cloudinary');
+var uuid = require('node-uuid');
 cloudinary.config({
     cloud_name: config.cloudinary.cloud_name,
     api_key: config.cloudinary.api_key,
@@ -27,6 +28,8 @@ router.post('/signup', function(req, res) {
     var password = req.body.password;
     var description = 'Soy nuevo en Geofinder';
     var photo = 'http://i66.tinypic.com/2yopwmr.jpg';
+    var referalid = uuid.v1();
+    var friendid = req.body.friendid;
 
     // Validation
     req.checkBody('name', 'Name is required').notEmpty();
@@ -46,7 +49,8 @@ router.post('/signup', function(req, res) {
             username: username,
             password: password,
             description: description,
-            photo: photo
+            photo: photo,
+            referalid: referalid
         });
 
     var query = {username: username};
@@ -55,12 +59,43 @@ router.post('/signup', function(req, res) {
          res.status(400).send('Este nombre de usuario ya existe prueba con otro :)')
          }
          else{
-            User.createUser(newUser, function(err, user){
-            if(err) throw err;
-            console.log(user);
-                res.send(user);
-
-         });
+             var queryid = {referalid: friendid};
+             console.log('refid', friendid);
+             var update = {$inc : {"score": 10}};
+             if (friendid != null || friendid != " ") {
+                 console.log('if dentro');
+                 User.findOne(queryid, function(err, existingid) {
+                     if (existingid) {
+                         console.log('existingid', existingid)
+                         User.update(queryid, update, function (err, user) {
+                             if (err) {
+                                 console.log('show err', err);
+                                 res.status(400).send('Some wrong')
+                             }
+                             if (user) {
+                                 console.log('amihooooasodsaodoasodosad', user);
+                                 User.createUser(newUser, function (err, user) {
+                                     if (err) throw err;
+                                     console.log(user);
+                                     res.send(user);
+                                 });
+                             }
+                         });
+                     }
+                     else{
+                         console.log('estoy en el else del existingid')
+                         res.status(400).send('Este Id no exsiste prueba con otro')
+                     }
+                 });
+             }
+             else{
+                 console.log('else undefined');
+                 User.createUser(newUser, function (err, user) {
+                     if (err) throw err;
+                     console.log(user);
+                     res.send(user);
+                 });
+             }
     }
     });
 }
@@ -112,7 +147,8 @@ passport.use(new TwitterStrategy({
             name				: profile.displayName,
             photo				: profile.photos[0].value,
             username            : profile.id,
-            description         : 'Soy nuevo en Geofinder'
+            description         : 'Soy nuevo en Geofinder',
+            referalid           : uuid.v1()
         });
 
         usertweet.save(function(err) {
@@ -140,7 +176,8 @@ passport.use(new FacebookStrategy({
             name				 : profile.displayName,
             photo				: profile.photos[0].value,
             username            :profile.id,
-            description         : 'Soy nuevo en Geofinder'
+            description         : 'Soy nuevo en Geofinder',
+            referalid           : uuid.v1()
         });
         userface.save(function(err) {
             if(err) throw err;
@@ -367,6 +404,7 @@ function isLoggedIn(req, res, next) {
 
 //route for get the seesion id in the front
 router.get('/sessionid', isLoggedIn, function(req, res) {
+    console.log('entro en el get de sesion id');
     console.log('profile:' + req.user);
     res.send(req.user);
 });

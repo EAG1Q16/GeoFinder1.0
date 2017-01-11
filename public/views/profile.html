@@ -8,7 +8,6 @@
             <div class="panel-title"><b><i class="fa fa-user-circle-o"></i> Información de Usuario:</b></div>
             </md-card-header-text>
         </md-card-header>
-        <md-card-content class="layout-padding">
             <form>
             <div layout-gt-xs="row">
             <md-input-container class="md-block" flex-gt-xs>
@@ -82,6 +81,19 @@
                     </md-input-container>
                 </div>
             </form>
+            <form>
+                <div layout-gt-xs="row">
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <label>Invita a tus amigos con este ID y gana puntos</label>
+                        <textarea ng-model="UserProfileInfo.referalid" rows="1"></textarea>
+                    </md-input-container>
+
+                </div>
+            </form>
+            <form>
+                <input type="file" file-model="myFile"/><br><br>
+                <button ng-click="uploadFile()">Upload</button>
+            </form>
         </md-card-content>
     </md-card>
     </div>
@@ -102,7 +114,7 @@
                     </md-list>
                     </md-card-content>
                 </md-card>
-            </div>
+    </div>
     </div>
     </div>
 </div>

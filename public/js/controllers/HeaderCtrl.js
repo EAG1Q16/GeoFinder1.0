@@ -2,7 +2,10 @@
  * Created by Andrea on 06/11/2016.
  */
 angular.module('GeoFinderApp').controller('HeaderCtrl',['$scope','$rootScope','$http','$routeParams',function($scope, $rootScope, $http, $routeParams){
-    
+
+    $scope.userSelected = {
+        used : ''
+    };
 
     $scope.options = [{
         id: 1,
@@ -23,7 +26,7 @@ angular.module('GeoFinderApp').controller('HeaderCtrl',['$scope','$rootScope','$
             $http.get('/user')
                 .success(function(data) {
                     $scope.users = data;
-                    console.log(data);
+                    console.log("searcher: ",data);
 
                 })
                 .error(function(data) {
@@ -38,9 +41,12 @@ angular.module('GeoFinderApp').controller('HeaderCtrl',['$scope','$rootScope','$
                 //$scope.$item = $item;
                 //$scope.$model = $model;
                 //$scope.$label = $label;
+
                 console.log($model);
                 //$scope.userSelected = $model.username;
-
+                $scope.userSelected = {
+                    used : ''
+                };
                 
             };
 
@@ -78,7 +84,10 @@ angular.module('GeoFinderApp').controller('HeaderCtrl',['$scope','$rootScope','$
                 $scope.$model = $model;
                 $scope.$label = $label;
                 console.log($model);
-                $scope.userSelected = $model.name;
+                $scope.userSelected.used = $model.name;
+                $scope.userSelected = {
+                    used : ''
+                };
 
 
             };
@@ -97,8 +106,13 @@ angular.module('GeoFinderApp').controller('HeaderCtrl',['$scope','$rootScope','$
 
 
     $scope.cambio = (function () {
-
+        $scope.userSelected = {
+            'used': ''
+        };
         searcher();
+        console.log('CAMBIO: USER_SELECTED',$scope.userSelected);
+
+        //$scope.userSelected="";
 
     });
 

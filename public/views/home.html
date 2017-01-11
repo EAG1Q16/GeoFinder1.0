@@ -4,7 +4,7 @@
     <div class="row center-block">
         <div class="col-md-12">
             <h1>¡Empieza tu Aventura!</h1>
-            <md-button class="md-raised md-primary" ng-href="#/register" style="background-color: #00ADB5; color: white">Registrate <i class="fa fa-pencil-square-o"></i></md-button>
+            <md-button class="md-raised md-primary" ng-href="#/register" style="background-color: #00ADB5; color: white">Regístrate <i class="fa fa-pencil-square-o"></i></md-button>
         </div>
     </div>
 </div>
@@ -115,11 +115,12 @@
         <div class="row">
             <div class="col-md-12">
                 <div ng-repeat="FollowingAdv in FollowingAdvs">
-                    <md-card ng-repeat="adventure in FollowingAdv.adventures.created">
+                    <md-card ng-repeat="adventure in FollowingAdv.adventures.created | orderBy: adventure.registerdate">
                         <md-card-title>
                             <md-card-title-text>
                                 <span class="md-headline">{{adventure.name}}</span>
                                 <span class="md-subhead">{{adventure.description}}</span>
+                                <span class="md-subhead">{{adventure.registerdate}}</span>
                             </md-card-title-text>
                             <md-card-title-media>
                                 <div class="card-media">

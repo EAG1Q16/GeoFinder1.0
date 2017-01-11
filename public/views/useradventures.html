@@ -1,65 +1,82 @@
 <div id="AdventuresProfileContainer">
     <div class="container">
         <div class="row">
+            <div class="col-md-12">
             <div class="col-md-4">
-                <md-card>
-                    <md-card-header class="customColor">
-                        <div class="panel-title"><b><i class="fa fa-tree"></i> Aventuras Creadas:</b></div>
-                    </md-card-header>
-                    <md-card-content>
-                        <!-- List group -->
-                        <md-list-item class="md-3-line md-long-text" ng-repeat="creada in creadas" href="#/adventureprofile/{{creada._id}}">
-                            <img ng-src="{{creada.image}}" class="md-avatar">
-                            <div class="md-list-item-text">
-                                <h3><b>{{ creada.name }}</b></h3>
-                                <p>{{ creada.description }}</p>
-                                <p><small>Dificultad: {{creada.difficulty}}</small></p>
-                            </div>
-                        </md-list-item>
-                    </md-card-content>
-                </md-card>
+                <div class="col-md-12">
+                    <md-card>
+                        <md-card-header class="customColor">
+                            <div class="panel-title"><b><i class="fa fa-tree"></i> Aventuras Creadas:</b></div>
+                        </md-card-header>
+                        <md-card-content>
+                            <!-- List group -->
+                            <div class="" ng-repeat="creada in creadas">
+                                <a href="#/adventureprofile/{{creada._id}}" style="color: inherit">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <img ng-src="{{creada.image}}" class="img-rounded" height="65px"   width="65px">
+                                        </div>
+                                        <div class="col-md-8" style="padding-top: 1em">
+                                            <h4>{{ creada.name }}</h4>
+                                        </div>
+                                    </div>
+                                <hr>
+                                </a>
+                          </div>
+                        </md-card-content>
+                    </md-card>
+                </div>
             </div>
             <div class="col-md-4">
-                <md-card>
-                <md-card-header class="customColor">
-                    <div class="panel-title"><b><i class="fa fa-star"></i> Aventuras Favoritas:</b></div>
-                </md-card-header>
-                <md-card-content>
-                    <!-- List group -->
-                        <md-list-item class="md-3-line" ng-repeat="favorita in favoritas" href="#/adventureprofile/{{favorita._id}}">
-                            <img ng-src="{{favorita.image}}?25" class="md-avatar">
-                            <div class="md-list-item-text" layout="column">
-                                <h3><b>{{ favorita.name }}</b></h3>
-                                <p>{{ favorita.description }}</p>
-                                <p><small>Dificultad: {{favorita.difficulty}}</small></p>
+                <div class="col-md-12">
+                    <md-card>
+                        <md-card-header class="customColor">
+                            <div class="panel-title"><b><i class="fa fa-heart"></i> Aventuras Favoritas:</b></div>
+                        </md-card-header>
+                        <md-card-content>
+                            <!-- List group -->
+                            <div class="" ng-repeat="favorita in favoritas">
+                                <a href="#/adventureprofile/{{favorita._id}}" style="color: inherit">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <img ng-src="{{favorita.image}}" class="img-rounded" height="65px"   width="65px">
+                                        </div>
+                                        <div class="col-md-8" style="padding-top: 1em">
+                                            <h4>{{ favorita.name }}</h4>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                </a>
                             </div>
-                            <md-button class="md-secondary md-icon-button" ng-click="" ng-if="" >
-                                <md-icon style="color: red" class="fa fa-heart"></md-icon>
-                            </md-button>
-                            <md-button class="md-secondary md-icon-button" ng-click="" ng-if="" >
-                                <md-icon class="fa fa-heart"></md-icon>
-                            </md-button>
-                        </md-list-item>
-                </md-card-content>
-                </md-card>
+                        </md-card-content>
+                    </md-card>
+                </div>
             </div>
             <div class="col-md-4">
-                <md-card>
-                    <md-card-header class="customColor">
-                        <div class="panel-title"><b><i class="fa fa-map-signs"></i> Aventuras Jugadas:</b></div>
-                    </md-card-header>
-                    <md-card-content>
-                        <!-- List group -->
-                        <md-list-item class="md-3-line" ng-repeat="judada in jugadas" href="#/adventureprofile/{{jugada._id}}">
-                            <img ng-src="{{jugada.image}}" class="md-avatar" style="align-content: flex-start">
-                            <div class="md-list-item-text" layout="column" style="padding-left:16em">
-                                <h3><b>{{ jugada.name }}</b></h3>
-                                <p>{{ jugada.description }}</p>
-                                <p><small>Dificultad: {{jugada.difficulty}}</small></p>
+                <div class="col-md-12">
+                    <md-card>
+                        <md-card-header class="customColor">
+                            <div class="panel-title"><b><i class="fa fa-map-signs"></i> Aventuras Jugadas:</b></div>
+                        </md-card-header>
+                        <md-card-content>
+                            <!-- List group -->
+                            <div class="" ng-repeat="jugada in jugadas">
+                                <a href="#/adventureprofile/{{jugada._id}}" style="color: inherit">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <img ng-src="{{jugada.image}}" class="img-rounded" height="65px"   width="65px">
+                                        </div>
+                                        <div class="col-md-8" style="padding-top: 1em">
+                                            <h4>{{ jugada.name }}</h4>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                </a>
                             </div>
-                        </md-list-item>
-                    </md-card-content>
-                </md-card>
+                        </md-card-content>
+                    </md-card>
+                </div>
+            </div>
             </div>
         </div>
     </div>

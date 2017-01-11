@@ -13,6 +13,7 @@ angular.module('GeoFinderApp').controller('PublicUserProfileCtrl',['$scope','$ro
         });
 
     var puserID = window.location.href.split("/").pop();
+    
 
     // when landing on the page get adventure
     $http.get('/user/my/' + puserID)
