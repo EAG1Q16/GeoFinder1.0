@@ -31,4 +31,33 @@ angular.module('GeoFinderApp').controller('UserAdventuresCtrl',['$scope', '$root
         console.log("Ir al perfil de avenruar");
         $location.path('/adventureprofile/'+id);
     }
+
+    $scope.UnFavAdventure = function(id) {
+        $http.delete('/user/uafavadv/' + id +'/'+ $rootScope.UserSessionId._id)
+            .success(function(data){
+                $http.get('/user/sessionid')
+                    .success(function(data) {
+                        $rootScope.UserSessionId = data;
+                        $rootScope.UserSessionUri = data._id;
+                        // when landing on the page get user
+                        $http.get('/user/my/' + $rootScope.UserSessionId._id)
+                            .success(function(data) {
+                                console.log("Obtengo las aventuras");
+                                console.log(data);
+                                $scope.creadas = data.adventures.created;
+                                $scope.favoritas = data.adventures.favs;
+                                $scope.jugadas = data.adventures.played;
+                            })
+                            .error(function(data) {
+                                console.log('Error: ' + data);
+                            });
+                    })
+                    .error(function(data) {
+                        console.log('Error: ', data);
+                    });
+            })
+            .error(function(data) {
+                console.log('Error' + data);
+            });
+    };
 }]);

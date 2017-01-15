@@ -60,9 +60,9 @@ router.post('/signup', function(req, res) {
          }
          else{
              var queryid = {referalid: friendid};
-             console.log('refid', friendid);
+             console.log('refid *'+ friendid+"*");
              var update = {$inc : {"score": 10}};
-             if (friendid != null || friendid != " ") {
+             if (friendid != null && friendid != "") {
                  console.log('if dentro');
                  User.findOne(queryid, function(err, existingid) {
                      if (existingid) {
