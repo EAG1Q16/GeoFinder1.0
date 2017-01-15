@@ -182,26 +182,25 @@ router.post('/hintnear/', function (req, res){
     var lon = req.body.longitude;
     var id =req.body.advid;
 
-    //console.log(lat);
-    //console.log(lon);
-    //console.log(id);
-
     Adventures.findById(id).populate('hints').exec().then(function (adventure, err) {
-        //console.log('err',err);
-        //console.log('aventura',adventure);
         if(err)
             res.send(err)
         if(adventure){
                 var pistas;
-                console.log('Entro en el iiiiif');
-               /* var c_long = adventure.location.coordinates[0];
-                var c_lat = adventure.location.coordinates[1];
-                var test = geolib.isPointInCircle({latitude: lat, longitude: lon},
-                    {latitude: c_lat, longitude: c_long},
-                    20);
+               // console.log('Entro en el iiiiif');
+               // var c_long = adventure.location.coordinates[0];
+               // var c_lat = adventure.location.coordinates[1];
+               // console.log('lat',lat);
+               // console.log('lon',lon);
+               // console.log('clat',c_lat);
+               // console.log('clon',c_long);
+               // var posicion = geolib.isPointInCircle({latitude: lat, longitude: lon},
+                //    {latitude: c_lat, longitude: c_long},
+                 //   20);
+               // console.log(posicion);
 
-                if(test == true)
-                {*/
+               // if(posicion == true)
+               // {
                     var hintadv = adventure.hints;
                     //console.log('hintadv',hintadv);
                     
@@ -223,12 +222,34 @@ router.post('/hintnear/', function (req, res){
                             console.log('false');
                         }
                     }
-                }
-               /* else
-                    console.log('Dirigete a la localización de la aventura');
-                    res.send('Dirígete a la localización de la aventura');*/
+               // }
+               // else
+               //     console.log('Dirigete a la localización de la aventura');
+               //     res.send('Dirígete a la localización de la aventura');
 
-        //}
+        }
+    });
+});
+
+
+router.post('/posicion/', function (req, res){
+
+    var lat = req.body.latitude;
+    var lon = req.body.longitude;
+    var id =req.body.advid;
+
+    Adventures.findById(id).populate('hints').exec().then(function (adventure, err) {
+        if(err)
+            res.send(err)
+        if(adventure){
+            var c_long = adventure.location.coordinates[0];
+            var c_lat = adventure.location.coordinates[1];
+            var posicion = geolib.isPointInCircle({latitude: lat, longitude: lon},
+                {latitude: c_lat, longitude: c_long},
+                20);
+            res.send(posicion);
+
+        }
     });
 });
 
