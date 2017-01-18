@@ -690,6 +690,63 @@ router.delete('/uaplayedadv/', function (req, res) {
     });
 });
 
+//Login with twitter in the mobile app
+router.post('/app/twitter/login', function(req, res){
+    var query = {provider_id: req.body.user_id};
+    User.findOne(query, function(err, existingUser) {
+        if (existingUser) {
+            res.send(existingUser);
+        }
+        else {
+            // Al igual que antes, si el usuario ya existe lo devuelve
+            var usertweet = new User({
+                provider_id	         : req.body.user_id,
+                name				 : req.body.screen_name,
+                photo				: 'http://i66.tinypic.com/2yopwmr.jpg',
+                username            :req.body.user_id,
+                description         : 'Soy nuevo en Geofinder',
+                referalid           : uuid.v1()
+            });
+            usertweet.save(function(err,user) {
+                if(err) throw err;
+                res.send(user);
+            });
+        }
+        if(err){
+            res.status(400).send('Algo ha ocurrido mal')
+        }
+    });
+});
+
+//Login with facebook in the mobile app
+router.post('/app/facebook/login', function(req, res){
+    console.log(req.body);
+    var query = {provider_id: req.body.id};
+    User.findOne(query, function(err, existingUser) {
+        if (existingUser) {
+            res.send(existingUser)
+        }
+        else {
+            // Al igual que antes, si el usuario ya existe lo devuelve
+            var userface = new User({
+                provider_id	: req.body.id,
+                name				 : req.body.name,
+                photo				: req.body.picture,
+                username            :req.body.id,
+                description         : 'Soy nuevo en Geofinder',
+                referalid           : uuid.v1()
+            });
+            userface.save(function(err,user) {
+                if(err) throw err;
+                res.send(user);
+            });
+        }
+        if(err){
+            res.status(400).send('Algo ha ocurrido mal')
+        }
+    });
+});
+
 module.exports = router;
 
 
