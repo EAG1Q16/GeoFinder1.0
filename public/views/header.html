@@ -12,11 +12,12 @@
         <div class="col-md-6 collapse navbar-collapse">
         <div class="row">
         <form class="navbar-form" role="search">
-            <div  class='container-fluid typeahead-demo'>
-
-                <input ng-if="!flag" type="text" placeholder="Busca usuarios" ng-model="userSelected.used" typeahead-on-select="onSelect($item, $model, $label)" ng-model-options="modelOptions"  uib-typeahead="user for user in users | filter:{username:$viewValue} | limitTo:5" typeahead-template-url="/uib/template/typeahead/typeahead-match.html" typeahead-popup-template-url="/uib/template/typeahead/typeahead-popup.html" class="form-control">
-                <input ng-if="flag" type="text" placeholder="Busca aventuras" ng-model="userSelected.used" typeahead-on-select="onSelect($item, $model, $label)" ng-model-options="modelOptions"  uib-typeahead="adventure for adventure in adventures | filter:{name:$viewValue} | limitTo:5" typeahead-template-url="/uib/template/typeahead/typeahead-match2.html" typeahead-popup-template-url="/uib/template/typeahead/typeahead-popup.html" class="form-control">
-
+            <div  class='container-fluid typeahead-demo' ng-if="!flag">
+                <input  type="text" placeholder="Busca usuarios" ng-model="userSelected.used" typeahead-on-select="onSelect($item, $model, $label)" ng-model-options="modelOptions"  uib-typeahead="user for user in users | filter:{username:$viewValue} | limitTo:5" typeahead-template-url="/uib/template/typeahead/typeahead-match.html" typeahead-popup-template-url="/uib/template/typeahead/typeahead-popup.html" class="form-control">
+                <select class="form-control" ng-change="cambio()" ng-options="option as option.name for option in options track by option.id" ng-model="sel"></select>
+            </div>
+            <div  class='container-fluid typeahead-demo' ng-if="flag">
+                <input  type="text" placeholder="Busca aventuras" ng-model="userSelected.used" typeahead-on-select="onSelect($item, $model, $label)" ng-model-options="modelOptions"  uib-typeahead="adventure for adventure in adventures | filter:{name:$viewValue} | limitTo:5" typeahead-template-url="/uib/template/typeahead/typeahead-match2.html" typeahead-popup-template-url="/uib/template/typeahead/typeahead-popup.html" class="form-control">
                 <select class="form-control" ng-change="cambio()" ng-options="option as option.name for option in options track by option.id" ng-model="sel"></select>
             </div>
         </form>

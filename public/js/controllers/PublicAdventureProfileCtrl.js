@@ -6,11 +6,11 @@ angular.module('GeoFinderApp').controller('PublicAdventureProfileCtrl',['$scope'
 
     var adventureID = window.location.href.split("/").pop();
 
-    $scope.labels =["Java", "Hadoop", "Hive", "PIG", "MapReduce", "Git"];
+    /*$scope.labels =["Java", "Hadoop", "Hive", "PIG", "MapReduce", "Git"];
 
     $scope.data = [
         [28, 48, 40, 19, 96, 100]
-    ];
+    ];*/
 
     // when landing on the page get user
     $http.get('/user/sessionid')
@@ -165,7 +165,7 @@ angular.module('GeoFinderApp').controller('PublicAdventureProfileCtrl',['$scope'
         [28, 48, 40, 19, 96, 27, 100]
     ];
 
-    $scope.labels = ["Download Sales", "In-Store Sales", "Mail-Order Sales"];
-    $scope.data = [300, 500, 100];
+    $scope.labels = ["Número de pistas", "Número de comentarios", "Veces jugada"];
+    $scope.data = [6, 8, 5];
 
 }]);
