@@ -35,19 +35,29 @@
                         </md-card-header>
                         <md-card-content>
                             <!-- List group -->
-                            <div class="" ng-repeat="favorita in favoritas">
-                                <a href="#/adventureprofile/{{favorita._id}}" style="color: inherit">
-                                    <div class="row">
+
+                                <div class="" ng-repeat="favorita in favoritas" ng-click="PerfilAventura(favorita._id)">
+                                <div class="row">
+                                    <a href="#/adventureprofile/{{favorita._id}}" style="color: inherit">
                                         <div class="col-md-4">
                                             <img ng-src="{{favorita.image}}" class="img-rounded" height="65px"   width="65px">
                                         </div>
-                                        <div class="col-md-8" style="padding-top: 1em">
+                                        <div class="col-md-5" style="padding-top: 1em">
                                             <h4>{{ favorita.name }}</h4>
                                         </div>
+                                    </a>
+                                    <div class="col-md-2" style="padding-top: 1em; align-content: center">
+                                        <md-button class="md-icon-button" aria-label="Favorite" ng-click="UnFavAdventure(favorita._id)">
+                                            <i style="color: red" class="fa fa-heart"></i>
+                                        </md-button>
                                     </div>
-                                    <hr>
-                                </a>
-                            </div>
+                                    <div class="col-md-1"></div>
+                                </div>
+                                <hr>
+
+                </div>
+                            </a>
+
                         </md-card-content>
                     </md-card>
                 </div>

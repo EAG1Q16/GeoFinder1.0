@@ -7,6 +7,7 @@ angular.module('GeoFinderApp').controller('PublicAdventureProfileCtrl',['$scope'
     var adventureID = window.location.href.split("/").pop();
 
 
+
     // when landing on the page get user
     $http.get('/user/sessionid')
         .success(function(data) {
@@ -180,5 +181,6 @@ angular.module('GeoFinderApp').controller('PublicAdventureProfileCtrl',['$scope'
                 console.log('Error' + data);
             });
     };
+
 
 }]);
