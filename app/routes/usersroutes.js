@@ -748,6 +748,21 @@ router.post('/app/facebook/login', function(req, res){
     });
 });
 
+//Login silly for the mobile app without passport more efficient way
+router.post('/app/easy/login', function(req, res){
+    console.log(req.body);
+    var query = {_id: req.body.id};
+    User.findOne(query, function(err, existingUser) {
+        if (existingUser) {
+            res.send(existingUser)
+        }
+        if(err){
+            res.status(400).send('Algo ha ocurrido mal')
+        }
+    });
+});
+
+
 module.exports = router;
 
 
