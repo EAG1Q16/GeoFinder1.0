@@ -157,9 +157,6 @@ router.post('/near/', function (req, res){
                 if(test == true)
                 {
                     cercanas.push(adventure);
-                    //return cercanas;
-                    //res.send(cercanas);
-                    //cercanas=[];
                 }
                 else
                     console.log('false');
@@ -187,46 +184,27 @@ router.post('/hintnear/', function (req, res){
             res.send(err)
         if(adventure){
                 var pistas;
-               // console.log('Entro en el iiiiif');
-               // var c_long = adventure.location.coordinates[0];
-               // var c_lat = adventure.location.coordinates[1];
-               // console.log('lat',lat);
-               // console.log('lon',lon);
-               // console.log('clat',c_lat);
-               // console.log('clon',c_long);
-               // var posicion = geolib.isPointInCircle({latitude: lat, longitude: lon},
-                //    {latitude: c_lat, longitude: c_long},
-                 //   20);
-               // console.log(posicion);
+                var hintadv = adventure.hints;
+                //console.log('hintadv',hintadv);
 
-               // if(posicion == true)
-               // {
-                    var hintadv = adventure.hints;
-                    //console.log('hintadv',hintadv);
-                    
 
-                    for (var i = 0; i < hintadv.length; i++){
-                        console.log('fooooooooor');
-                        var c_long = hintadv[i].location.coordinates[0];
-                        var c_lat = hintadv[i].location.coordinates[1];
-                        var test1 = geolib.isPointInCircle({latitude: lat, longitude: lon},
-                            {latitude: c_lat, longitude: c_long},
-                            20);
+                for (var i = 0; i < hintadv.length; i++){
+                    console.log('fooooooooor');
+                    var c_long = hintadv[i].location.coordinates[0];
+                    var c_lat = hintadv[i].location.coordinates[1];
+                    var test1 = geolib.isPointInCircle({latitude: lat, longitude: lon},
+                        {latitude: c_lat, longitude: c_long},
+                        20);
 
-                        if (test1 == true) {
-                            pistas = hintadv[i];
-                            console.log(pistas);
-                            res.send(pistas);
-                        }
-                        else {
-                            console.log('false');
-                        }
+                    if (test1 == true) {
+                        pistas = hintadv[i];
+                        console.log('pistaaaasaaas' ,pistas);
+                        res.send(pistas);
                     }
-               // }
-               // else
-               //     console.log('Dirigete a la localización de la aventura');
-               //     res.send('Dirígete a la localización de la aventura');
-
+                    else {
+                        console.log('false');
+                    }
+                }
         }
     });
 });
@@ -247,9 +225,34 @@ router.post('/posicion/', function (req, res){
             var posicion = geolib.isPointInCircle({latitude: lat, longitude: lon},
                 {latitude: c_lat, longitude: c_long},
                 20);
+            console.log(c_long);
+            console.log(c_lat);
+            console.log(lon);
+            console.log(lat);
+            console.log(posicion);
             res.send(posicion);
 
         }
+    });
+});
+
+router.post('/timeplayed/', function(req, res) {
+    var query = {_id: req.body.adventure_id};
+    var update = {$inc : {"played" : 1}};
+    var options = {};
+
+    Adventures.findOneAndUpdate(query, update, options, function(err, adventure) {
+        if (err) {
+            res.send(err);
+        }
+        console.log(adventure);
+    });
+
+    Adventures.find({_id: req.body.adventure_id}).deepPopulate(pathdeepPopulate).exec().then(function (err, adventure) {
+        if(err)
+            res.send(err)
+        if (adventure)
+        res.send(adventure);
     });
 });
 
