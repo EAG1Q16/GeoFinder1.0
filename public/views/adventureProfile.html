@@ -10,6 +10,7 @@
         right: 0;
         left: 0;
     }
+    .container {box-sizing: border-box}
 </style>
 
 <div class="AdventureP" ng-controller="PublicAdventureProfileCtrl">
@@ -23,32 +24,45 @@
             </ui-gmap-marker>
         </ui-gmap-google-map>
         </div>
-        <div class="row">
-            <div class="col-md-12">
-                <md-card>
-                    <md-card-content>
-                        <div class="col-md-6">
-                            <div class="col-md-12">
-                            <canvas id="radar" class="chart chart-radar"
-                            chart-data="data" chart-options="options" chart-labels="labels">
-                            </canvas>
+        <br>
+        <br>
+        <!--<div class="row">-->
+        <!--<div class="col-md-12">-->
+            <div class="detailBox">
+                <div class="titleBox">
+                    <label><h4>Comentarios:</h4></label>
+                </div>
+                <div class="actionBox">
+                    <ul class="commentList">
+                        <li ng-repeat="comment in comments">
+                            <button type="button" class="btn btn-custom glyphicon glyphicon-remove close" ng-show="UserSessionId._id == comment.user._id" ng-click="deletecomment(comment._id)"></button>
+                            <div class="commenterImage">
+                                <img src="{{comment.user.photo}}" />
                             </div>
-                         </div>
-                        <div class="col-md-6">
-                            <div class="col-md-12">
-                                <canvas id="doughnut" class="chart chart-doughnut"
-                                        chart-data="data" chart-labels="labels">
-                                </canvas>
+                            <div class="commentText">
+                                <p class=""><b>{{comment.user.name}}</b></p>
+                                <p class="">{{comment.text}}</p> <span class="date sub-text">{{comment.commentdate}}</span>
                             </div>
+                            <md-divider></md-divider>
+                        </li>
+                    </ul>
+                    <form class="form-inline" role="form">
+                        <div class="form-group">
+                            <input class="form-control" type="text" placeholder="Escribe tu comentario" ng-model="NewComment.text">
                         </div>
-                    </md-card-content>
-                </md-card>
+                        <div class="form-group">
+                            <button class="btn btn-success" ng-click="addcomment()">Añadir</button>
+                        </div>
+                    </form>
+                </div>
+
             </div>
-            </div>
-        </div>
+        <!--</div>-->
+        <!--</div>-->
+    </div>
     <div class="col-md-4">
-        <div class="row">
-        <div class="col-md-12">
+        <div class="row" style="position: fixed">
+        <div class="col-md-11">
         <div class="row">
                             <div class="col-md-12">
                                 <md-card>
@@ -95,45 +109,33 @@
                     </md-card>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="detailBox">
-                    <div class="titleBox">
-                        <label><h4>Comentarios:</h4></label>
-                    </div>
-                    <div class="actionBox">
-                        <ul class="commentList">
-                            <li ng-repeat="comment in comments">
-                                <button type="button" class="btn btn-custom glyphicon glyphicon-remove close" ng-show="UserSessionId._id == comment.user._id" ng-click="deletecomment(comment._id)"></button>
-                                <div class="commenterImage">
-                                    <img src="{{comment.user.photo}}" />
+            <div class="row">
+                <div class="col-md-12">
+                    <md-card>
+                        <md-card-content>
+                            <div class="row">
+                                <div class="col-md-12">
+                                <div class="col-md-2"></div>
+                            <div class="col-md-10">
+                                <canvas id="radar" class="chart chart-radar" chart-data="chart.data"
+                                        chart-options="chart.options" chart-labels="chart.labels"
+                                        chart-colors="chart.colors">
+                                </canvas>
+                            </div>
                                 </div>
-                                <div class="commentText">
-                                    <p class=""><b>{{comment.user.name}}</b></p>
-                                    <p class="">{{comment.text}}</p> <span class="date sub-text">{{comment.commentdate}}</span>
-                                </div>
-                                <md-divider></md-divider>
-                            </li>
-                        </ul>
-                        <form class="form-inline" role="form">
-                            <div class="form-group">
-                                <input class="form-control" type="text" placeholder="Escribe tu comentario" ng-model="NewComment.text">
+                                <!--<h3>La aventura en grafico</h3>-->
+                                <!--<div class="col-md-1"></div>-->
                             </div>
-                            <div class="form-group">
-                                <button class="btn btn-success" ng-click="addcomment()">Añadir</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                            </div>
-                        </div>
-                    </div>
+                        </md-card-content>
+                    </md-card>
                 </div>
             </div>
-        </div>
+
         </div>
     </div>
+        </div>
     </div>
+</div>
 </div>
 </div>
 </div>

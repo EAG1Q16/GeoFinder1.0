@@ -6,11 +6,7 @@ angular.module('GeoFinderApp').controller('PublicAdventureProfileCtrl',['$scope'
 
     var adventureID = window.location.href.split("/").pop();
 
-    $scope.labels =["Java", "Hadoop", "Hive", "PIG", "MapReduce", "Git"];
 
-    $scope.data = [
-        [28, 48, 40, 19, 96, 100]
-    ];
 
     // when landing on the page get user
     $http.get('/user/sessionid')
@@ -43,8 +39,36 @@ angular.module('GeoFinderApp').controller('PublicAdventureProfileCtrl',['$scope'
 
             $scope.AdventureProfileInfo = data;
             $scope.comments = data.comments;
-            console.log($scope.comments);
-            console.log($scope.AdventureProfileInfo);
+
+            $scope.chart ={
+                labels: ["Jugada", "Comentarios", "Favoritos"],
+                data: [data.played, data.comments.length, data.favs],
+                /*colors:[{
+                    backgroundColor: "rgba(179,181,198,0.1)",
+                    borderColor: "rgba(179,181,198,1)",
+                    pointBackgroundColor: "rgba(179,181,198,1)",
+                    pointBorderColor: "#fff",
+                    pointHoverBackgroundColor: "#fff",
+                    pointHoverBorderColor: "rgba(179,181,198,1)"
+                }],*/
+
+                options:{
+                    maintainAspectRatio:true,
+                    responsive: false,
+                    title: {
+                        display:false
+                    },
+                    legend: { display: false },
+                    scale: {
+                        reverse: false,
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+
+            };
+
             angular.forEach($scope.comments, function (comment, key) {
                 comment.commentdate = moment(comment.commentdate, "").fromNow();
             })
@@ -157,15 +181,6 @@ angular.module('GeoFinderApp').controller('PublicAdventureProfileCtrl',['$scope'
                 console.log('Error' + data);
             });
     };
-    //TEst Charts ---------------------------------------------------//
-    $scope.labels =["Eating", "Drinking", "Sleeping", "Designing", "Coding", "Cycling", "Running"];
 
-    $scope.data = [
-        [65, 59, 90, 81, 56, 55, 40],
-        [28, 48, 40, 19, 96, 27, 100]
-    ];
-
-    $scope.labels = ["Download Sales", "In-Store Sales", "Mail-Order Sales"];
-    $scope.data = [300, 500, 100];
 
 }]);

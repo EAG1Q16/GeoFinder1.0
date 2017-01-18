@@ -279,6 +279,7 @@ router.put('/update/photo/:user_id', function(req, res) {
             User.findById(req.params.user_id, function(err, user) {
                 if(err)
                     res.send(err)
+                if(user)
                 res.send(user);
             });
         });

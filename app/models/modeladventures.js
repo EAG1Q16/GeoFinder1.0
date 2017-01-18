@@ -21,6 +21,8 @@ var adventures = new mongoose.Schema({
         type : Date, default: Date.now
     },
     favs:{type: Number, default: 0
+    },
+    played:{type: Number, default: 0
     }
 });
 
