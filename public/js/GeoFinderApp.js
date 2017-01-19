@@ -2,7 +2,19 @@
  * Created by tonim on 05/10/2016.
  */
 
-var GeoFinderApp = angular.module('GeoFinderApp', ['ngRoute','uiGmapgoogle-maps','ui.bootstrap','ngMaterial','chart.js']);
+var isDlgOpen;
+
+var GeoFinderApp = angular.module('GeoFinderApp', ['ngRoute','uiGmapgoogle-maps','ui.bootstrap',
+    'ngMaterial','chart.js','ngMessages']);
+
+GeoFinderApp.directive('doNotCompile', function () {
+    return {
+        terminal: true,
+        link: function (scope, element, attrs) {
+            element.removeAttr('do-not-compile');
+        }
+    }
+})
 
 GeoFinderApp.config(['$routeProvider', function($routeProvider){
 

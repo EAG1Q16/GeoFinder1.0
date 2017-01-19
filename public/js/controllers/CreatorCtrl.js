@@ -2,7 +2,8 @@
  * Created by mbmarkus on 4/11/16.
  */
 angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','$http','uiGmapGoogleMapApi',
-    '$timeout','uiGmapIsReady', function($scope, $rootScope, $http, GoogleMapApi, $timeout, uiGmapIsReady){
+    '$timeout','uiGmapIsReady','$mdDialog','$mdToast', function($scope, $rootScope, $http, GoogleMapApi, $timeout, uiGmapIsReady,
+                                         $mdDialog, $mdToast){
 
     /**
      * Init zone
@@ -21,15 +22,127 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
         visible: false
     };
     $scope.SelectedAdv = {};
-    var CheckBoxMarkersAventureStatus = false;
+    
+    var el = angular.element(document.getElementById('map'));
+    
+    /**
+     *  Status 
+     */
+    //Primera Parte
+    //Si el Mostrar todas las Aventuras esta activo
+    $scope.IsCheckBoxMarkAdvActive = false;
+    //Si el MDialog de Creación de Aventura ha sido aplicado
+    $scope.IsAdventureInputsFilled = false;
+    //Si la Localización de la aventura ha sido aplicada
+    $scope.IsAdventurePos = false;
+    //Si la primera Pista ha sido rellenada
+    $scope.IsFirstHintFilled = false;
+    //Si la Aventura ha sido finalizada --> Pasamos a Pistas
+    $scope.IsAdventureFinished = false;
+    //Activador del Marker
+    $scope.IsMarkerCreatorActive = false;
 
-    uiGmapIsReady.promise(1).then(function(instances) {
-        var mapInstance = instances[0].map;
-        google.maps.event.addListener(mapInstance, 'click', function() {
+    //Segunda Parte
+    $scope.IsNewHintFilled = false;
+
+    //Tabs
+    $scope.IsTabVistaActive = true;
+    $scope.IsTabAventurasActive = false;
+    $scope.IsTabPistasActive = false;
+
+    $scope.SwitchTabs = function (active){
+        switch(active){
+            case "Vista":
+                $scope.IsTabVistaActive = true;
+                $scope.IsTabAventurasActive = false;
+                $scope.IsTabPistasActive = false;
+                break;
+            case "Aventuras":
+                $scope.IsTabVistaActive = false;
+                $scope.IsTabAventurasActive = true;
+                $scope.IsTabPistasActive = false;
+                break;
+            case "Pistas":
+                $scope.IsTabVistaActive = false;
+                $scope.IsTabAventurasActive = false;
+                $scope.IsTabPistasActive = true;
+                break;
+            default:
+                $scope.IsTabVistaActive = true;
+                $scope.IsTabAventurasActive = false;
+                $scope.IsTabPistasActive = false;
+                break;
+        }
+    };
+    /**
+     * MDDialog Zone
+     */
+
+    $scope.log = function() {
+        console.log($scope.NewAdventure);
+        console.log($scope.NewHint);
+        console.log($scope.SelectedAdv);
+    };
+
+    $scope.hide = function() {
+        $mdDialog.hide();
+    };
+
+    $scope.cancel = function() {
+        $scope.NewAdventure = {};
+        $scope.NewHint = {};
+        $mdDialog.hide();
+
+        $scope.IsAdventureInputsFilled = false;
+        //Si la Localización de la aventura ha sido aplicada
+        $scope.IsAdventurePos = false;
+        //Si la primera Pista ha sido rellenada
+        $scope.IsFirstHintFilled = false;
+        //Activador del Marker
+        $scope.IsMarkerCreatorActive = false;
+
+        $scope.IsNewHintFilled = false;
+
+    };
+
+    $scope.showCustomToast = function() {
+        $mdToast.show({
+            hideDelay   : 0,
+            position    : 'top right',
+            controller  : 'CreatorCtrl',
+            templateUrl : 'toast-template.html',
+            parent: el
         });
-        google.maps.event.addListener(mapInstance, 'idle', function() {
-        });
-    });
+    };
+
+    $scope.closeToast = function() {
+        if (isDlgOpen) return;
+
+        $mdToast
+            .hide()
+            .then(function() {
+                isDlgOpen = false;
+            });
+    };
+
+    $scope.openMoreInfo = function(e) {
+        if ( isDlgOpen ) return;
+        isDlgOpen = true;
+
+        $mdDialog
+            .show($mdDialog
+                .alert()
+                .title('More info goes here.')
+                .textContent('Something witty.')
+                .ariaLabel('More info')
+                .ok('Got it')
+                .targetEvent(e)
+            )
+            .then(function() {
+                isDlgOpen = false;
+            })
+    };
+
 
     /**
      * Map zone
@@ -61,34 +174,7 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
         bounds: {},
         clickedMarker: {
             id: 0,
-            options:{
-            }
-        },
-        events: {
-            //This turns of events and hits against scope from gMap events this does speed things up
-            // adding a blacklist for watching your controller scope should even be better
-            blacklist: ['drag', 'dragend','dragstart','zoom_changed', 'center_changed'],
-            click: function (mapModel, eventName, originalEventArgs) {
-                // 'this' is the directive's scope
-                $log.info("user defined event: " + eventName, mapModel, originalEventArgs);
-
-                var e = originalEventArgs[0];
-                console.log(e);
-                var lat = e.latLng.lat(),
-                    lon = e.latLng.lng();
-                $scope.map.clickedMarker = {
-                    id: 0,
-                    options: {
-                        labelContent: 'You clicked here ' + 'lat: ' + lat + ' lon: ' + lon,
-                        labelClass: "marker-labels",
-                        labelAnchor: "50 0"
-                    },
-                    latitude: lat,
-                    longitude: lon
-                };
-                //scope apply required because this event handler is outside of the angular domain
-                //$scope.$evalAsync();
-            }
+            options: {}
         }
     };
     /**
@@ -108,17 +194,17 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
                     latitude: position.coords.latitude,
                     longitude: position.coords.longitude,
                     options: {
-                        labelContent: '----Puntero----',
-                        labelAnchor: "26 0",
-                        labelClass: "marker-labels",
-                        draggable: true
+                        icon: '/images/icons/ic_place_black_48px.svg',
+                        animation: google.maps.Animation.DROP,
+                        draggable: true,
+                        raiseOnDrag: true
                     }
                 };
 
 
                 $scope.$watchCollection("map.createMarker", function(newVal, oldVal) {
-                    $scope.map.center.latitude = position.coords.latitude;
-                    $scope.map.center.longitude = position.coords.longitude;
+                    $scope.map.center.latitude = $scope.map.createMarker.latitude;
+                    $scope.map.center.longitude = $scope.map.createMarker.longitude;
 
                     $scope.NewAdventure.location_coordinates = [$scope.map.createMarker.longitude, $scope.map.createMarker.latitude];
                     $scope.NewHint.location_coordinates = [$scope.map.createMarker.longitude, $scope.map.createMarker.latitude];
@@ -145,16 +231,16 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
                     var dificon;
                     switch (value.difficulty){
                         case "Fácil":
-                            dificon = '/images/MapIcons/extended-icons5_101.png';
+                            dificon = '/images/icons/extended-icons5_101.png';
                             break;
-                        case "Mediana":
-                            dificon = '/images/MapIcons/extended-icons5_102.png';
+                        case "Media":
+                            dificon = '/images/icons/extended-icons5_102.png';
                             break;
                         case "Díficil":
-                            dificon = '/images/MapIcons/extended-icons5_103.png';
+                            dificon = '/images/icons/extended-icons5_103.png';
                             break;
                         default:
-                            dificon = '/images/MapIcons/extended-icons5_05.png';
+                            dificon = '/images/icons/extended-icons5_05.png';
                             break;
                     }
 
@@ -188,55 +274,56 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
     };
 
     $scope.ShowHintofAdventureonMap = function (){
-            $scope.CleanMap();
-            var markersHints = [];
-            $http.get('/adventures/id/'+ $scope.SelectedAdv._id)
-                .success(function (data) {
-                    angular.forEach(data.hints, function (value, key) {
-                        markersHints.push(
-                            {
-                                index: value.index,
-                                indication: {
-                                    distance: value.indication.distance,
-                                    sense: value.indication.sense
-                                },
-                                text: value.text,
-                                image: value.image,
-                                _id: value._id,
-                                latitude: value.location.coordinates[1],
-                                longitude: value.location.coordinates[0],
-                                showWindow: false,
-                                options: {
-                                    icon: '/images/MapIcons/extended-icons5_77.png',
-                                    animation: 0,
-                                    title: value.text,
-                                    labelAnchor: "26 0",
-                                    labelClass: "marker-labels"
-                                }
-                            }
-                        );
-                    });
-                    console.log(markersHints);
-                })
-                .error(function (data) {
-                    console.log(data);
-                })
+        $scope.CleanMap();
 
-            $scope.map.markersHints = markersHints;
+        var markersHints = [];
+        $http.get('/adventures/id/'+ $scope.SelectedAdv._id)
+            .success(function (data) {
+                angular.forEach(data.hints, function (value) {
+                    markersHints.push(
+                        {
+                            index: value.index,
+                            indication: {
+                                distance: value.indication.distance,
+                                sense: value.indication.sense
+                            },
+                            text: value.text,
+                            image: value.image,
+                            _id: value._id,
+                            latitude: value.location.coordinates[1],
+                            longitude: value.location.coordinates[0],
+                            showWindow: false,
+                            options: {
+                                icon: '/images/icons/ic_assistant_photo_black_48px.svg',
+                                animation: google.maps.Animation.DROP,
+                                title: value.text,
+                                labelAnchor: "26 0",
+                                labelClass: "marker-labels"
+                            }
+                        }
+                    );
+                });
+                console.log(markersHints);
+                $scope.map.markersHints = markersHints;
+            })
+            .error(function (data) {
+                console.log(data);
+            });
+
         };
 
     $scope.CleanMap = function () {
         $scope.map.markersHints = [];
         $scope.map.markerAdventures = [];
-    }
+    };
 
     $scope.CheckBoxMarkersAventure = function () {
-        if (!CheckBoxMarkersAventureStatus){
-            CheckBoxMarkersAventureStatus = true;
+        if (!$scope.IsCheckBoxMarkAdvActive){
+            $scope.IsCheckBoxMarkAdvActive = true;
             $scope.ShowAdventuresonMap();
         }
         else {
-            CheckBoxMarkersAventureStatus = false;
+            $scope.IsCheckBoxMarkAdvActive = false;
             $scope.CleanMap();
         }
     };
@@ -245,12 +332,31 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
         switch(style){
             case "Diurno":
                 $scope.options.styles = MapBox;
+                if($scope.IsAdventureInputsFilled){
+                    $scope.map.createMarker.options.icon = '/images/icons/ic_place_black_48px.svg';
+                }
+                angular.forEach($scope.map.markersHints, function (value) {
+                    value.options.icon = '/images/icons/ic_assistant_photo_black_48px.svg'
+                });
                 break;
             case "Nocturno":
                 $scope.options.styles = BlackMap;
+                if($scope.IsAdventureInputsFilled){
+                    $scope.map.createMarker.options.icon = '/images/icons/ic_place_white_48px.svg';
+                }
+                angular.forEach($scope.map.markersHints, function (value) {
+                    value.options.icon = '/images/icons/ic_assistant_photo_white_48px.svg'
+                });
+
                 break;
             default:
                 $scope.options.styles = MapBox;
+                if($scope.IsAdventureInputsFilled){
+                    $scope.map.createMarker.options.icon = '/images/icons/ic_place_black_48px.svg';
+                }
+                angular.forEach($scope.map.markersHints, function (value) {
+                    value.options.icon = '/images/icons/ic_assistant_photo_black_48px.svg'
+                });
                 break;
         }
     };
@@ -259,7 +365,6 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
      * Creator Adventure Zone
      * @constructor
      */
-
 
     $scope.CreateAdventure = function(){
         if ($rootScope.UserSessionId._id != null) {
@@ -270,15 +375,14 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
                 text: $scope.NewAdventure.hinttext,
                 image: $scope.NewAdventure.hintimage
             };
+
             $http.post('/adventures/createadventure/', $scope.NewAdventure)
                 .success(function (data) {
+                    //[0] necessario para eliminar el array
+                    $scope.SelectedAdv = data;
                     console.log(data);
                     //Reprint Coordinates
                     $scope.NewAdventure.location_coordinates = [$scope.map.createMarker.longitude, $scope.map.createMarker.latitude];
-                    $scope.SuccessMsg = "Adventura creada";
-                    $timeout(function () {
-                        $scope.SuccessMsg = null;
-                    }, 3000);
 
                     var Newassign = {};
                     Newassign.adventure_id = data._id;
@@ -286,8 +390,8 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
 
                     $http.post('/user/acreatedadv/', Newassign)
                         .success(function (data) {
-                            $scope.SelectedAdv._id = data;
-                            $scope.NewAdventure = {}; //clear the form
+                            $scope.NewAdventure = {};
+                            //clear the form
                         })
                         .error(function (data) {
                             console.log('Error:' + data);
@@ -298,6 +402,113 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
                 });
         }
         else $scope.ErrorMsg = ('Es necesario estar registrado');
+    };
+
+    $scope.showProcessCrAdv = function(ev) {
+        $mdDialog.show({
+            controller: function () {
+                this.parent = $scope;
+            },
+            controllerAs: 'ctrl',
+            templateUrl: 'dialogCreateAdv.tmpl.html',
+            targetEvent: ev,
+            clickOutsideToClose:true,
+            fullscreen: $scope.customFullscreen
+            // Only for -xs, -sm breakpoints.
+        }).then(function() {
+            console.log($scope.NewAdventure);
+            if(!$scope.IsAdventureInputsFilled){
+                var toast = $mdToast.simple()
+                    .textContent('Creación cancelada!')
+                    .action('OK')
+                    .highlightAction(false)
+                    .hideDelay(5000)
+                    .parent(el)
+                    .position('top');
+                $mdToast.show(toast);
+                $scope.NewAdventure = {};
+                $scope.SwitchTabs("Aventuras");
+            }
+            else
+            {
+                $scope.IsAdventurePos = true;
+                $scope.SwitchTabs("Vista");
+                $mdToast.show({
+                    hideDelay   : 0,
+                    position    : 'top right',
+                    controller  : 'CreatorCtrl',
+                    templateUrl : 'assignPoint.html',
+                    parent: el
+                }).then(function () {
+                    //Cerramos la Toast
+                    $scope.IsMarkerCreatorActive = false;
+                    console.log("Marker Cerrado:"+ $scope.IsMarkerCreatorActive);
+
+                    $mdDialog.show({
+                        controller: function () { this.parent = $scope; },
+                        controllerAs: 'ctrl',
+                        templateUrl: 'dialogAggHint.tmpl.html',
+                        targetEvent: ev,
+                        clickOutsideToClose:true,
+                        fullscreen: $scope.customFullscreen
+                        // Only for -xs, -sm breakpoints.
+                    }).then(function() {
+                        if(!$scope.IsFirstHintFilled){
+                            var toast = $mdToast.simple()
+                                .textContent('Creación cancelada!')
+                                .action('OK')
+                                .highlightAction(false)
+                                .hideDelay(5000)
+                                .parent(el)
+                                .position('top');
+                            $mdToast.show(toast);
+                            $scope.NewAdventure = {};
+                            $scope.SwitchTabs("Aventuras");
+                        }
+                        else {
+                            console.log($scope.NewAdventure);
+
+                            $scope.IsAdventureInputsFilled = false;
+                            //Si la Localización de la aventura ha sido aplicada
+                            $scope.IsAdventurePos = false;
+                            //Si la primera Pista ha sido rellenada
+                            $scope.IsFirstHintFilled = false;
+                            //Activador del Marker
+                            $scope.IsMarkerCreatorActive = false;
+
+                            $scope.CreateAdventure();
+
+                            //Habilito el boton de Agregar
+                            $scope.IsAdventureFinished = true;
+
+                            var confirm = $mdDialog.confirm()
+                                .title('Agregación de Pistas')
+                                .textContent('Tu Aventura ya esta creada, ahora pasaremos al crear Pistas')
+                                .ariaLabel('Lucky day')
+                                .targetEvent(ev)
+                                .ok('Please do it!');
+
+                            $mdDialog.show(confirm).then(function() {
+
+                                console.log($scope.SelectedAdv);
+                                var toast = $mdToast.simple()
+                                    .textContent('Aventura Creada: '+ $scope.SelectedAdv.name + ' - Dificultad: '+ $scope.SelectedAdv.difficulty)
+                                    .action('OK')
+                                    .highlightAction(false)
+                                    .hideDelay(8000)
+                                    .parent(el)
+                                    .position('top left');
+                                $mdToast.show(toast);
+
+                                $scope.ShowHintofAdventureonMap();
+
+                            });
+                        }
+
+                    });
+                })
+            }
+        });
     };
 
     /**
@@ -324,7 +535,7 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
 
                     var Newassign = {};
                     Newassign.hint_id = data._id;
-                    Newassign.adventure_id = $scope.SelectedAdv._id;
+                    Newassign.adventure_id = $rootScope.SelectedAdv._id;
 
                     console.log(Newassign);
 
@@ -344,21 +555,121 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
         else $scope.ErrorMsg = ('Es necesario estar registrado');
     };
 
-    $scope.ActivHintCreator = function (status) {
-        if (status){
-            $scope.StatusHint = false;
-        }
-        else {
-            $scope.StatusHint = true;
-        }
-    };
-
     $scope.SelAdventureforHint = function (id) {
         console.log(id);
-        $scope.SelectedAdv =
-            {
-                _id: id
-            };
+        $http.get('/adventures/id/' + id)
+            .success(function(data) {
+                $scope.SelectedAdv = data;
+                console.log($scope.SelectedAdv);
+
+            })
+            .error(function(data) {
+                console.log('Error: ' + data);
+            });
     };
+
+    $scope.showPopUpCrHint = function(ev) {
+        $mdDialog.show({
+            controller: function () {this.parent = $scope;},
+            controllerAs: 'ctrl',
+            templateUrl: 'dialogAggHintWFinal.tmpl.html',
+            targetEvent: ev,
+            clickOutsideToClose:true,
+            fullscreen: $scope.customFullscreen
+            // Only for -xs, -sm breakpoints.
+        }).then(function() {
+            console.log($scope.NewHint);
+            if(!$scope.IsNewHintFilled){
+                var toast = $mdToast.simple()
+                    .textContent('Creación cancelada!')
+                    .action('OK')
+                    .highlightAction(false)
+                    .hideDelay(5000)
+                    .parent(el)
+                    .position('top');
+                $mdToast.show(toast);
+                $scope.NewHint = {};
+            }
+            else {
+                $scope.IsNewHintFilled = true;
+                $scope.SwitchTabs("Vista");
+                $mdToast.show({
+                    hideDelay   : 0,
+                    position    : 'top right',
+                    controller  : 'CreatorCtrl',
+                    templateUrl : 'assignPoint.html',
+                    parent: el
+                }).then(function () {
+                    //Cerramos la Toast
+                    $scope.IsMarkerCreatorActive = false;
+                    console.log("Marker Cerrado:"+ $scope.IsMarkerCreatorActive);
+
+                    $mdDialog.show({
+                        controller: function () { this.parent = $scope; },
+                        controllerAs: 'ctrl',
+                        templateUrl: 'dialogAggHint.tmpl.html',
+                        targetEvent: ev,
+                        clickOutsideToClose:true,
+                        fullscreen: $scope.customFullscreen
+                        // Only for -xs, -sm breakpoints.
+                    }).then(function() {
+                        if(!$scope.IsFirstHintFilled){
+                            var toast = $mdToast.simple()
+                                .textContent('Creación cancelada!')
+                                .action('OK')
+                                .highlightAction(false)
+                                .hideDelay(5000)
+                                .parent(el)
+                                .position('top');
+                            $mdToast.show(toast);
+                            $scope.NewAdventure = {};
+                            $scope.SwitchTabs("Aventuras");
+                        }
+                        else {
+                            console.log($scope.NewAdventure);
+
+                            $scope.IsAdventureInputsFilled = false;
+                            //Si la Localización de la aventura ha sido aplicada
+                            $scope.IsAdventurePos = false;
+                            //Si la primera Pista ha sido rellenada
+                            $scope.IsFirstHintFilled = false;
+                            //Activador del Marker
+                            $scope.IsMarkerCreatorActive = false;
+
+                            $scope.CreateAdventure();
+
+                            //Habilito el boton de Agregar
+                            $scope.IsAdventureFinished = true;
+
+                            var confirm = $mdDialog.confirm()
+                                .title('Agregación de Pistas')
+                                .textContent('Tu Aventura ya esta creada, ahora pasaremos al crear Pistas')
+                                .ariaLabel('Lucky day')
+                                .targetEvent(ev)
+                                .ok('Please do it!');
+
+                            $mdDialog.show(confirm).then(function() {
+
+                                console.log($scope.SelectedAdv);
+                                var toast = $mdToast.simple()
+                                    .textContent('Aventura Creada: '+ $scope.SelectedAdv.name + ' - Dificultad: '+ $scope.SelectedAdv.difficulty)
+                                    .action('OK')
+                                    .highlightAction(false)
+                                    .hideDelay(8000)
+                                    .parent(el)
+                                    .position('top left');
+                                $mdToast.show(toast);
+
+                                $scope.ShowHintofAdventureonMap();
+
+                            });
+                        }
+
+                    });
+                })
+            }
+        });
+    };
+
 
 }]);

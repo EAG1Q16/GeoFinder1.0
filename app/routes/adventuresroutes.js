@@ -70,10 +70,10 @@ router.post('/createadventure/', function(req, res) {
                 if (err) {
                     res.send(err);
                 }
-                Adventures.findById(adv._id, function (err, advent) {
-                    if (err)
-                        res.send(err);
-                    res.send(advent);
+                Adventures.findById(req.params.adv_id).deepPopulate(['adventures.comments', 'comments.user', 'hints']).exec().then(function(err, adventure){
+                    if(err)
+                        res.send(err)
+                    res.send(adventure);
                 });
             });
 
