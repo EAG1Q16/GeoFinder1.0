@@ -9,24 +9,31 @@ angular.module('GeoFinderApp').controller('RegisterCtrl',['$scope','$location','
     $scope.NewUser = {};
 
     $scope.RegisterUser = function(){
-        $http.post('/user/signup', $scope.NewUser)
-            .success(function(data){
-                $scope.UserRegistred = {
-                    username: $scope.NewUser.username,
-                    password: $scope.NewUser.password
-                };
-                $http.post('/user/login', $scope.UserRegistred)
-                    .success(function(data){
-                        $location.path('/index');
-                    })
-                    .error(function(data){
-                        console.log('Error:' + data);
-                    });
-            })
-            .error(function(data){
-                console.log('Error:' + data);
-                $scope.ErrorMsg = (data);
-            });
+        if($scope.NewUser.password == $scope.NewUser.repetir){
+            $http.post('/user/signup', $scope.NewUser)
+                .success(function(data){
+                    $scope.UserRegistred = {
+                        username: $scope.NewUser.username,
+                        password: $scope.NewUser.password
+                    };
+                    $http.post('/user/login', $scope.UserRegistred)
+                        .success(function(data){
+                            $location.path('/index');
+                        })
+                        .error(function(data){
+                            console.log('Error:' + data);
+                        });
+                })
+                .error(function(data){
+                    console.log('Error:' + data);
+                    $scope.ErrorMsg = (data);
+                });
+        }
+        else
+        {
+            $scope.ErrorMsg = 'Las contraseñas no coinciden';
+        }
+
     };
 
 }]);

@@ -10,7 +10,7 @@
                         </md-card-header>
                         <md-card-content>
                             <!-- List group -->
-                            <div class="" ng-repeat="creada in creadas">
+                            <div class="" ng-repeat="creada in creadas track by $index">
                                 <a href="#/adventureprofile/{{creada._id}}" style="color: inherit">
                                     <div class="row">
                                         <div class="col-md-4">
@@ -20,7 +20,7 @@
                                             <h4>{{ creada.name }}</h4>
                                         </div>
                                     </div>
-                                <hr>
+                                <hr ng-hide="$last">
                                 </a>
                           </div>
                             <div ng-if="creadas.length == 0">
@@ -42,9 +42,11 @@
                             <div class="panel-title"><b><i class="fa fa-heart"></i> Aventuras Favoritas:</b></div>
                         </md-card-header>
                         <md-card-content>
+                            <div ng-if="favoritas.length == 0" class="text-center">
+                                <h4 style = "color: dimgrey">Añade aventuras a tus favoritas</h4>
+                            </div>
                             <!-- List group -->
-
-                                <div class="" ng-repeat="favorita in favoritas" ng-click="PerfilAventura(favorita._id)">
+                                <div class="" ng-repeat="favorita in favoritas track by $index" ng-click="PerfilAventura(favorita._id)">
                                 <div class="row">
                                     <a href="#/adventureprofile/{{favorita._id}}" style="color: inherit">
                                         <div class="col-md-4">
@@ -55,24 +57,15 @@
                                         </div>
                                     </a>
                                     <div class="col-md-2" style="padding-top: 1em; align-content: center">
-                                        <md-button class="md-icon-button" aria-label="Favorite" ng-click="UnFavAdventure(favorita._id)">
-                                            <i style="color: red" class="fa fa-heart"></i>
+                                        <md-button class="md-icon-button" ng-click="UnFavAdventure(favorita._id)">
+                                           <i style="color: red" class="fa fa-heart"></i>
                                         </md-button>
                                     </div>
                                     <div class="col-md-1"></div>
                                 </div>
-                                <hr>
-
-                </div>
+                                <hr ng-hide="$last">
+                             </div>
                             </a>
-                            <div ng-if="favoritas.length == 0">
-                                <div class="row" style="padding-top: 3em">
-                                    <div class="col text-center">
-                                        <h4 style = "color: dimgrey">Ninguna favorita!</h4>
-                                    </div>
-                                </div>
-                            </div>
-
                         </md-card-content>
                     </md-card>
                 </div>
@@ -84,8 +77,11 @@
                             <div class="panel-title"><b><i class="fa fa-map-signs"></i> Aventuras Jugadas:</b></div>
                         </md-card-header>
                         <md-card-content>
+                            <div ng-if="jugadas.length == 0" class="text-center">
+                                <h4 style = "color: dimgrey">No ha jugado ninguna aventura</h4>
+                            </div>
                             <!-- List group -->
-                            <div class="" ng-repeat="jugada in jugadas">
+                            <div class="" ng-repeat="jugada in jugadas track by $index">
                                 <a href="#/adventureprofile/{{jugada._id}}" style="color: inherit">
                                     <div class="row">
                                         <div class="col-md-4">
@@ -95,16 +91,8 @@
                                             <h4>{{ jugada.name }}</h4>
                                         </div>
                                     </div>
-                                    <hr>
+                                    <hr ng-hide="$last">
                                 </a>
-                            </div>
-                            <div ng-if="jugadas.length == 0">
-                                <div class="row" style="padding-top: 3em">
-                                    <div class="col text-center">
-                                        <h4 style = "color: dimgrey">No ha jugado ninguna aventura, <br>
-                                            Disfrute de Geofinder!</h4>
-                                    </div>
-                                </div>
                             </div>
                         </md-card-content>
                     </md-card>

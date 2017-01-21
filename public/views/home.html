@@ -114,14 +114,49 @@
     <div class="col-md-9">
         <div class="row">
             <div class="col-md-12">
+                <br>
+                <div ng-if="FollowingAdvs.length == 0" ng-init="recomendedUser()">
+                    <div class="alert alert-info text-center">
+                    <h5>Todavía no sigues ningún aventurero, te recomendamos  algunos de los más audaces</h5>
+                    </div>
+                    <md-card ng-repeat="user in users | orderBy: '-score' | limitTo: '5'">
+                        <a style="color: inherit" ng-href="#/userprofile/{{user._id}}"><md-card-content>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="col-md-2">
+                                        <img class="img-circle" style="height: 100px; width: 100px" ng-src="{{user.photo}}">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h3>{{user.name}}</h3>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <img ng-if="user.score >=0 && user.score <150" class="img-responsive" height="65px" width="65px" src="../images/CAmpista.png">
+                                        <img ng-if="user.score >= 150 && user.score <300" class="img-responsive center-block" height="65px" width="65px" src="../images/Navegante.png">
+                                        <img ng-if="user.score >= 300 && user.score <450" class="img-responsive center-block" height="65px" width="65px" src="../images/Montañero.png">
+                                        <img ng-if="user.score >= 450 " class="img-responsive center-block" height="65px" width="65px" src="../images/Aventurero.png">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h5>{{user.description}}</h5>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <h5><b>Puntos:</b> {{user.score}}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </md-card-content></a>
+                    </md-card>
+                 </div>
+
                 <div ng-repeat="FollowingAdv in FollowingAdvs">
+                    <div class="alert alert-info text-center" ng-if="FollowingAdv.adventures.created.length == 0">
+                        Tus amigos aún no han creado ningúna aventura anímalos a hacerlo
+                    </div>
                     <md-card ng-repeat="adventure in FollowingAdv.adventures.created | orderBy: adventure.registerdate">
                         <md-card-title>
                             <md-card-title-text>
                                 <span class="md-headline">{{adventure.name}}</span>
                                 <span class="md-subhead">{{adventure.description}}</span>
                                 <span class="md-subhead">{{adventure.registerdate}}</span>
-
                             </md-card-title-text>
                             <md-card-title-media>
                                 <div class="card-media">
@@ -145,9 +180,7 @@
                                     </div>
                                 </div>
                             </div>
-
                         </md-card-actions>
-
                     </md-card>
                 </div>
             </div>

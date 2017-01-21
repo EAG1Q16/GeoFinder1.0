@@ -18,7 +18,19 @@ router.post('/:usr_id', function(req, res) {
         user: user
     },function (err, comment) {
         if(comment){
-            res.send(comment);
+
+            var query = {_id: req.params.usr_id};
+            var update = {$inc : {"score": 1}};
+            var options = {};
+
+            User.findOneAndUpdate(query, update, options, function(err, user) {
+                if (err) {
+                    res.send(err);
+                }
+                if(user){
+                    res.send(comment);
+                }
+            });
         }else{
             res.status(400).send("Error al crear el comentario")
         }
