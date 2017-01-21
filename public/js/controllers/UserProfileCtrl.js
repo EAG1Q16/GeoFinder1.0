@@ -287,7 +287,7 @@ angular.module('GeoFinderApp').controller('ProfileCtrl',['$scope','$rootScope','
     };
 
     $scope.replaceElement = function () {
-
+        angular.element(document.getElementById('InputFileID')).click();
     };
 
     $scope.uploadFile = function(){
@@ -295,7 +295,6 @@ angular.module('GeoFinderApp').controller('ProfileCtrl',['$scope','$rootScope','
         var fd = new FormData();
         fd.append('file', file);
         console.log('mi fichero',file);
-
         $http.post('/user/update/image/' + $rootScope.UserSessionUri,fd, {
             transformRequest: angular.identity,
             headers: {'Content-Type': undefined}

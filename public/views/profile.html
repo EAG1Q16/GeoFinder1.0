@@ -15,7 +15,7 @@
                 </div>
                 <div class="col-md-4" style="padding-top: 5%; padding-left: 6%" >
                     <br  ng-show="myFile == undefined">
-                    <input type="file" file-model="myFile" id="InputFile" class="ng-hide"/>
+                    <input type="file" file-model="myFile" id="InputFileID" class="ng-hide"/>
                     <md-button class="md-raised" ng-click="replaceElement()" ng-show="myFile == undefined">Seleccionar imagen</md-button>
                     <md-button class="md-raised" ng-click="uploadFile()" ng-show="myFile != undefined">Subir</md-button>
                     <md-button class="md-raised md-warn" ng-click="cancelUpload()" ng-show="myFile != undefined">Cancelar</md-button>
