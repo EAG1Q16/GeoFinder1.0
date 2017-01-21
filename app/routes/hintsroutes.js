@@ -10,6 +10,7 @@ var geolib = new require('geolib');
 var multer = require('multer');
 var upload = multer({dest: __dirname+'/../uploads'});
 var cloudinary  = require('cloudinary');
+var User = require('../models/modeluser');
 var router = express.Router();
 
 // GET hints in list
@@ -58,7 +59,7 @@ router.post('/createhint/', function(req, res) {
                 indication:
                     {
                         distance: 0,
-                        sense: 'Waiting for a new Hint'
+                        sense: 'No Disponible'
                     }
             }, function(err, hint) {
                 if (err)
@@ -160,6 +161,20 @@ router.put('/makefinal/:id', function(req, res) {
             if (err)
                 res.send(err);
 
+
+            //Esta puesto aquí para evitar que los usuarios generen 5000 aventuras sin agregar ninguna pista
+            // y ganen puntos de forma ilegal
+            var query = {_id: req.body.id};
+            var update = {$inc : {"score" : 20}};
+            var options = {};
+
+            User.findOneAndUpdate(query, update, options, function(err, adventure) {
+                if (err) {
+                    res.send(err);
+                }
+                console.log(adventure);
+            });
+
             Hints.findById(req.params.id, function(err, hint){
                 if(err)
                     res.send(err)
@@ -197,7 +212,7 @@ router.put('/update/username/:user_id', function(req, res) {
     });
 });
 
-//Modify the photo of a user
+//Upload Fotos
 router.post('/update/image/', upload.single('file'), function(req, res) {
     cloudinary.uploader.upload(req.file.path, function(result) {
         console.log(result);

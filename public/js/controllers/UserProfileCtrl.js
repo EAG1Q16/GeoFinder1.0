@@ -287,7 +287,7 @@ angular.module('GeoFinderApp').controller('ProfileCtrl',['$scope','$rootScope','
     };
 
     $scope.replaceElement = function () {
-        angular.element(document.querySelector('#InputFile')).click();
+
     };
 
     $scope.uploadFile = function(){
@@ -327,6 +327,29 @@ angular.module('GeoFinderApp').controller('ProfileCtrl',['$scope','$rootScope','
                     .position('top right');
                 $mdToast.show(toast);
             });
+
+        angular.element(document.querySelector('#InputFile')).click().then(function () {
+
+            var file = $scope.myFile;
+            var fd = new FormData();
+            fd.append('file', file);
+            console.log('mi fichero',file);
+
+            $http.post('/user/update/image/' + $rootScope.UserSessionUri,fd, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            })
+                .success(function(data){
+                    console.log("success!!");
+                    $rootScope.UserSessionId = data;
+                    $scope.UserProfileInfo = data;
+                })
+                .error(function(err){
+                    console.log("error!!");
+                });
+        });
+
+
     };
 
     $scope.cancelUpload = function () {

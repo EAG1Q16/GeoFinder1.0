@@ -41,6 +41,8 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
     //Primera Parte
     //Si el Mostrar todas las Aventuras esta activo
     $scope.IsCheckBoxMarkAdvActive = false;
+    //Si el Mostrar todas las Aventuras propias esta activo
+    $scope.CheckBoxYourAdvActive = false;
     //Si el MDialog de Creación de Aventura ha sido aplicado
     $scope.IsAdventureInputsFilled = false;
     //Si la Localización de la aventura ha sido aplicada
@@ -56,6 +58,9 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
     $scope.IsNewHintFilled = false;
     //Señalizador del Final de Hints
     $scope.IsFinal = false;
+
+    //Visualizador
+    $scope.IsVisualizeActive = false;
 
     //Tabs
     $scope.IsTabVistaActive = true;
@@ -286,6 +291,58 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
         $scope.map.markerAdventures = markersAdventures;
     };
 
+    $scope.ShowMyAdventuresonMap = function (){
+            $scope.CleanMap();
+            var markersAdventures = [];
+            $http.get('/user/my/adventures/'+ $rootScope.UserSessionId._id)
+                .success(function (data) {
+                    angular.forEach(data.adventures.created, function (value, key) {
+                        //For color icons
+                        var dificon;
+                        switch (value.difficulty){
+                            case "Fácil":
+                                dificon = '/images/icons/extended-icons5_101.png';
+                                break;
+                            case "Media":
+                                dificon = '/images/icons/extended-icons5_102.png';
+                                break;
+                            case "Difícil":
+                                dificon = '/images/icons/extended-icons5_103.png';
+                                break;
+                            default:
+                                dificon = '/images/icons/extended-icons5_05.png';
+                                break;
+                        }
+
+                        markersAdventures.push(
+                            {
+                                name: value.name,
+                                description: value.description,
+                                image: value.image,
+                                difficulty: value.difficulty,
+                                _id: value._id,
+                                latitude: value.location.coordinates[1],
+                                longitude: value.location.coordinates[0],
+                                showWindow: false,
+                                options: {
+                                    icon: dificon,
+                                    animation: 0,
+                                    title: value.name,
+                                    labelAnchor: "26 0",
+                                    labelClass: "marker-labels"
+                                }
+                            }
+                        );
+                    });
+                    console.log(markersAdventures);
+                })
+                .error(function (data) {
+                    console.log(data);
+                })
+
+            $scope.map.markerAdventures = markersAdventures;
+        };
+
     $scope.ShowHintofAdventureonMap = function (){
         $scope.CleanMap();
 
@@ -302,30 +359,54 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
                     }
                     else icon = '/images/icons/ic_assistant_photo_black_48px.svg';
 
-
-                    markersHints.push(
-                        {
-                            index: value.index,
-                            indication: {
-                                distance: value.indication.distance,
-                                sense: value.indication.sense
-                            },
-                            text: value.text,
-                            final: value.final,
-                            image: value.image,
-                            _id: value._id,
-                            latitude: value.location.coordinates[1],
-                            longitude: value.location.coordinates[0],
-                            showWindow: false,
-                            options: {
-                                icon: icon,
-                                animation: google.maps.Animation.DROP,
-                                title: value.text,
-                                labelAnchor: "26 0",
-                                labelClass: "marker-labels"
+                    if (value.indication.distance == 0)
+                    {
+                        markersHints.push(
+                            {
+                                index: value.index,
+                                text: value.text,
+                                final: value.final,
+                                image: value.image,
+                                _id: value._id,
+                                latitude: value.location.coordinates[1],
+                                longitude: value.location.coordinates[0],
+                                showWindow: false,
+                                options: {
+                                    icon: icon,
+                                    animation: google.maps.Animation.DROP,
+                                    title: value.text,
+                                    labelAnchor: "26 0",
+                                    labelClass: "marker-labels"
+                                }
                             }
-                        }
-                    );
+                        );
+                    }
+                    else{
+                        markersHints.push(
+                            {
+                                index: value.index,
+                                indication: {
+                                    distance: 'Distancia de la próxima pista: '+ value.indication.distance,
+                                    sense: 'Rumbo: '+ value.indication.sense
+                                },
+                                text: value.text,
+                                final: value.final,
+                                image: value.image,
+                                _id: value._id,
+                                latitude: value.location.coordinates[1],
+                                longitude: value.location.coordinates[0],
+                                showWindow: false,
+                                options: {
+                                    icon: icon,
+                                    animation: google.maps.Animation.DROP,
+                                    title: value.text,
+                                    labelAnchor: "26 0",
+                                    labelClass: "marker-labels"
+                                }
+                            }
+                        );
+                    }
+
                 });
                 console.log(markersHints);
                 $scope.map.markersHints = markersHints;
@@ -342,12 +423,41 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
     };
 
     $scope.CheckBoxMarkersAventure = function () {
+
+        //Limpieza del Visualize
+        $scope.IsVisualizeActive = false;
+
+        if ($scope.CheckBoxYourAdvActive){
+            //Desactivo la otra
+            $scope.CheckBoxYourAdvActive = false;
+            $scope.CleanMap();
+        }
         if (!$scope.IsCheckBoxMarkAdvActive){
             $scope.IsCheckBoxMarkAdvActive = true;
             $scope.ShowAdventuresonMap();
         }
         else {
             $scope.IsCheckBoxMarkAdvActive = false;
+            $scope.CleanMap();
+        }
+    };
+
+    $scope.CheckBoxYourAdv = function () {
+
+        //Limpieza del Visualize
+        $scope.IsVisualizeActive = false;
+
+        if($scope.IsCheckBoxMarkAdvActive){
+            //Desactivo la otra
+            $scope.IsCheckBoxMarkAdvActive = false;
+        }
+
+        if (!$scope.CheckBoxYourAdvActive){
+            $scope.CheckBoxYourAdvActive = true;
+            $scope.ShowMyAdventuresonMap();
+        }
+        else {
+            $scope.CheckBoxYourAdvActive = false;
             $scope.CleanMap();
         }
     };
@@ -403,6 +513,8 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
      */
 
     $scope.CreateAdventure = function(){
+        $scope.CleanMap();
+
         if ($rootScope.UserSessionId._id != null) {
 
             $scope.NewAdventure.location_type = 'Point';
@@ -555,7 +667,7 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
                                 .textContent('Tu Aventura ya esta creada, ahora añadiremos más Pistas')
                                 .ariaLabel('Lucky day')
                                 .targetEvent(ev)
-                                .ok('Please do it!');
+                                .ok('Siguiente');
 
                             $mdDialog.show(confirm).then(function() {
 
@@ -634,7 +746,10 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
 
                 console.log(Newassign);
 
-                $http.put('/hints/makefinal/'+ data._id)
+                var User = {};
+                User.id = $rootScope.UserSessionId._id;
+
+                $http.put('/hints/makefinal/'+ data._id, User)
                     .success(function (data) {
 
                         $http.post('/adventures/ahintdadv/', Newassign)
@@ -657,11 +772,14 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
     };
 
     $scope.SelAdventureforHint = function (id) {
+
         console.log(id);
         $http.get('/adventures/id/' + id)
             .success(function(data) {
                 $scope.SelectedAdv = data;
-                console.log($scope.SelectedAdv);
+                //Activación del Visualize
+                $scope.IsVisualizeActive = true;
+                $scope.ShowHintofAdventureonMap();
 
             })
             .error(function(data) {
@@ -715,7 +833,6 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
 
                         $scope.CreateFinalHint();
 
-                        $scope.IsCheckBoxMarkAdvActive = false;
                         $scope.IsAdventureInputsFilled = false;
                         $scope.IsAdventurePos = false;
                         $scope.IsFirstHintFilled = false;
@@ -760,6 +877,8 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
                             .parent(el)
                             .position('top left');
                         $mdToast.show(toast);
+
+                        $scope.NewHint = {};
                     }
 
                 })
@@ -771,7 +890,7 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
     /**
      *  Image Zone
      */
-    $scope.uploadFile = function(){
+    $scope.uploadFileForAdv = function(){
         var file = $scope.myFile;
         var fd = new FormData();
         fd.append('file', file);
@@ -783,7 +902,43 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
         })
             .success(function(data){
                 console.log("success!!");
+                $scope.NewAdventure.image = data;
+
+            })
+            .error(function(err){
+                console.log("error!!");
+            });
+    };
+    $scope.uploadFileForFirstHint = function(){
+        var file = $scope.myFile;
+        var fd = new FormData();
+        fd.append('file', file);
+        console.log('mi fichero',file);
+
+        $http.post('/adventures/upload/image/',fd, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        })
+            .success(function(data){
+                console.log("success!!");
                 $scope.NewAdventure.hintimage = data;
+            })
+            .error(function(err){
+                console.log("error!!");
+            });
+    };
+    $scope.uploadFileForHints = function(){
+        var file = $scope.myFile;
+        var fd = new FormData();
+        fd.append('file', file);
+        console.log('mi fichero',file);
+
+        $http.post('/adventures/upload/image/',fd, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        })
+            .success(function(data){
+                console.log("success!!");
                 $scope.NewHint.image = data;
             })
             .error(function(err){
@@ -791,8 +946,15 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
             });
     };
 
-    $scope.replaceElement = function () {
-        angular.element(document.querySelector('#InputFile')).click();
+
+    $scope.replaceElement1 = function () {
+        angular.element(document.querySelector('#InputFile1')).click();
+    };
+    $scope.replaceElement2 = function () {
+        angular.element(document.querySelector('#InputFile2')).click();
+    };
+    $scope.replaceElement3 = function () {
+        angular.element(document.querySelector('#InputFile3')).click();
     };
 
 }])
