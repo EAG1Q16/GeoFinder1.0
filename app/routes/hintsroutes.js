@@ -106,5 +106,21 @@ router.delete('/removehint/:id', function(req, res) {
     });
 });
 
+router.put('/makefinal/:id', function(req, res) {
+    Hints.update({_id : req.params.id
+        },{$set:{final: true
+        }},
+        function(err, hint) {
+            if (err)
+                res.send(err);
+
+            Hints.findById(req.params.id, function(err, hint){
+                if(err)
+                    res.send(err)
+                res.send(hint);
+            });
+        });
+});
+
 
 module.exports = router;

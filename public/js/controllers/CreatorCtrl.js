@@ -279,6 +279,7 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
         var markersHints = [];
         $http.get('/adventures/id/'+ $scope.SelectedAdv._id)
             .success(function (data) {
+                $scope.SelectedAdv = data;
                 angular.forEach(data.hints, function (value) {
                     markersHints.push(
                         {
@@ -375,6 +376,8 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
                 text: $scope.NewAdventure.hinttext,
                 image: $scope.NewAdventure.hintimage
             };
+
+            console.log($scope.NewAdventure);
 
             $http.post('/adventures/createadventure/', $scope.NewAdventure)
                 .success(function (data) {
@@ -519,23 +522,16 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
     $scope.CreateHint = function(advid){
         console.log(advid);
 
-        if ($rootScope.UserSessionId._id != null) {
-
             $scope.NewHint.location_type = 'Point';
             $scope.NewHint._id = $scope.SelectedAdv._id;
 
             $http.post('/hints/createhint/', $scope.NewHint)
                 .success(function (data) {
                     console.log(data);
-                    //Reprint Coordinates
-                    $scope.SuccessMsg = "Pista creada";
-                    $timeout(function () {
-                        $scope.SuccessMsg = null;
-                    }, 3000);
 
                     var Newassign = {};
                     Newassign.hint_id = data._id;
-                    Newassign.adventure_id = $rootScope.SelectedAdv._id;
+                    Newassign.adventure_id = $scope.SelectedAdv._id;
 
                     console.log(Newassign);
 
@@ -551,8 +547,6 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
                 .error(function (data) {
                     console.log('Error:' + data);
                 });
-        }
-        else $scope.ErrorMsg = ('Es necesario estar registrado');
     };
 
     $scope.SelAdventureforHint = function (id) {
@@ -591,6 +585,7 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
                 $scope.NewHint = {};
             }
             else {
+                $scope.IsMarkerCreatorActive = true;
                 $scope.IsNewHintFilled = true;
                 $scope.SwitchTabs("Vista");
                 $mdToast.show({
@@ -604,68 +599,17 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
                     $scope.IsMarkerCreatorActive = false;
                     console.log("Marker Cerrado:"+ $scope.IsMarkerCreatorActive);
 
-                    $mdDialog.show({
-                        controller: function () { this.parent = $scope; },
-                        controllerAs: 'ctrl',
-                        templateUrl: 'dialogAggHint.tmpl.html',
-                        targetEvent: ev,
-                        clickOutsideToClose:true,
-                        fullscreen: $scope.customFullscreen
-                        // Only for -xs, -sm breakpoints.
-                    }).then(function() {
-                        if(!$scope.IsFirstHintFilled){
-                            var toast = $mdToast.simple()
-                                .textContent('Creación cancelada!')
-                                .action('OK')
-                                .highlightAction(false)
-                                .hideDelay(5000)
-                                .parent(el)
-                                .position('top');
-                            $mdToast.show(toast);
-                            $scope.NewAdventure = {};
-                            $scope.SwitchTabs("Aventuras");
-                        }
-                        else {
-                            console.log($scope.NewAdventure);
+                    $scope.CreateHint($scope.SelectedAdv._id);
 
-                            $scope.IsAdventureInputsFilled = false;
-                            //Si la Localización de la aventura ha sido aplicada
-                            $scope.IsAdventurePos = false;
-                            //Si la primera Pista ha sido rellenada
-                            $scope.IsFirstHintFilled = false;
-                            //Activador del Marker
-                            $scope.IsMarkerCreatorActive = false;
+                    var toast = $mdToast.simple()
+                        .textContent('Hint Creada:')
+                        .action('OK')
+                        .highlightAction(false)
+                        .hideDelay(8000)
+                        .parent(el)
+                        .position('top left');
+                    $mdToast.show(toast);
 
-                            $scope.CreateAdventure();
-
-                            //Habilito el boton de Agregar
-                            $scope.IsAdventureFinished = true;
-
-                            var confirm = $mdDialog.confirm()
-                                .title('Agregación de Pistas')
-                                .textContent('Tu Aventura ya esta creada, ahora pasaremos al crear Pistas')
-                                .ariaLabel('Lucky day')
-                                .targetEvent(ev)
-                                .ok('Please do it!');
-
-                            $mdDialog.show(confirm).then(function() {
-
-                                console.log($scope.SelectedAdv);
-                                var toast = $mdToast.simple()
-                                    .textContent('Aventura Creada: '+ $scope.SelectedAdv.name + ' - Dificultad: '+ $scope.SelectedAdv.difficulty)
-                                    .action('OK')
-                                    .highlightAction(false)
-                                    .hideDelay(8000)
-                                    .parent(el)
-                                    .position('top left');
-                                $mdToast.show(toast);
-
-                                $scope.ShowHintofAdventureonMap();
-
-                            });
-                        }
-
-                    });
                 })
             }
         });

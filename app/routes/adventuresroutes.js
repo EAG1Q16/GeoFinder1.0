@@ -70,7 +70,7 @@ router.post('/createadventure/', function(req, res) {
                 if (err) {
                     res.send(err);
                 }
-                Adventures.findById(req.params.adv_id).deepPopulate(['adventures.comments', 'comments.user', 'hints']).exec().then(function(err, adventure){
+                Adventures.findById(adv._id).deepPopulate(['adventures.comments', 'comments.user', 'hints']).exec().then(function(err, adventure){
                     if(err)
                         res.send(err)
                     res.send(adventure);
