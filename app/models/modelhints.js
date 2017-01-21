@@ -18,7 +18,11 @@ var hints = new mongoose.Schema({
         {
             distance: Number,
             sense: String
-        }
+        },
+    final: {
+        type: Boolean,
+        default: false
+    }
 });
 hints.plugin(deepPopulate, null);
 

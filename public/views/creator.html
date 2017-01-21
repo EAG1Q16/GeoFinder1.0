@@ -20,11 +20,19 @@
         left: 0;
     }
     .Padding{
-        padding-top: 1%;
+        padding-top: 1.5em;
     }
 
     md-checkbox.md-checked.blue .md-icon {
         background-color: rgb(63,81,181);
+    }
+    md-tabs:not(.md-no-tab-content):not(.md-dynamic-height) {
+        height: calc(101vh - 3em - 64px);
+    }
+
+    .md-card{
+        box-shadow: 0;
+        margin: 0;
     }
 </style>
 
@@ -33,173 +41,310 @@
         <div class="row" id="blank">
         <div class="col-md-3">
             <div class="row">
-                        <md-content>
-                            <md-tabs md-dynamic-height>
-                                <md-tab label="Vista" md-active>
-                                    <div>
-                                        <md-content class="md-padding">
-                                            <span class="md-subhead">Localización</span>
+                    <md-content>
+                        <md-tabs>
+                            <md-tab label="Vista" md-active="IsTabVistaActive">
+                                <div>
+                                    <md-content class="md-padding">
+                                        <md-input-container class="md-block" flex-gt-xs>
+                                            <label>Latitud</label>
+                                            <input type="number" ng-model="map.center.latitude" step="0.01"/>
+                                        </md-input-container>
+                                        <md-input-container class="md-block">
+                                            <label>Longitud</label>
+                                            <input type="number" ng-model="map.center.longitude" step="0.001"/>
+                                        </md-input-container>
+                                        <md-slider-container>
+                                            <span class="md-body-1">Zoom</span>
+                                            <md-slider flex ng-model="map.zoom" min="1" max="21" aria-label="blue" id="blue-slider" class="md-primary">
+                                            </md-slider>
+                                            <md-input-container>
+                                                <input flex type="number" ng-model="map.zoom" aria-label="blue" aria-controls="blue-slider">
+                                            </md-input-container>
+                                        </md-slider-container>
+                                        <h5>Modo diurno/nocturno</h5>
+                                        <md-switch class="md-no-ink md-primary" ng-model="stylemap"  aria-label="Switch No Ink" ng-true-value="'Nocturno'" ng-false-value="'Diurno'"
+                                                   ng-switch="SwitchStyleMap(stylemap)">
+                                            <h5>{{ stylemap }}</h5>
+                                        </md-switch>
+                                        <hr>
+                                        <h5>Mostrar</h5>
+                                        <md-checkbox class="blue" ng-checked="IsCheckBoxMarkAdvActive" ng-click="CheckBoxMarkersAventure()">Todas las aventuras</md-checkbox>
+                                        </md-switch>
+                                    </md-content>
+                                </div>
+                            </md-tab>
+                            <md-tab label="Creación" md-active="IsTabAventurasActive">
+                                <div>
+                                    <md-content class="md-padding">
+                                        <div class="row center-block">
+                                            <span class="md-subhead">Mostrar</span>
                                             <br>
                                             <br>
-                                            <md-input-container class="md-block">
-                                                <label>Latitud</label>
-                                                <input type="number" ng-model="map.center.latitude" step="0.001"/>
-                                            </md-input-container>
-                                            <md-input-container class="md-block">
-                                                <label>Longitud</label>
-                                                <input type="number" ng-model="map.center.longitude" step="0.001"/>
-                                            </md-input-container>
-                                            <hr>
-                                            <md-slider-container>
-                                                <span class="md-body-1">Zoom</span>
-                                                <md-slider flex ng-model="map.zoom" min="1" max="21" aria-label="blue" id="blue-slider" class="md-primary">
-                                                </md-slider>
-                                                <md-input-container>
-                                                    <input flex type="number" ng-model="map.zoom" aria-label="blue" aria-controls="blue-slider">
-                                                </md-input-container>
-                                            </md-slider-container>
-                                            <hr>
-                                            <h5>Modo diurno/nocturno</h5>
-                                            <md-switch class="md-no-ink md-primary" ng-model="stylemap"  aria-label="Switch No Ink" ng-true-value="'Nocturno'" ng-false-value="'Diurno'"
-                                                       ng-switch="SwitchStyleMap(stylemap)">
-                                                <h5>{{ stylemap }}</h5>
-                                            </md-switch>
-                                            <hr>
-                                            <h5>Mostrar</h5>
-                                            <md-checkbox class="blue" ng-click="CheckBoxMarkersAventure()">Todas las aventuras</md-checkbox>
-                                            </md-switch>
-                                            <hr>
-                                        </md-content>
-                                    </div>
+                                            <md-checkbox class="blue" ng-checked="IsCheckBoxMarkAdvActive" ng-click="CheckBoxMarkersAventure()">Todas las aventuras</md-checkbox>
+                                            <div ng-show="IsAdventureFinished">
+                                                <hr>
+                                                <md-card style="background-color: rgba(221, 221, 221, 0.18);">
+                                                    <md-card-title>
+                                                        <md-card-title-text>
+                                                            <span class="md-headline" style="padding-right: 25px;">{{SelectedAdv.name}}</span>
+                                                            <br>
+                                                            <br>
+                                                            <span class="md-subhead">{{SelectedAdv.description}}</span>
+                                                            <span class="md-subhead">Dificultad: {{SelectedAdv.difficulty}}</span>
+                                                            <span class="md-subhead">Número de pistas: {{SelectedAdv.hints.length}}</span>
 
-                                </md-tab>
-                                <md-tab label="Aventuras">
-                                    <div>
-                                        <md-content class="md-padding">
-                                            <div class="row center-block">
-                                                <md-checkbox class="blue" ng-click="CheckBoxMarkersAventure()">Todas las aventuras</md-checkbox>
-                                                <form>
-                                                    <md-input-container class="md-block">
-                                                        <label>Nombre de la Aventura</label>
-                                                        <input ng-model="NewAdventure.name">
-                                                    </md-input-container>
-                                                    <md-input-container class="md-block">
-                                                        <label>Descripción de la Aventura</label>
-                                                        <input ng-model="NewAdventure.description">
-                                                    </md-input-container>
-                                                    <hr>
-                                                    <md-input-container class="md-block">
-                                                        <label>Pista Inicial: Texto</label>
-                                                        <input ng-model="NewAdventure.hinttext">
-                                                    </md-input-container>
-                                                    <md-input-container class="md-block">
-                                                        <label>Pista Inicial: Texto</label>
-                                                        <input ng-model="NewAdventure.hintimage">
-                                                    </md-input-container>
-                                                    <hr>
-                                                    <div class="form-group">
-                                                        <label for="difficulty-radiobutton">Dificultad Aventura</label>
-                                                        <md-radio-group ng-model="NewAdventure.difficulty" id="difficulty-radiobutton">
-                                                            <md-radio-button value="Fácil" class="md-primary">Fácil</md-radio-button>
-                                                            <md-radio-button value="Media" class="md-primary">Media </md-radio-button>
-                                                            <md-radio-button value="Díficil" class="md-primary">Díficil</md-radio-button>
-                                                        </md-radio-group>
-                                                    </div>
-                                                    <br>
-                                                    <button type="button" class="btn btn-success btn-block" ng-click="CreateAdventure()">Crear Aventura</button>
-                                                    <br>
-                                                </form>
+                                                        </md-card-title-text>
+                                                        <md-card-title-media>
+                                                            <div class="md-media-sm card-media">
+                                                                <img class="md-user-avatar" ng-src="{{SelectedAdv.image}}"/>
+                                                            </div>
+                                                        </md-card-title-media>
+                                                    </md-card-title>
+                                                </md-card>
                                             </div>
-                                        </md-content>
-                                    </div>
-                                </md-tab>
-                                <md-tab label="Pistas">
-                                    <div>
-                                        <md-content class="md-padding">
-                                            <div class="row center-block">
-                                                <button ng-click="ShowHintofAdventureonMap()">Print Hints de {{SelectedAdv._id}} </button>
-                                                <form>
-                                                    <div class="form-group">
-                                                        <label for="texthint-input">Texto de la Pista</label>
-                                                        <input class="form-control" type="text" ng-model="NewHint.text" id="texthint-input">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="imagehint-input">URI de la Imagen</label>
-                                                        <input class="form-control" type="text" ng-model="NewHint.image" id="imagehint-input">
-                                                    </div>
-                                                    <br>
-                                                    <button type="button" class="btn btn-success btn-block" ng-click="CreateHint(SelectedAdv)">Crear Pista</button>
-                                                    <br>
-                                                </form>
-                                            </div>
-                                        </md-content>
-                                    </div>
-                                </md-tab>
-                            </md-tabs>
-                        </md-content>
+                                            <hr>
+                                            <span class="md-subhead">Adventuras</span>
+                                            <form>
+                                                <md-button class="md-primary" ng-disabled="IsAdventurePos || IsAdventureFinished" ng-click="showProcessCrAdv($event)">
+                                                    Crear una Aventura
+                                                </md-button>
+                                            </form>
+                                            <hr>
+                                            <span class="md-subhead">Pistas</span>
+                                            <form>
+                                                <md-button class="md-primary" ng-disabled="!IsAdventureFinished" ng-click="showPopUpCrHint($event)">
+                                                    Agregar una Pista
+                                                </md-button>
+                                            </form>
+                                        </div>
+                                    </md-content>
+                                </div>
+                            </md-tab>
+                        </md-tabs>
+                    </md-content>
             </div>
         </div>
         <div class="col-md-9">
-            <div class="row">
+            <div class="row" id="map">
                 <div class="col-md-12 map-wrapper">
                     <ui-gmap-google-map center='map.center' zoom='map.zoom' options="options" events="map.events">
-                        <!-- Marker central -->
-                        <ui-gmap-marker coords="map.clickedMarker"  idKey="map.clickedMarker.id" options="map.clickedMarker.options">
-                        </ui-gmap-marker>
                         <!-- Marker create -->
-                        <ui-gmap-marker coords="map.createMarker"  idKey="map.createMarker.id" options="map.createMarker.options">
+                        <ui-gmap-marker ng-if="IsMarkerCreatorActive" coords="map.createMarker" idKey="map.createMarker.id" options="map.createMarker.options">
                         </ui-gmap-marker>
                         <!--- Markers Aventuras -->
 
-                        <ui-gmap-marker ng-repeat="m in map.markerAdventures" coords='m' click="!m.showWindow" icon='m.icon' idKey="m._id" options="m.options">
-                            <ui-gmap-window ng-cloak>
-                                <div class="scrollFix">
-                                        <md-card class="mdcard">
-                                        <md-card-title>
-                                            <md-card-title-text>
-                                                <span class="md-headline">{{m.name}}</span>
-                                                <span class="md-subhead">
-                                                    {{m.description}}
-                                                    <br>
-                                                    {{m.latitude}},{{m.longitude}}
-                                                </span>
-                                            </md-card-title-text>
-                                            <md-card-title-media>
-                                                <div class="card-media">
-                                                    <img style="max-height: 100px; max-width: 100px" ng-src="{{m.image}}">
-                                                </div>
-                                            </md-card-title-media>
-                                        </md-card-title>
-                                        <md-card-actions style="background-color: #00ADB5; color: white">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <h5><b>Dificultad:</b> {{m.difficulty}}</h5>
-                                                    <button href=#/adventureprofile/{{m._id}}" type="button" class="btn btn-default">Detalles</button>
-                                                    <button ng-click="$parent.ActivHintCreator(true); $parent.SelAdventureforHint(idKey);" type="button" class="btn btn-warning">Añadir Pista</button>
-                                                    <button type="button" class="btn btn-danger">Eliminar Aventura</button>
-                                                </div>
+                        <ui-gmap-marker ng-repeat="m in map.markerAdventures track by $index" coords='m' click="!m.showWindow" icon='m.icon' idKey="m._id" options="m.options">
+                            <ui-gmap-window>
+                                <md-card class="md-card">
+                                    <md-card-title>
+                                        <md-card-title-text>
+                                            <span class="md-headline" style="padding-right: 25px;">{{m.name}}</span>
+                                            <br>
+                                            <br>
+                                            <span class="md-subhead">{{m.description}}</span>
+                                            <span class="md-subhead">Dificultad: {{m.difficulty}}</span>
+                                        </md-card-title-text>
+                                        <md-card-title-media>
+                                            <div class="md-media-sm card-media">
+                                                <img class="md-user-avatar" ng-src="{{m.image}}"/>
                                             </div>
-                                        </md-card-actions>
-                                        </md-card>
-                                </div>
+                                        </md-card-title-media>
+                                    </md-card-title>
+                                    <md-card-actions layout="row" layout-align="end center">
+                                        <div do-not-compile="">
+                                            <md-button class="md-raised md-primary" ng-click="$parent.SelAdventureforHint($parent.m._id)">Agregar una Pista</md-button>
+                                        </div>
+                                    </md-card-actions>
+                                </md-card>
                             </ui-gmap-window>
                         </ui-gmap-marker>
 
                         <ui-gmap-marker ng-repeat="h in map.markersHints" coords='h' click="!h.showWindow" icon='h.icon' idKey="h._id" options="h.options">
-                            <ui-gmap-window ng-cloak>
-                                <div class="scrollFix">
-                                  Pista: {{h.index}}
-                                  Name: {{h.text}}
-                                  Loc: {{m.latitude}},{{m.longitude}}
-                                </div>
+                            <ui-gmap-window>
+                                <md-card class="md-card">
+                                    <md-card-title>
+                                        <md-card-title-text>
+                                            <span class="md-headline" style="padding-right: 25px;">Pista {{h.index}}</span>
+                                            <br>
+                                            <span class="md-subhead">Pista: {{h.text}}</span>
+                                            <span class="md-subhead">Distancia de la próxima pista: {{h.indication.distance}}</span>
+                                            <span class="md-subhead">Rumbo: {{h.indication.sense}}</span>
+                                            <div class="md-media-sm card-media">
+                                            <span class="md-subhead">Pista Imagen</span>
+                                            <img class="img-responsive" ng-src="{{h.image}}"/>
+                                            </div>
+
+                                        </md-card-title-text>
+                                    </md-card-title>
+                                </md-card>
                             </ui-gmap-window>
                         </ui-gmap-marker>
                     </ui-gmap-google-map>
-                    <div ng-if="ErrorMsg" class="alert alert-danger text-center" role="alert">{{ErrorMsg}}</div>
-                    <div ng-if="SuccessMsg" class="alert alert-success text-center" role="alert">{{SuccessMsg}}</div>
                 </div>
             </div>
         </div>
     </div>
     </div>
 </div>
+
+
+<script type="text/ng-template" id="dialogCreateAdv.tmpl.html"><md-dialog aria-label="Mango (Fruit)">
+<form ng-cloak>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Creación de una Aventura</h2>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <div class="md-dialog-content">
+            <form name="FirstCreateAdvForm">
+                <span>Datos de la Aventura</span>
+                <md-input-container md-no-float class="md-block">
+                    <input required ng-model="ctrl.parent.NewAdventure.name" placeholder="Nombre de la Aventura">
+                </md-input-container>
+
+                <md-input-container md-no-float class="md-block">
+                    <textarea required ng-model="ctrl.parent.NewAdventure.description" rows="4" md-maxlength="150"
+                              ng-maxlength="150" placeholder="Descripción de la Aventura...">
+                    </textarea>
+                </md-input-container>
+                <hr>
+                <div class="form-group">
+                    <label for="difficulty-radiobutton">Dificultad Aventura</label>
+                    <md-radio-group ng-model="ctrl.parent.NewAdventure.difficulty" id="difficulty-radiobutton"
+                    ng-required="true">
+                        <md-radio-button value="Fácil" class="md-primary">Fácil</md-radio-button>
+                        <md-radio-button value="Media" class="md-primary">Media </md-radio-button>
+                        <md-radio-button value="Difícil" class="md-primary">Difícil</md-radio-button>
+                    </md-radio-group>
+                </div>
+            </form>
+        </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+        <span flex></span>
+        <md-button ng-click="ctrl.parent.cancel()">
+            Cancelar
+        </md-button>
+        <md-button ng-disabled="!ctrl.parent.NewAdventure.name || !ctrl.parent.NewAdventure.description || !ctrl.parent.NewAdventure.difficulty"
+                    md-autofocus ng-click="ctrl.parent.hide(); ctrl.parent.IsAdventureInputsFilled = true;
+                    ctrl.parent.IsMarkerCreatorActive = true;">
+            Siguiente
+        </md-button>
+    </md-dialog-actions>
+</form>
+</md-dialog>
+</script>
+
+<script type="text/ng-template" id="dialogAggHint.tmpl.html"><md-dialog aria-label="Mango (Fruit)">
+<form ng-cloak>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Agregar una Pista</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()">
+                <md-icon aria-label="Close dialog"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <div class="md-dialog-content">
+                <form>
+                    <md-input-container md-no-float class="md-block">
+                        <input required ng-model="ctrl.parent.NewAdventure.hinttext" placeholder="Texto de la Pista">
+                    </md-input-container>
+
+                    <md-input-container md-no-float class="md-block">
+                        <hr>
+                        <span class="md-subhead">Imagen</span>
+                        <div class="col-md-12">
+                            <input type="file" file-model="ctrl.parent.myFile" id="InputFile" class="ng-hide "/>
+                            <md-button class="md-raised" ng-click="ctrl.parent.replaceElement()">Seleccionar Archivo</md-button>
+                            <md-button class="md-raised md-right" ng-click="ctrl.parent.uploadFile()">Subir</md-button>
+                            <br>
+                            <img ng-src="{{ctrl.parent.NewAdventure.hintimage}}" class="img-responsive">
+                        </div>
+                    </md-input-container>
+                </form>
+        </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+        <span flex></span>
+        <md-button ng-click="ctrl.parent.cancel()">
+            Cancelar
+        </md-button>
+        <md-button ng-disabled="!ctrl.parent.NewAdventure.hinttext"
+                   md-autofocus ng-click="ctrl.parent.hide(); ctrl.parent.IsFirstHintFilled = true;">
+            Finalizar
+        </md-button>
+    </md-dialog-actions>
+</form>
+</script>
+
+<script type="text/ng-template" id="dialogAggHintWFinal.tmpl.html"><md-dialog aria-label="Mango (Fruit)">
+<form ng-cloak>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Agregar una Pista</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()">
+                <md-icon aria-label="Close dialog"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <div class="md-dialog-content">
+            <md-checkbox class="blue" ng-click="ctrl.parent.IsFinal = true">Pista Final</md-checkbox>
+            <form>
+                <md-input-container md-no-float class="md-block">
+                    <input ng-disabled="ctrl.parent.IsFinal" required ng-model="ctrl.parent.NewHint.text" placeholder="Texto de la Pista">
+                </md-input-container>
+
+                <md-input-container md-no-float class="md-block">
+                    <input ng-disabled="ctrl.parent.IsFinal" ng-model="ctrl.parent.NewAdventure.hint" placeholder="URI de la Imagen">
+                </md-input-container>
+            </form>
+        </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+        <span flex></span>
+        <md-button ng-click="ctrl.parent.cancel()">
+            Cancelar
+        </md-button>
+        <md-button ng-show="ctrl.parent.IsFinal == false" ng-disabled="!ctrl.parent.NewHint.text"
+                   md-autofocus ng-click="ctrl.parent.hide(); ctrl.parent.IsNewHintFilled = true">
+            Siguiente
+        </md-button>
+        <md-button ng-show="ctrl.parent.IsFinal == true"
+                   md-autofocus ng-click="ctrl.parent.hide(); ctrl.parent.IsNewHintFilled = true;">
+            Siguiente
+        </md-button>
+    </md-dialog-actions>
+</form>
+</md-dialog>
+</script>
+
+<script type="text/ng-template" id="assignPoint.html"><md-toast>
+    <md-toast>
+        <span class="md-toast-text" flex>Ubicar la Aventura</span>
+        <md-button ng-click="closeToast(); IsMarkerCreatorActive=false;">
+            Siguiente
+        </md-button>
+    </md-toast>
+</script>
+
+<script type="text/ng-template" id="assignHint.html"><md-toast>
+    <md-toast>
+        <span class="md-toast-text" flex>Ubicar la Pista</span>
+        <md-button ng-click="closeToast(); IsMarkerCreatorActive=false;">
+            Siguiente
+        </md-button>
+    </md-toast>
+</script>
