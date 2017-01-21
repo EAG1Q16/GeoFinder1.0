@@ -8,6 +8,9 @@ var Hints = require('../models/modelhints');
 var Adventures = require('../models/modeladventures');
 var router = express.Router();
 var geolib = new require('geolib');
+var multer = require('multer');
+var upload = multer({dest: __dirname+'/../uploads'});
+var cloudinary  = require('cloudinary');
 
 // GET adventures in list
 router.get('/', function(req, res) {
@@ -35,6 +38,7 @@ router.post('/createadventure/', function(req, res) {
         name:req.body.name,
         description:req.body.description,
         difficulty:req.body.difficulty,
+        image: req.body.image,
         location:
         {
              type: req.body.location_type,
@@ -219,6 +223,14 @@ router.post('/timeplayed/', function(req, res) {
             res.send(err)
         if (adventure)
         res.send(adventure);
+    });
+});
+
+//Subir imagenes
+router.post('/upload/image/', upload.single('file'), function(req, res) {
+    cloudinary.uploader.upload(req.file.path, function(result) {
+        console.log(result);
+        res.send(result.url);
     });
 });
 

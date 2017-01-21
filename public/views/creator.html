@@ -82,7 +82,9 @@
                                             <br>
                                             <br>
                                             <md-checkbox class="blue" ng-checked="IsCheckBoxMarkAdvActive" ng-click="CheckBoxMarkersAventure()">Todas las aventuras</md-checkbox>
-                                            <div ng-show="IsAdventureFinished">
+                                            <br>
+                                            <md-checkbox class="blue" ng-checked="CheckBoxYourAdvActive" ng-click="CheckBoxYourAdv()">Aventuras Creadas</md-checkbox>
+                                            <div ng-show="IsAdventureFinished || IsVisualizeActive">
                                                 <hr>
                                                 <md-card style="background-color: rgba(221, 221, 221, 0.18);">
                                                     <md-card-title>
@@ -93,7 +95,6 @@
                                                             <span class="md-subhead">{{SelectedAdv.description}}</span>
                                                             <span class="md-subhead">Dificultad: {{SelectedAdv.difficulty}}</span>
                                                             <span class="md-subhead">Número de pistas: {{SelectedAdv.hints.length}}</span>
-
                                                         </md-card-title-text>
                                                         <md-card-title-media>
                                                             <div class="md-media-sm card-media">
@@ -152,8 +153,8 @@
                                         </md-card-title-media>
                                     </md-card-title>
                                     <md-card-actions layout="row" layout-align="end center">
-                                        <div do-not-compile="">
-                                            <md-button class="md-raised md-primary" ng-click="$parent.SelAdventureforHint($parent.m._id)">Agregar una Pista</md-button>
+                                        <div ng-show="$parent.CheckBoxYourAdvActive" do-not-compile="">
+                                            <md-button class="md-raised md-primary" ng-click="$parent.SelAdventureforHint($parent.m._id)">Visualizar Pistas</md-button>
                                         </div>
                                     </md-card-actions>
                                 </md-card>
@@ -163,18 +164,28 @@
                         <ui-gmap-marker ng-repeat="h in map.markersHints" coords='h' click="!h.showWindow" icon='h.icon' idKey="h._id" options="h.options">
                             <ui-gmap-window>
                                 <md-card class="md-card">
-                                    <md-card-title>
+                                    <md-card-title ng-show="h.show == true">
                                         <md-card-title-text>
                                             <span class="md-headline" style="padding-right: 25px;">Pista {{h.index}}</span>
                                             <br>
-                                            <span class="md-subhead">Pista: {{h.text}}</span>
+                                            <span class="md-subhead">Descripcion: {{h.text}}</span>
                                             <span class="md-subhead">Distancia de la próxima pista: {{h.indication.distance}}</span>
                                             <span class="md-subhead">Rumbo: {{h.indication.sense}}</span>
                                             <div class="md-media-sm card-media">
-                                            <span class="md-subhead">Pista Imagen</span>
+                                            <span ng-show="h.image" class="md-subhead">Pista Imagen</span>
                                             <img class="img-responsive" ng-src="{{h.image}}"/>
                                             </div>
-
+                                        </md-card-title-text>
+                                    </md-card-title>
+                                    <md-card-title ng-show="h.show == false">
+                                        <md-card-title-text>
+                                            <span class="md-headline" style="padding-right: 25px;">Pista {{h.index}}</span>
+                                            <br>
+                                            <span class="md-subhead">Descripcion: {{h.text}}</span>
+                                            <div class="md-media-sm card-media">
+                                                <span ng-show="h.image" class="md-subhead">Pista Imagen</span>
+                                                <img class="img-responsive" ng-src="{{h.image}}"/>
+                                            </div>
                                         </md-card-title-text>
                                     </md-card-title>
                                 </md-card>
@@ -193,26 +204,39 @@
 <form ng-cloak>
     <md-toolbar>
         <div class="md-toolbar-tools">
-            <h2>Creación de una Aventura</h2>
+            <h2>Datos de la Aventura</h2>
         </div>
     </md-toolbar>
 
     <md-dialog-content>
         <div class="md-dialog-content">
             <form name="FirstCreateAdvForm">
-                <span>Datos de la Aventura</span>
+                <span class="md-subhead">Descripción de la Aventura</span>
                 <md-input-container md-no-float class="md-block">
                     <input required ng-model="ctrl.parent.NewAdventure.name" placeholder="Nombre de la Aventura">
                 </md-input-container>
 
                 <md-input-container md-no-float class="md-block">
                     <textarea required ng-model="ctrl.parent.NewAdventure.description" rows="4" md-maxlength="150"
-                              ng-maxlength="150" placeholder="Descripción de la Aventura...">
+                              ng-maxlength="150" placeholder="Descripción detallada de la Aventura...">
                     </textarea>
                 </md-input-container>
+
+                <md-input-container class="md-block">
+                    <span class="md-subhead">Imagen de la Aventura</span>
+                    <input type="file" file-model="ctrl.parent.myFile" id="InputFile" ng-show="false" aria-label="file"/>
+                </md-input-container>
                 <hr>
+                <div class="row form-group">
+                    <md-button class="md-raised" ng-click="ctrl.parent.replaceElement()">Seleccionar Archivo</md-button>
+                    <br>
+                    <md-button class="md-raised" ng-click="ctrl.parent.uploadFile()">Subir</md-button>
+                    <hr>
+                    <img ng-src="{{ctrl.parent.NewAdventure.image}}" class="img-responsive" style="vertical-align: middle;">
+                </div>
                 <div class="form-group">
-                    <label for="difficulty-radiobutton">Dificultad Aventura</label>
+                    <span class="md-subhead">Dificultad general de la Aventura</span>
+                    <br>
                     <md-radio-group ng-model="ctrl.parent.NewAdventure.difficulty" id="difficulty-radiobutton"
                     ng-required="true">
                         <md-radio-button value="Fácil" class="md-primary">Fácil</md-radio-button>
@@ -243,7 +267,7 @@
 <form ng-cloak>
     <md-toolbar>
         <div class="md-toolbar-tools">
-            <h2>Agregar una Pista</h2>
+            <h2>Primera Pista</h2>
             <span flex></span>
             <md-button class="md-icon-button" ng-click="cancel()">
                 <md-icon aria-label="Close dialog"></md-icon>
@@ -254,22 +278,23 @@
     <md-dialog-content>
         <div class="md-dialog-content">
                 <form>
-                    <md-input-container md-no-float class="md-block">
-                        <input required ng-model="ctrl.parent.NewAdventure.hinttext" placeholder="Texto de la Pista">
+                    <span class="md-subhead">Descripción</span>
+                    <md-input-container class="md-block">
+                        <input required ng-model="ctrl.parent.NewAdventure.hinttext" placeholder="Descripción para llegar">
                     </md-input-container>
 
-                    <md-input-container md-no-float class="md-block">
-                        <hr>
-                        <span class="md-subhead">Imagen</span>
-                        <div class="col-md-12">
-                            <input type="file" file-model="ctrl.parent.myFile" id="InputFile" class="ng-hide "/>
-                            <md-button class="md-raised" ng-click="ctrl.parent.replaceElement()">Seleccionar Archivo</md-button>
-                            <md-button class="md-raised md-right" ng-click="ctrl.parent.uploadFile()">Subir</md-button>
-                            <br>
-                            <img ng-src="{{ctrl.parent.NewAdventure.hintimage}}" class="img-responsive">
-                        </div>
+                    <md-input-container class="md-block">
+                        <span class="md-subhead">Agregar una Imagen</span>
+                        <input type="file" file-model="ctrl.parent.myFile" id="InputFile" ng-show="false" aria-label="file"/>
                     </md-input-container>
                 </form>
+            <div class="row form-group">
+                <md-button class="md-raised" ng-click="ctrl.parent.replaceElement()">Seleccionar Archivo</md-button>
+                <br>
+                <md-button class="md-raised" ng-click="ctrl.parent.uploadFileForAdv()">Subir</md-button>
+                <hr>
+                <img ng-src="{{ctrl.parent.NewAdventure.hintimage}}" class="img-responsive" style="vertical-align: middle;">
+            </div>
         </div>
     </md-dialog-content>
 
@@ -306,10 +331,18 @@
                     <input ng-disabled="ctrl.parent.IsFinal" required ng-model="ctrl.parent.NewHint.text" placeholder="Texto de la Pista">
                 </md-input-container>
 
-                <md-input-container md-no-float class="md-block">
-                    <input ng-disabled="ctrl.parent.IsFinal" ng-model="ctrl.parent.NewAdventure.hint" placeholder="URI de la Imagen">
+                <md-input-container class="md-block">
+                    <span class="md-subhead">Agregar una Imagen</span>
+                    <input type="file" file-model="ctrl.parent.myFile" id="InputFile" ng-show="false" aria-label="file"/>
                 </md-input-container>
             </form>
+            <div class="row">
+                <md-button class="md-raised" ng-click="ctrl.parent.replaceElement()">Seleccionar Archivo</md-button>
+                <br>
+                <md-button class="md-raised" ng-click="ctrl.parent.uploadFile()">Subir</md-button>
+                <hr>
+                <img ng-src="{{ctrl.parent.NewAdventure.hintimage}}" class="img-responsive" style="vertical-align: middle;">
+            </div>
         </div>
     </md-dialog-content>
 

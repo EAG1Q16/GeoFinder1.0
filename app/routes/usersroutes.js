@@ -535,6 +535,17 @@ router.get('/recomendedadv/:user_id', function(req, res){
 //La variable pathdeepPopulate se utiliza para no repetir los paths en cada pathdeepPopulate
 var pathdeepPopulate = ['adventures.created', 'adventures.favs', 'adventures.played'];
 
+router.get('/my/adventures/:user_id', function(req, res){
+    //La variable pathdeepPopulate se utiliza para no repetir los paths en cada pathdeepPopulate
+    //La variable se guarda en la Adventure Zone
+    User.findById(req.params.user_id).deepPopulate(pathdeepPopulate).exec().then(function(err, user){
+        if(err)
+            res.send(err)
+        if(user)
+            res.send(user);
+    });
+});
+
 // Assign Created Adventure <--> User
 router.post('/acreatedadv/', function(req, res) {
     var query = {_id: req.body.user_id};
