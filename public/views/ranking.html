@@ -47,7 +47,7 @@
                                 </div> <!-- row other -->
                                 <div class="row">
                                     <div class="col-md-12 text-center">
-                                        <md-button class="md-raised md-primary" style="background-color: #00ADB5; color: white;" ng-click="getAll()">Ver Todas</md-button>
+                                        <md-button class="md-raised md-primary" style="background-color: #00ADB5; color: white;" ng-click="getAll()">Ver Todos</md-button>
                                     </div>
                                 </div> <!-- row filter name -->
                             </md-card-content>
@@ -71,15 +71,15 @@
                                 </div>
                                 <div class="col-md-2">
                                     <img ng-if="user.score >=0 && user.score <150" class="img-responsive" height="65px" width="65px" src="../images/CAmpista.png">
-                                    <img ng-if="user.score >= 150 && user.score <300" class="img-responsive center-block" height="65px" width="65px" src="../images/Navegante.png">
-                                    <img ng-if="user.score >= 300 && user.score <450" class="img-responsive center-block" height="65px" width="65px" src="../images/Montañero.png">
-                                    <img ng-if="user.score >= 450 " class="img-responsive center-block" height="65px" width="65px" src="../images/Aventurero.png">
+                                    <img ng-if="user.score >= 150 && user.score <300" class="img-responsive" height="65px" width="65px" src="../images/Navegante.png">
+                                    <img ng-if="user.score >= 300 && user.score <450" class="img-responsive" height="65px" width="65px" src="../images/Montañero.png">
+                                    <img ng-if="user.score >= 450 " class="img-responsive" height="65px" width="65px" src="../images/Aventurero.png">
                                 </div>
                                 <div class="col-md-8">
                                     <h5>{{user.description}}</h5>
                                 </div>
                                 <div class="col-md-2">
-                                    <h5><b>Puntos:</b> {{user.score}}</h5>
+                                    <h5><b>Rango:</b> {{user.score}}</h5>
                                 </div>
                             </div>
                             </div>
