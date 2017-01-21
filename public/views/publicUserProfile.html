@@ -72,6 +72,16 @@
                 </md-card>
             </div>
             <div class="col-md-9">
+                <div class="col-md-12" ng-if="CreatedAdventures.length == 0">
+                    <br>
+                    <br>
+                        <div class="alert alert-info text-center" ng-if="pUserProfileInfo._id == UserSessionId._id">
+                            <h5>Todavía no has creado ningúna aventura</h5>
+                        </div>
+                        <div class="alert alert-info text-center" ng-if="pUserProfileInfo._id != UserSessionId._id">
+                            <h5>Este usuario no ha creado aventuras</h5>
+                        </div>
+                </div>
                 <md-card ng-repeat="CreatedAdventure in CreatedAdventures">
                     <md-card-title>
                         <md-card-title-text>

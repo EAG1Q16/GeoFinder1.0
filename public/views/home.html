@@ -117,7 +117,7 @@
                 <br>
                 <div ng-if="FollowingAdvs.length == 0" ng-init="recomendedUser()">
                     <div class="alert alert-info text-center">
-                    Todavía no sigues ningún aventurero, te recomendamos  algunos de los más audaces
+                    <h5>Todavía no sigues ningún aventurero, te recomendamos  algunos de los más audaces</h5>
                     </div>
                     <md-card ng-repeat="user in users | orderBy: '-score' | limitTo: '5'">
                         <a style="color: inherit" ng-href="#/userprofile/{{user._id}}"><md-card-content>
@@ -149,7 +149,7 @@
 
                 <div ng-repeat="FollowingAdv in FollowingAdvs">
                     <div class="alert alert-info text-center" ng-if="FollowingAdv.adventures.created.length == 0">
-                        Tus amigos aún no han creado ningúna aventura animalos a hacerlo
+                        Tus amigos aún no han creado ningúna aventura anímalos a hacerlo
                     </div>
                     <md-card ng-repeat="adventure in FollowingAdv.adventures.created | orderBy: adventure.registerdate">
                         <md-card-title>
