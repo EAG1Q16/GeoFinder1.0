@@ -44,6 +44,8 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
 
     //Segunda Parte
     $scope.IsNewHintFilled = false;
+    //Señalizador del Final de Hints
+    $scope.IsFinal = false;
 
     //Tabs
     $scope.IsTabVistaActive = true;
@@ -102,6 +104,7 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
         $scope.IsMarkerCreatorActive = false;
 
         $scope.IsNewHintFilled = false;
+        $scope.IsFinal = false;
 
     };
 
@@ -236,7 +239,7 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
                         case "Media":
                             dificon = '/images/icons/extended-icons5_102.png';
                             break;
-                        case "Díficil":
+                        case "Difícil":
                             dificon = '/images/icons/extended-icons5_103.png';
                             break;
                         default:
@@ -281,6 +284,15 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
             .success(function (data) {
                 $scope.SelectedAdv = data;
                 angular.forEach(data.hints, function (value) {
+
+                    var icon = '';
+
+                    if (value.final){
+                        icon = '/images/icons/ic_beenhere_black_48px.svg';
+                    }
+                    else icon = '/images/icons/ic_assistant_photo_black_48px.svg';
+
+
                     markersHints.push(
                         {
                             index: value.index,
@@ -289,13 +301,14 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
                                 sense: value.indication.sense
                             },
                             text: value.text,
+                            final: value.final,
                             image: value.image,
                             _id: value._id,
                             latitude: value.location.coordinates[1],
                             longitude: value.location.coordinates[0],
                             showWindow: false,
                             options: {
-                                icon: '/images/icons/ic_assistant_photo_black_48px.svg',
+                                icon: icon,
                                 animation: google.maps.Animation.DROP,
                                 title: value.text,
                                 labelAnchor: "26 0",
@@ -333,30 +346,42 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
         switch(style){
             case "Diurno":
                 $scope.options.styles = MapBox;
-                if($scope.IsAdventureInputsFilled){
+                if($scope.IsAdventureInputsFilled || $scope.IsNewHintFilled){
                     $scope.map.createMarker.options.icon = '/images/icons/ic_place_black_48px.svg';
                 }
                 angular.forEach($scope.map.markersHints, function (value) {
-                    value.options.icon = '/images/icons/ic_assistant_photo_black_48px.svg'
+                    if(value.final){
+                        value.options.icon = '/images/icons/ic_beenhere_black_48px.svg';
+                    }
+                    else
+                    value.options.icon = '/images/icons/ic_assistant_photo_black_48px.svg';
                 });
                 break;
             case "Nocturno":
                 $scope.options.styles = BlackMap;
-                if($scope.IsAdventureInputsFilled){
+                if($scope.IsAdventureInputsFilled || $scope.IsNewHintFilled){
                     $scope.map.createMarker.options.icon = '/images/icons/ic_place_white_48px.svg';
                 }
                 angular.forEach($scope.map.markersHints, function (value) {
-                    value.options.icon = '/images/icons/ic_assistant_photo_white_48px.svg'
+                    if(value.final){
+                        value.options.icon = '/images/icons/ic_beenhere_white_48px.svg';
+                    }
+                    else
+                        value.options.icon = '/images/icons/ic_assistant_photo_white_48px.svg';
                 });
 
                 break;
             default:
                 $scope.options.styles = MapBox;
-                if($scope.IsAdventureInputsFilled){
+                if($scope.IsAdventureInputsFilled || $scope.IsNewHintFilled){
                     $scope.map.createMarker.options.icon = '/images/icons/ic_place_black_48px.svg';
                 }
                 angular.forEach($scope.map.markersHints, function (value) {
-                    value.options.icon = '/images/icons/ic_assistant_photo_black_48px.svg'
+                    if(value.final){
+                        value.options.icon = '/images/icons/ic_beenhere_black_48px.svg';
+                    }
+                    else
+                        value.options.icon = '/images/icons/ic_assistant_photo_black_48px.svg';
                 });
                 break;
         }
@@ -371,12 +396,6 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
         if ($rootScope.UserSessionId._id != null) {
 
             $scope.NewAdventure.location_type = 'Point';
-            $scope.NewAdventure.hint = {
-                direction : 'Test N',
-                text: $scope.NewAdventure.hinttext,
-                image: $scope.NewAdventure.hintimage
-            };
-
             console.log($scope.NewAdventure);
 
             $http.post('/adventures/createadventure/', $scope.NewAdventure)
@@ -391,10 +410,41 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
                     Newassign.adventure_id = data._id;
                     Newassign.user_id = $rootScope.UserSessionId._id;
 
+                    $scope.NewHint = {
+                        _id: data._id,
+                        text: $scope.NewAdventure.hinttext,
+                        image: $scope.NewAdventure.hintimage,
+                        location_type : 'Point',
+                        location_coordinates : [$scope.map.createMarker.longitude, $scope.map.createMarker.latitude]
+                    };
+
                     $http.post('/user/acreatedadv/', Newassign)
                         .success(function (data) {
-                            $scope.NewAdventure = {};
-                            //clear the form
+
+                            $http.post('/hints/createhint/', $scope.NewHint)
+                                .success(function (data) {
+                                    console.log(data);
+
+                                    var Newassign = {};
+                                    Newassign.hint_id = data._id;
+                                    Newassign.adventure_id = $scope.NewHint._id;
+
+                                    console.log(Newassign);
+
+                                    $http.post('/adventures/ahintdadv/', Newassign)
+                                        .success(function (data) {
+                                            $scope.NewHint = {}; //clear the form
+                                            $scope.NewAdventure = {};
+                                            //clear the form
+                                        })
+                                        .error(function (data) {
+                                            console.log('Error:' + data);
+                                        });
+                                })
+                                .error(function (data) {
+                                    console.log('Error:' + data);
+                                });
+
                         })
                         .error(function (data) {
                             console.log('Error:' + data);
@@ -419,6 +469,10 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
             fullscreen: $scope.customFullscreen
             // Only for -xs, -sm breakpoints.
         }).then(function() {
+
+            $scope.map.center.latitude = $scope.map.createMarker.latitude;
+            $scope.map.center.longitude = $scope.map.createMarker.longitude;
+
             console.log($scope.NewAdventure);
             if(!$scope.IsAdventureInputsFilled){
                 var toast = $mdToast.simple()
@@ -435,7 +489,7 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
             else
             {
                 $scope.IsAdventurePos = true;
-                $scope.SwitchTabs("Vista");
+
                 $mdToast.show({
                     hideDelay   : 0,
                     position    : 'top right',
@@ -483,10 +537,12 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
 
                             //Habilito el boton de Agregar
                             $scope.IsAdventureFinished = true;
+                            //Limpio el mapa
+                            $scope.CleanMap();
 
                             var confirm = $mdDialog.confirm()
                                 .title('Agregación de Pistas')
-                                .textContent('Tu Aventura ya esta creada, ahora pasaremos al crear Pistas')
+                                .textContent('Tu Aventura ya esta creada, ahora añadiremos más Pistas')
                                 .ariaLabel('Lucky day')
                                 .targetEvent(ev)
                                 .ok('Please do it!');
@@ -549,6 +605,47 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
                 });
     };
 
+    $scope.CreateFinalHint = function () {
+
+        console.log("Entrado en FinalHint");
+
+        $scope.NewHint.location_type = 'Point';
+        $scope.NewHint._id = $scope.SelectedAdv._id;
+        $scope.NewHint.text = 'Felicidades has completado la Aventura';
+        $scope.NewHint.image = 'http://res.cloudinary.com/geofinder/image/upload/v1485003782/trophy.gif';
+
+        $http.post('/hints/createhint/', $scope.NewHint)
+            .success(function (data) {
+                console.log(data);
+
+                var Newassign = {};
+                Newassign.hint_id = data._id;
+                Newassign.adventure_id = $scope.SelectedAdv._id;
+
+                console.log(Newassign);
+
+                $http.put('/hints/makefinal/'+ data._id)
+                    .success(function (data) {
+
+                        $http.post('/adventures/ahintdadv/', Newassign)
+                            .success(function (data) {
+                                $scope.NewHint = {}; //clear the form
+                                $scope.ShowHintofAdventureonMap();
+                            })
+                            .error(function (data) {
+                                console.log('Error:' + data);
+                            });
+                    })
+                    .error(function (data) {
+                        console.log('Error:' + data);
+                    });
+
+            })
+            .error(function (data) {
+                console.log('Error:' + data);
+            });
+    };
+
     $scope.SelAdventureforHint = function (id) {
         console.log(id);
         $http.get('/adventures/id/' + id)
@@ -575,7 +672,7 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
             console.log($scope.NewHint);
             if(!$scope.IsNewHintFilled){
                 var toast = $mdToast.simple()
-                    .textContent('Creación cancelada!')
+                    .textContent('Agregación cancelada!')
                     .action('OK')
                     .highlightAction(false)
                     .hideDelay(5000)
@@ -585,30 +682,75 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
                 $scope.NewHint = {};
             }
             else {
+
+                $scope.map.center.latitude = $scope.map.createMarker.latitude;
+                $scope.map.center.longitude = $scope.map.createMarker.longitude;
+
                 $scope.IsMarkerCreatorActive = true;
                 $scope.IsNewHintFilled = true;
-                $scope.SwitchTabs("Vista");
+                $scope.CleanMap();
+
                 $mdToast.show({
                     hideDelay   : 0,
                     position    : 'top right',
                     controller  : 'CreatorCtrl',
-                    templateUrl : 'assignPoint.html',
+                    templateUrl : 'assignHint.html',
                     parent: el
                 }).then(function () {
                     //Cerramos la Toast
                     $scope.IsMarkerCreatorActive = false;
                     console.log("Marker Cerrado:"+ $scope.IsMarkerCreatorActive);
 
-                    $scope.CreateHint($scope.SelectedAdv._id);
+                    if ($scope.IsFinal){
 
-                    var toast = $mdToast.simple()
-                        .textContent('Hint Creada:')
-                        .action('OK')
-                        .highlightAction(false)
-                        .hideDelay(8000)
-                        .parent(el)
-                        .position('top left');
-                    $mdToast.show(toast);
+                        $scope.CreateFinalHint();
+
+                        $scope.IsCheckBoxMarkAdvActive = false;
+                        $scope.IsAdventureInputsFilled = false;
+                        $scope.IsAdventurePos = false;
+                        $scope.IsFirstHintFilled = false;
+                        $scope.IsAdventureFinished = false;
+                        $scope.IsMarkerCreatorActive = false;
+
+                        //Segunda Parte
+                        $scope.IsNewHintFilled = false;
+                        $scope.IsFinal = false;
+
+                        var toast = $mdToast.simple()
+                            .textContent('Pista Final Añadida')
+                            .action('OK')
+                            .highlightAction(false)
+                            .hideDelay(3000)
+                            .parent(el)
+                            .position('top left');
+                        $mdToast.show(toast).then(function () {
+
+                            var toast2 = $mdToast.simple()
+                                .textContent('Aventura Completada')
+                                .action('OK')
+                                .highlightAction(false)
+                                .hideDelay(3000)
+                                .parent(el)
+                                .position('top left');
+                            $mdToast.show(toast2).then(function () {
+                               //Final
+                                $scope.NewHint = {};
+
+                            });
+                        });
+                    }
+                    else {
+                        $scope.CreateHint($scope.SelectedAdv._id);
+
+                        var toast = $mdToast.simple()
+                            .textContent('Pista Creada')
+                            .action('OK')
+                            .highlightAction(false)
+                            .hideDelay(8000)
+                            .parent(el)
+                            .position('top left');
+                        $mdToast.show(toast);
+                    }
 
                 })
             }
@@ -616,4 +758,47 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
     };
 
 
-}]);
+    /**
+     *  Image Zone
+     */
+    $scope.uploadFile = function(){
+        var file = $scope.myFile;
+        var fd = new FormData();
+        fd.append('file', file);
+        console.log('mi fichero',file);
+
+        $http.post('/hints/update/image/',fd, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        })
+            .success(function(data){
+                console.log("success!!");
+                $scope.NewAdventure.hintimage = data;
+                $scope.NewHint.image = data;
+            })
+            .error(function(err){
+                console.log("error!!");
+            });
+    };
+
+    $scope.replaceElement = function () {
+        angular.element(document.querySelector('#InputFile')).click();
+    };
+
+}])
+    .directive('fileModel', ['$parse', function ($parse) {
+        return {
+            restrict: 'A',
+            link: function(scope, element, attrs) {
+                var model = $parse(attrs.fileModel);
+                var modelSetter = model.assign;
+
+                element.bind('change', function(){
+                    scope.$apply(function(){
+                        modelSetter(scope, element[0].files[0]);
+                    });
+                });
+            }
+        };
+    }]);
+

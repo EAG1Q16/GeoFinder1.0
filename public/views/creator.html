@@ -71,10 +71,6 @@
                                         <h5>Mostrar</h5>
                                         <md-checkbox class="blue" ng-checked="IsCheckBoxMarkAdvActive" ng-click="CheckBoxMarkersAventure()">Todas las aventuras</md-checkbox>
                                         </md-switch>
-                                        <hr>
-                                        <md-button ng-click="log(); SwitchTabs('Pistas');" class="md-raised" style="padding-left: 10px;padding-right: 10px;">
-                                            Show Custom Toast
-                                        </md-button>
                                     </md-content>
                                 </div>
                             </md-tab>
@@ -122,10 +118,6 @@
                                                 </md-button>
                                             </form>
                                         </div>
-                                        <hr>
-                                        <md-button ng-click="ShowHintofAdventureonMap(); IsAdventureFinished=true;" class="md-raised" style="padding-left: 10px;padding-right: 10px;">
-                                            Print Hints
-                                        </md-button>
                                     </md-content>
                                 </div>
                             </md-tab>
@@ -170,11 +162,22 @@
 
                         <ui-gmap-marker ng-repeat="h in map.markersHints" coords='h' click="!h.showWindow" icon='h.icon' idKey="h._id" options="h.options">
                             <ui-gmap-window>
-                                <div class="scrollFix">
-                                  Pista: {{h.index}}
-                                  Name: {{h.text}}
-                                  Loc: {{m.latitude}},{{m.longitude}}
-                                </div>
+                                <md-card class="md-card">
+                                    <md-card-title>
+                                        <md-card-title-text>
+                                            <span class="md-headline" style="padding-right: 25px;">Pista {{h.index}}</span>
+                                            <br>
+                                            <span class="md-subhead">Pista: {{h.text}}</span>
+                                            <span class="md-subhead">Distancia de la próxima pista: {{h.indication.distance}}</span>
+                                            <span class="md-subhead">Rumbo: {{h.indication.sense}}</span>
+                                            <div class="md-media-sm card-media">
+                                            <span class="md-subhead">Pista Imagen</span>
+                                            <img class="img-responsive" ng-src="{{h.image}}"/>
+                                            </div>
+
+                                        </md-card-title-text>
+                                    </md-card-title>
+                                </md-card>
                             </ui-gmap-window>
                         </ui-gmap-marker>
                     </ui-gmap-google-map>
@@ -214,7 +217,7 @@
                     ng-required="true">
                         <md-radio-button value="Fácil" class="md-primary">Fácil</md-radio-button>
                         <md-radio-button value="Media" class="md-primary">Media </md-radio-button>
-                        <md-radio-button value="Díficil" class="md-primary">Díficil</md-radio-button>
+                        <md-radio-button value="Difícil" class="md-primary">Difícil</md-radio-button>
                     </md-radio-group>
                 </div>
             </form>
@@ -256,7 +259,15 @@
                     </md-input-container>
 
                     <md-input-container md-no-float class="md-block">
-                        <input ng-model="ctrl.parent.NewAdventure.hintimage" placeholder="URI de la Imagen">
+                        <hr>
+                        <span class="md-subhead">Imagen</span>
+                        <div class="col-md-12">
+                            <input type="file" file-model="ctrl.parent.myFile" id="InputFile" class="ng-hide "/>
+                            <md-button class="md-raised" ng-click="ctrl.parent.replaceElement()">Seleccionar Archivo</md-button>
+                            <md-button class="md-raised md-right" ng-click="ctrl.parent.uploadFile()">Subir</md-button>
+                            <br>
+                            <img ng-src="{{ctrl.parent.NewAdventure.hintimage}}" class="img-responsive">
+                        </div>
                     </md-input-container>
                 </form>
         </div>
@@ -273,7 +284,6 @@
         </md-button>
     </md-dialog-actions>
 </form>
-</md-dialog>
 </script>
 
 <script type="text/ng-template" id="dialogAggHintWFinal.tmpl.html"><md-dialog aria-label="Mango (Fruit)">
@@ -290,13 +300,14 @@
 
     <md-dialog-content>
         <div class="md-dialog-content">
+            <md-checkbox class="blue" ng-click="ctrl.parent.IsFinal = true">Pista Final</md-checkbox>
             <form>
                 <md-input-container md-no-float class="md-block">
-                    <input required ng-model="ctrl.parent.NewHint.text" placeholder="Texto de la Pista">
+                    <input ng-disabled="ctrl.parent.IsFinal" required ng-model="ctrl.parent.NewHint.text" placeholder="Texto de la Pista">
                 </md-input-container>
 
                 <md-input-container md-no-float class="md-block">
-                    <input ng-model="ctrl.parent.NewAdventure.hint" placeholder="URI de la Imagen">
+                    <input ng-disabled="ctrl.parent.IsFinal" ng-model="ctrl.parent.NewAdventure.hint" placeholder="URI de la Imagen">
                 </md-input-container>
             </form>
         </div>
@@ -307,8 +318,12 @@
         <md-button ng-click="ctrl.parent.cancel()">
             Cancelar
         </md-button>
-        <md-button ng-disabled="!ctrl.parent.NewHint.text"
+        <md-button ng-show="ctrl.parent.IsFinal == false" ng-disabled="!ctrl.parent.NewHint.text"
                    md-autofocus ng-click="ctrl.parent.hide(); ctrl.parent.IsNewHintFilled = true">
+            Siguiente
+        </md-button>
+        <md-button ng-show="ctrl.parent.IsFinal == true"
+                   md-autofocus ng-click="ctrl.parent.hide(); ctrl.parent.IsNewHintFilled = true;">
             Siguiente
         </md-button>
     </md-dialog-actions>
