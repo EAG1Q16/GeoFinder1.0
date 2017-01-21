@@ -29,4 +29,15 @@ angular.module('GeoFinderApp').controller('HomeCtrl',['$scope','$location','$roo
             console.log('not logged');
         });
 
+    $scope.recomendedUser = function () {
+        $http.get('/user')
+            .success(function(data) {
+                $scope.users = data;
+                console.log($scope.users)
+            })
+            .error(function(data) {
+                console.log('Error: ' + data);
+            });
+    }
+
 }]);
