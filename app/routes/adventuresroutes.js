@@ -228,9 +228,32 @@ router.post('/timeplayed/', function(req, res) {
 
 //Subir imagenes
 router.post('/upload/image/', upload.single('file'), function(req, res) {
-    cloudinary.uploader.upload(req.file.path, function(result) {
+    cloudinary.uploader.upload(req.file.path, function (result) {
         console.log(result);
         res.send(result.url);
+    });
+});
+
+router.post('/advplay/', function(req, res) {
+    var query = {_id: req.body.user_id};
+    var update = {$inc : {"played" : 30}};
+    var options = {};
+
+    User.findOneAndUpdate(query, update, options, function(err, user) {
+        if (err) {
+            res.send(err);
+        }
+        if(user){
+            console.log(user);
+        }
+
+    });
+
+    User.find({_id: req.body.user_id}).deepPopulate(pathdeepPopulate).exec().then(function (err, user) {
+        if(err)
+            res.send(err)
+        if (user)
+            res.send(user);
     });
 });
 
