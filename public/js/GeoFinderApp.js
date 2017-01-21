@@ -62,10 +62,10 @@ GeoFinderApp.config(['$routeProvider', function($routeProvider){
         })
     .when('/creator', {
         templateUrl: './views/creator.html',
-        controller: 'CreatorCtrl'
-        //resolve:{
-        //    factory: checkRouting
-        //}
+        controller: 'CreatorCtrl',
+        resolve:{
+            factory: checkRouting
+        }
         })
         .otherwise({
             redirectTo: '/index'

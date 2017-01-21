@@ -59,7 +59,7 @@ router.post('/createhint/', function(req, res) {
                 indication:
                     {
                         distance: 0,
-                        sense: 'Waiting for a new Hint'
+                        sense: 'No Disponible'
                     }
             }, function(err, hint) {
                 if (err)

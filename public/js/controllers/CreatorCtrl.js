@@ -343,7 +343,6 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
                 angular.forEach(data.hints, function (value) {
 
                     var icon = '';
-                    var show = true;
 
                     if (value.final){
                         icon = '/images/icons/ic_beenhere_black_48px.svg';
@@ -352,33 +351,52 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
 
                     if (value.indication.distance == 0)
                     {
-                        show = false;
+                        markersHints.push(
+                            {
+                                index: value.index,
+                                text: value.text,
+                                final: value.final,
+                                image: value.image,
+                                _id: value._id,
+                                latitude: value.location.coordinates[1],
+                                longitude: value.location.coordinates[0],
+                                showWindow: false,
+                                options: {
+                                    icon: icon,
+                                    animation: google.maps.Animation.DROP,
+                                    title: value.text,
+                                    labelAnchor: "26 0",
+                                    labelClass: "marker-labels"
+                                }
+                            }
+                        );
+                    }
+                    else{
+                        markersHints.push(
+                            {
+                                index: value.index,
+                                indication: {
+                                    distance: 'Distancia de la próxima pista: '+ value.indication.distance,
+                                    sense: 'Rumbo: '+ value.indication.sense
+                                },
+                                text: value.text,
+                                final: value.final,
+                                image: value.image,
+                                _id: value._id,
+                                latitude: value.location.coordinates[1],
+                                longitude: value.location.coordinates[0],
+                                showWindow: false,
+                                options: {
+                                    icon: icon,
+                                    animation: google.maps.Animation.DROP,
+                                    title: value.text,
+                                    labelAnchor: "26 0",
+                                    labelClass: "marker-labels"
+                                }
+                            }
+                        );
                     }
 
-                    markersHints.push(
-                        {
-                            index: value.index,
-                            indication: {
-                                distance: value.indication.distance,
-                                sense: value.indication.sense
-                            },
-                            text: value.text,
-                            final: value.final,
-                            image: value.image,
-                            _id: value._id,
-                            latitude: value.location.coordinates[1],
-                            longitude: value.location.coordinates[0],
-                            showWindow: false,
-                            show: show,
-                            options: {
-                                icon: icon,
-                                animation: google.maps.Animation.DROP,
-                                title: value.text,
-                                labelAnchor: "26 0",
-                                labelClass: "marker-labels"
-                            }
-                        }
-                    );
                 });
                 console.log(markersHints);
                 $scope.map.markersHints = markersHints;
@@ -874,7 +892,43 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
         })
             .success(function(data){
                 console.log("success!!");
+                $scope.NewAdventure.image = data;
+
+            })
+            .error(function(err){
+                console.log("error!!");
+            });
+    };
+    $scope.uploadFileForFirstHint = function(){
+        var file = $scope.myFile;
+        var fd = new FormData();
+        fd.append('file', file);
+        console.log('mi fichero',file);
+
+        $http.post('/adventures/upload/image/',fd, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        })
+            .success(function(data){
+                console.log("success!!");
                 $scope.NewAdventure.hintimage = data;
+            })
+            .error(function(err){
+                console.log("error!!");
+            });
+    };
+    $scope.uploadFileForHints = function(){
+        var file = $scope.myFile;
+        var fd = new FormData();
+        fd.append('file', file);
+        console.log('mi fichero',file);
+
+        $http.post('/adventures/upload/image/',fd, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        })
+            .success(function(data){
+                console.log("success!!");
                 $scope.NewHint.image = data;
             })
             .error(function(err){
@@ -882,27 +936,15 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
             });
     };
 
-        $scope.uploadFile = function(){
-            var file = $scope.myFile;
-            var fd = new FormData();
-            fd.append('file', file);
-            console.log('mi fichero',file);
 
-            $http.post('/adventures/upload/image/',fd, {
-                transformRequest: angular.identity,
-                headers: {'Content-Type': undefined}
-            })
-                .success(function(data){
-                    console.log("success!!");
-                    $scope.NewAdventure.image = data
-                })
-                .error(function(err){
-                    console.log("error!!");
-                });
-        };
-
-    $scope.replaceElement = function () {
-        angular.element(document.querySelector('#InputFile')).click();
+    $scope.replaceElement1 = function () {
+        angular.element(document.querySelector('#InputFile1')).click();
+    };
+    $scope.replaceElement2 = function () {
+        angular.element(document.querySelector('#InputFile2')).click();
+    };
+    $scope.replaceElement3 = function () {
+        angular.element(document.querySelector('#InputFile3')).click();
     };
 
 }])

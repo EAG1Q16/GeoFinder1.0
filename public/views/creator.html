@@ -164,31 +164,19 @@
                         <ui-gmap-marker ng-repeat="h in map.markersHints" coords='h' click="!h.showWindow" icon='h.icon' idKey="h._id" options="h.options">
                             <ui-gmap-window>
                                 <md-card class="md-card">
-                                    <md-card-title ng-show="h.show == true">
+                                    <md-card-title>
                                         <md-card-title-text>
                                             <span class="md-headline" style="padding-right: 25px;">Pista {{h.index}}</span>
                                             <br>
                                             <span class="md-subhead">Descripcion: {{h.text}}</span>
-                                            <span class="md-subhead">Distancia de la próxima pista: {{h.indication.distance}}</span>
-                                            <span class="md-subhead">Rumbo: {{h.indication.sense}}</span>
-                                            <div class="md-media-sm card-media">
-                                            <span ng-show="h.image" class="md-subhead">Pista Imagen</span>
-                                            <img class="img-responsive" ng-src="{{h.image}}"/>
-                                            </div>
-                                        </md-card-title-text>
-                                    </md-card-title>
-                                    <md-card-title ng-show="h.show == false">
-                                        <md-card-title-text>
-                                            <span class="md-headline" style="padding-right: 25px;">Pista {{h.index}}</span>
-                                            <br>
-                                            <span class="md-subhead">Descripcion: {{h.text}}</span>
+                                            <span class="md-subhead">{{h.indication.distance}}</span>
+                                            <span class="md-subhead">{{h.indication.sense}}</span>
                                             <div class="md-media-sm card-media">
                                                 <span ng-show="h.image" class="md-subhead">Pista Imagen</span>
-                                                <img class="img-responsive" ng-src="{{h.image}}"/>
+                                                <img class="img-responsive" style="max-height: 250px;" ng-src="{{h.image}}"/>
                                             </div>
                                         </md-card-title-text>
                                     </md-card-title>
-                                </md-card>
                             </ui-gmap-window>
                         </ui-gmap-marker>
                     </ui-gmap-google-map>
@@ -224,13 +212,13 @@
 
                 <md-input-container class="md-block">
                     <span class="md-subhead">Imagen de la Aventura</span>
-                    <input type="file" file-model="ctrl.parent.myFile" id="InputFile" ng-show="false" aria-label="file"/>
+                    <input type="file" file-model="ctrl.parent.myFile" id="InputFile1" ng-show="false" aria-label="file"/>
                 </md-input-container>
                 <hr>
                 <div class="row form-group">
-                    <md-button class="md-raised" ng-click="ctrl.parent.replaceElement()">Seleccionar Archivo</md-button>
+                    <md-button class="md-raised" ng-click="ctrl.parent.replaceElement1()">Seleccionar Archivo</md-button>
                     <br>
-                    <md-button class="md-raised" ng-click="ctrl.parent.uploadFile()">Subir</md-button>
+                    <md-button class="md-raised" ng-click="ctrl.parent.uploadFileForAdv()">Subir</md-button>
                     <hr>
                     <img ng-src="{{ctrl.parent.NewAdventure.image}}" class="img-responsive" style="vertical-align: middle;">
                 </div>
@@ -264,6 +252,7 @@
 </script>
 
 <script type="text/ng-template" id="dialogAggHint.tmpl.html"><md-dialog aria-label="Mango (Fruit)">
+
 <form ng-cloak>
     <md-toolbar>
         <div class="md-toolbar-tools">
@@ -277,21 +266,20 @@
 
     <md-dialog-content>
         <div class="md-dialog-content">
-                <form>
-                    <span class="md-subhead">Descripción</span>
-                    <md-input-container class="md-block">
-                        <input required ng-model="ctrl.parent.NewAdventure.hinttext" placeholder="Descripción para llegar">
-                    </md-input-container>
+            <form>
+                <md-input-container md-no-float class="md-block">
+                    <input required ng-model="ctrl.parent.NewAdventure.hinttext" placeholder="Descripción para llegar">
+                </md-input-container>
 
-                    <md-input-container class="md-block">
-                        <span class="md-subhead">Agregar una Imagen</span>
-                        <input type="file" file-model="ctrl.parent.myFile" id="InputFile" ng-show="false" aria-label="file"/>
-                    </md-input-container>
-                </form>
-            <div class="row form-group">
-                <md-button class="md-raised" ng-click="ctrl.parent.replaceElement()">Seleccionar Archivo</md-button>
+                <md-input-container class="md-block">
+                    <span class="md-subhead">Agregar una Imagen</span>
+                    <input type="file" file-model="ctrl.parent.myFile" id="InputFile2" ng-show="false" aria-label="file"/>
+                </md-input-container>
+            </form>
+            <div class="row">
+                <md-button class="md-raised" ng-click="ctrl.parent.replaceElement2()">Seleccionar Archivo</md-button>
                 <br>
-                <md-button class="md-raised" ng-click="ctrl.parent.uploadFileForAdv()">Subir</md-button>
+                <md-button class="md-raised" ng-click="ctrl.parent.uploadFileForFirstHint()">Subir</md-button>
                 <hr>
                 <img ng-src="{{ctrl.parent.NewAdventure.hintimage}}" class="img-responsive" style="vertical-align: middle;">
             </div>
@@ -309,6 +297,7 @@
         </md-button>
     </md-dialog-actions>
 </form>
+</md-dialog>
 </script>
 
 <script type="text/ng-template" id="dialogAggHintWFinal.tmpl.html"><md-dialog aria-label="Mango (Fruit)">
@@ -333,15 +322,15 @@
 
                 <md-input-container class="md-block">
                     <span class="md-subhead">Agregar una Imagen</span>
-                    <input type="file" file-model="ctrl.parent.myFile" id="InputFile" ng-show="false" aria-label="file"/>
+                    <input type="file" file-model="ctrl.parent.myFile" id="InputFile3" ng-show="false" aria-label="file"/>
                 </md-input-container>
             </form>
             <div class="row">
-                <md-button class="md-raised" ng-click="ctrl.parent.replaceElement()">Seleccionar Archivo</md-button>
+                <md-button ng-disabled="ctrl.parent.IsFinal" class="md-raised" ng-click="ctrl.parent.replaceElement3()">Seleccionar Archivo</md-button>
                 <br>
-                <md-button class="md-raised" ng-click="ctrl.parent.uploadFile()">Subir</md-button>
+                <md-button ng-disabled="ctrl.parent.IsFinal" class="md-raised" ng-click="ctrl.parent.uploadFileForHints()">Subir</md-button>
                 <hr>
-                <img ng-src="{{ctrl.parent.NewAdventure.hintimage}}" class="img-responsive" style="vertical-align: middle;">
+                <img ng-src="{{ctrl.parent.NewHint.image}}" class="img-responsive" style="vertical-align: middle;">
             </div>
         </div>
     </md-dialog-content>
