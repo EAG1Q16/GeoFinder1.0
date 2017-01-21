@@ -120,7 +120,7 @@
                         <md-list-item class="md-1-line" ng-repeat="FollowingUser in FollowingUsers">
                            <a ng-href="#/userprofile/{{FollowingUser._id}}"><img class="md-avatar" ng-src="{{FollowingUser.photo}}"></a>
                            <h4>{{FollowingUser.username}}</h4>
-                           <md-button class="md-raised md-warn md-secondary" ng-click="StopFollowUser(FollowingUser._id)">Dejar de Seguir</md-button>
+                           <md-button class="md-raised md-warn md-secondary" ng-click="StopFollowUser(FollowingUser._id)">No seguir</md-button>
                            <md-divider></md-divider>
                         </md-list-item>
                     </md-list>

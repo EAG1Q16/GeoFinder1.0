@@ -148,9 +148,6 @@
                  </div>
 
                 <div ng-repeat="FollowingAdv in FollowingAdvs">
-                    <div class="alert alert-info text-center" ng-if="FollowingAdv.adventures.created.length == 0">
-                        Tus amigos aún no han creado ningúna aventura anímalos a hacerlo
-                    </div>
                     <md-card ng-repeat="adventure in FollowingAdv.adventures.created | orderBy: adventure.registerdate">
                         <md-card-title>
                             <md-card-title-text>

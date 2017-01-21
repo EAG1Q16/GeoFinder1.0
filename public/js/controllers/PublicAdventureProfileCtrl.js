@@ -43,18 +43,10 @@ angular.module('GeoFinderApp').controller('PublicAdventureProfileCtrl',['$scope'
             $scope.chart ={
                 labels: ["Jugada", "Comentarios", "Favoritos"],
                 data: [data.played, data.comments.length, data.favs],
-                colors:[{
-                    backgroundColor: "rgba(179,181,198,0.3)",
-                    borderColor: "rgba(179,181,198,1)",
-                    pointBackgroundColor: "rgba(179,181,198,0.3)",
-                    pointBorderColor: "#fff",
-                    pointHoverBackgroundColor: "#fff",
-                    pointHoverBorderColor: "rgba(179,181,198,1)"
-                }],
-
+                colors:['#1EF9A1','#1EF9A1','#7FFD1F','#68F000'],
                 options:{
                     maintainAspectRatio:true,
-                    responsive: false,
+                    responsive: true,
                     title: {
                         display:false
                     },
@@ -65,14 +57,7 @@ angular.module('GeoFinderApp').controller('PublicAdventureProfileCtrl',['$scope'
                             beginAtZero: true
                         }
                     }
-                },
-                /*backgroundColor: "rgba(179,181,198,0.1)",
-                borderColor: "rgba(179,181,198,1)",
-                pointBackgroundColor: "rgba(179,181,198,0.1)",
-                pointBorderColor: "#fff",
-                pointHoverBackgroundColor: "#fff",
-                pointHoverBorderColor: "rgba(179,181,198,1)"*/
-
+                }
             };
 
             angular.forEach($scope.comments, function (comment, key) {
