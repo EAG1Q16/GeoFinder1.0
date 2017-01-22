@@ -5,7 +5,9 @@
 angular.module('GeoFinderApp').controller('PublicAdventureProfileCtrl',['$scope','$rootScope','$window','$location','$http','$routeParams', 'uiGmapGoogleMapApi', function($scope, $rootScope, $window, $location, $http, $routeParams, uiGmapGoogleMapApi){
 
     var adventureID = window.location.href.split("/").pop();
-
+    var advid = {
+      id: adventureID
+    };
 
 
     // when landing on the page get user
