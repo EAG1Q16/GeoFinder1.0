@@ -79,6 +79,8 @@ router.post('/createhint/', function(req, res) {
                 b_long = req.body.location_coordinates[0];
                 b_lat = req.body.location_coordinates[1];
 
+                console.log(b_long);
+                console.log(b_lat);
 
                 distance = geolib.getDistanceSimple(
                     {latitude: a_lat, longitude: a_long},
