@@ -133,7 +133,7 @@
                         </md-card-content></a>
                     </md-card>
                  </div>
-                <div class="alert alert-info text-center" ng-if="counter == true">
+                <div class="alert alert-info text-center" ng-if="counter == true && FollowingAdvs.length != 0">
                     Tus amigos aún no han creado ningúna aventura, anímales a hacerlo!
                 </div>
                 <div ng-repeat="FollowingAdv in FollowingAdvs" ng-if="counter == false">
