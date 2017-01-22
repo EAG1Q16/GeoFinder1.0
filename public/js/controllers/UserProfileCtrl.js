@@ -21,7 +21,8 @@ angular.module('GeoFinderApp').controller('ProfileCtrl',['$scope','$rootScope','
                        username: data.username,
                        photo: data.photo,
                        description: data.description,
-                       email: data.email
+                       email: data.email,
+                        referalid: data.referalid
                     };
                     $scope.FollowingUsers = data.following;
                     console.log($scope.UserProfileInfo);

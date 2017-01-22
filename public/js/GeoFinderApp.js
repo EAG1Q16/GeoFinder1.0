@@ -5,7 +5,7 @@
 var isDlgOpen;
 
 var GeoFinderApp = angular.module('GeoFinderApp', ['ngRoute','uiGmapgoogle-maps','ui.bootstrap',
-    'ngMaterial','chart.js','ngMessages']);
+    'ngMaterial','chart.js','ngMessages', 'monospaced.qrcode']);
 
 GeoFinderApp.directive('doNotCompile', function () {
     return {
