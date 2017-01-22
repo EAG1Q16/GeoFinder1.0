@@ -16,20 +16,24 @@
                                         <div class="col-md-4">
                                             <img ng-src="{{creada.image}}" class="img-rounded" height="65px"   width="65px">
                                         </div>
-                                        <div class="col-md-8" style="padding-top: 1em">
+                                        <div class="col-md-6" style="padding-top: 1em">
                                             <h4>{{ creada.name }}</h4>
+                                        </div>
+                                        <div class="col-md-2" style="padding-top: 1.5em">
+                                            <div class="row">
+                                                <p>{{creada.comments.length}} <i class="fa fa-comment-o" style="font-size: 1.3em;"></i></p>
+
+                                            </div>
                                         </div>
                                     </div>
                                 <hr ng-hide="$last">
                                 </a>
                           </div>
                             <div ng-if="creadas.length == 0">
-                                <div class="row" style="padding-top: 3em">
                                     <div class="col text-center">
-                                        <h4 style = "color: dimgrey">No tiene aventuras creadas, <br>
-                                            cree una aventura!</h4>
+                                        <h4 style = "color: dimgrey">Todavía no ha creado ninguna aventura </h4><br>
+                                        <md-button class="md-raised md-secondary" style=" background-color: #00db83; color: white" ng-href="#/creator">Crear una aventura</md-button>
                                     </div>
-                                </div>
                             </div>
                         </md-card-content>
                     </md-card>
@@ -58,7 +62,7 @@
                                     </a>
                                     <div class="col-md-2" style="padding-top: 1em; align-content: center">
                                         <md-button class="md-icon-button" ng-click="UnFavAdventure(favorita._id)">
-                                           <i style="color: red" class="fa fa-heart"></i>
+                                           <i style="font-size: 1.3em; color: red" class="fa fa-heart"></i>
                                         </md-button>
                                     </div>
                                     <div class="col-md-1"></div>
@@ -87,8 +91,14 @@
                                         <div class="col-md-4">
                                             <img ng-src="{{jugada.image}}" class="img-rounded" height="65px"   width="65px">
                                         </div>
-                                        <div class="col-md-8" style="padding-top: 1em">
+                                        <div class="col-md-6" style="padding-top: 1em">
                                             <h4>{{ jugada.name }}</h4>
+                                        </div>
+                                        <div class="col-md-2" style="padding-top: 1.5em">
+                                            <div class="row">
+                                                <p>{{jugada.comments.length}} <i class="fa fa-comment-o" style="font-size: 1.3em;"></i></p>
+
+                                            </div>
                                         </div>
                                     </div>
                                     <hr ng-hide="$last">

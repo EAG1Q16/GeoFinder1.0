@@ -39,6 +39,7 @@ router.post('/createadventure/', function(req, res) {
         description:req.body.description,
         difficulty:req.body.difficulty,
         image: req.body.image,
+        createdby: req.body.user_id,
         location:
         {
              type: req.body.location_type,
