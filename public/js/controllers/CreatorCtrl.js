@@ -2,7 +2,18 @@
  * Created by mbmarkus on 4/11/16.
  */
 angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','$http','uiGmapGoogleMapApi',
-    '$timeout','uiGmapIsReady', function($scope, $rootScope, $http, GoogleMapApi, $timeout, uiGmapIsReady){
+    '$timeout','uiGmapIsReady','$mdDialog','$mdToast', function($scope, $rootScope, $http, GoogleMapApi, $timeout, uiGmapIsReady,
+                                         $mdDialog, $mdToast){
+
+        // when landing on the page get user session
+        $http.get('/user/sessionid')
+            .success(function(data) {
+                $rootScope.UserSessionId = data;
+                $rootScope.UserSessionUri = data._id;
+            })
+            .error(function(data) {
+                console.log('not logged');
+            });
 
     /**
      * Init zone
@@ -21,15 +32,135 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
         visible: false
     };
     $scope.SelectedAdv = {};
-    var CheckBoxMarkersAventureStatus = false;
+    
+    var el = angular.element(document.getElementById('map'));
+    
+    /**
+     *  Status 
+     */
+    //Primera Parte
+    //Si el Mostrar todas las Aventuras esta activo
+    $scope.IsCheckBoxMarkAdvActive = false;
+    //Si el Mostrar todas las Aventuras propias esta activo
+    $scope.CheckBoxYourAdvActive = false;
+    //Si el MDialog de Creación de Aventura ha sido aplicado
+    $scope.IsAdventureInputsFilled = false;
+    //Si la Localización de la aventura ha sido aplicada
+    $scope.IsAdventurePos = false;
+    //Si la primera Pista ha sido rellenada
+    $scope.IsFirstHintFilled = false;
+    //Si la Aventura ha sido finalizada --> Pasamos a Pistas
+    $scope.IsAdventureFinished = false;
+    //Activador del Marker
+    $scope.IsMarkerCreatorActive = false;
 
-    uiGmapIsReady.promise(1).then(function(instances) {
-        var mapInstance = instances[0].map;
-        google.maps.event.addListener(mapInstance, 'click', function() {
+    //Segunda Parte
+    $scope.IsNewHintFilled = false;
+    //Señalizador del Final de Hints
+    $scope.IsFinal = false;
+
+    //Visualizador
+    $scope.IsVisualizeActive = false;
+
+    //Tabs
+    $scope.IsTabVistaActive = true;
+    $scope.IsTabAventurasActive = false;
+    $scope.IsTabPistasActive = false;
+
+    $scope.SwitchTabs = function (active){
+        switch(active){
+            case "Vista":
+                $scope.IsTabVistaActive = true;
+                $scope.IsTabAventurasActive = false;
+                $scope.IsTabPistasActive = false;
+                break;
+            case "Aventuras":
+                $scope.IsTabVistaActive = false;
+                $scope.IsTabAventurasActive = true;
+                $scope.IsTabPistasActive = false;
+                break;
+            case "Pistas":
+                $scope.IsTabVistaActive = false;
+                $scope.IsTabAventurasActive = false;
+                $scope.IsTabPistasActive = true;
+                break;
+            default:
+                $scope.IsTabVistaActive = true;
+                $scope.IsTabAventurasActive = false;
+                $scope.IsTabPistasActive = false;
+                break;
+        }
+    };
+    /**
+     * MDDialog Zone
+     */
+
+    $scope.log = function() {
+        console.log($scope.NewAdventure);
+        console.log($scope.NewHint);
+        console.log($scope.SelectedAdv);
+    };
+
+    $scope.hide = function() {
+        $mdDialog.hide();
+    };
+
+    $scope.cancel = function() {
+        $scope.NewAdventure = {};
+        $scope.NewHint = {};
+        $mdDialog.hide();
+
+        $scope.IsAdventureInputsFilled = false;
+        //Si la Localización de la aventura ha sido aplicada
+        $scope.IsAdventurePos = false;
+        //Si la primera Pista ha sido rellenada
+        $scope.IsFirstHintFilled = false;
+        //Activador del Marker
+        $scope.IsMarkerCreatorActive = false;
+
+        $scope.IsNewHintFilled = false;
+        $scope.IsFinal = false;
+
+    };
+
+    $scope.showCustomToast = function() {
+        $mdToast.show({
+            hideDelay   : 0,
+            position    : 'top right',
+            controller  : 'CreatorCtrl',
+            templateUrl : 'toast-template.html',
+            parent: el
         });
-        google.maps.event.addListener(mapInstance, 'idle', function() {
-        });
-    });
+    };
+
+    $scope.closeToast = function() {
+        if (isDlgOpen) return;
+
+        $mdToast
+            .hide()
+            .then(function() {
+                isDlgOpen = false;
+            });
+    };
+
+    $scope.openMoreInfo = function(e) {
+        if ( isDlgOpen ) return;
+        isDlgOpen = true;
+
+        $mdDialog
+            .show($mdDialog
+                .alert()
+                .title('More info goes here.')
+                .textContent('Something witty.')
+                .ariaLabel('More info')
+                .ok('Got it')
+                .targetEvent(e)
+            )
+            .then(function() {
+                isDlgOpen = false;
+            })
+    };
+
 
     /**
      * Map zone
@@ -61,34 +192,7 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
         bounds: {},
         clickedMarker: {
             id: 0,
-            options:{
-            }
-        },
-        events: {
-            //This turns of events and hits against scope from gMap events this does speed things up
-            // adding a blacklist for watching your controller scope should even be better
-            blacklist: ['drag', 'dragend','dragstart','zoom_changed', 'center_changed'],
-            click: function (mapModel, eventName, originalEventArgs) {
-                // 'this' is the directive's scope
-                $log.info("user defined event: " + eventName, mapModel, originalEventArgs);
-
-                var e = originalEventArgs[0];
-                console.log(e);
-                var lat = e.latLng.lat(),
-                    lon = e.latLng.lng();
-                $scope.map.clickedMarker = {
-                    id: 0,
-                    options: {
-                        labelContent: 'You clicked here ' + 'lat: ' + lat + ' lon: ' + lon,
-                        labelClass: "marker-labels",
-                        labelAnchor: "50 0"
-                    },
-                    latitude: lat,
-                    longitude: lon
-                };
-                //scope apply required because this event handler is outside of the angular domain
-                //$scope.$evalAsync();
-            }
+            options: {}
         }
     };
     /**
@@ -108,17 +212,17 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
                     latitude: position.coords.latitude,
                     longitude: position.coords.longitude,
                     options: {
-                        labelContent: '----Puntero----',
-                        labelAnchor: "26 0",
-                        labelClass: "marker-labels",
-                        draggable: true
+                        icon: '/images/icons/ic_place_black_48px.svg',
+                        animation: google.maps.Animation.DROP,
+                        draggable: true,
+                        raiseOnDrag: true
                     }
                 };
 
 
                 $scope.$watchCollection("map.createMarker", function(newVal, oldVal) {
-                    $scope.map.center.latitude = position.coords.latitude;
-                    $scope.map.center.longitude = position.coords.longitude;
+                    $scope.map.center.latitude = $scope.map.createMarker.latitude;
+                    $scope.map.center.longitude = $scope.map.createMarker.longitude;
 
                     $scope.NewAdventure.location_coordinates = [$scope.map.createMarker.longitude, $scope.map.createMarker.latitude];
                     $scope.NewHint.location_coordinates = [$scope.map.createMarker.longitude, $scope.map.createMarker.latitude];
@@ -145,16 +249,16 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
                     var dificon;
                     switch (value.difficulty){
                         case "Fácil":
-                            dificon = '/images/MapIcons/extended-icons5_101.png';
+                            dificon = '/images/icons/extended-icons5_101.png';
                             break;
-                        case "Mediana":
-                            dificon = '/images/MapIcons/extended-icons5_102.png';
+                        case "Media":
+                            dificon = '/images/icons/extended-icons5_102.png';
                             break;
-                        case "Díficil":
-                            dificon = '/images/MapIcons/extended-icons5_103.png';
+                        case "Difícil":
+                            dificon = '/images/icons/extended-icons5_103.png';
                             break;
                         default:
-                            dificon = '/images/MapIcons/extended-icons5_05.png';
+                            dificon = '/images/icons/extended-icons5_05.png';
                             break;
                     }
 
@@ -187,56 +291,173 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
         $scope.map.markerAdventures = markersAdventures;
     };
 
-    $scope.ShowHintofAdventureonMap = function (){
+    $scope.ShowMyAdventuresonMap = function (){
             $scope.CleanMap();
-            var markersHints = [];
-            $http.get('/adventures/id/'+ $scope.SelectedAdv._id)
+            var markersAdventures = [];
+            $http.get('/user/my/adventures/'+ $rootScope.UserSessionId._id)
                 .success(function (data) {
-                    angular.forEach(data.hints, function (value, key) {
-                        markersHints.push(
+                    angular.forEach(data.adventures.created, function (value, key) {
+                        //For color icons
+                        var dificon;
+                        switch (value.difficulty){
+                            case "Fácil":
+                                dificon = '/images/icons/extended-icons5_101.png';
+                                break;
+                            case "Media":
+                                dificon = '/images/icons/extended-icons5_102.png';
+                                break;
+                            case "Difícil":
+                                dificon = '/images/icons/extended-icons5_103.png';
+                                break;
+                            default:
+                                dificon = '/images/icons/extended-icons5_05.png';
+                                break;
+                        }
+
+                        markersAdventures.push(
                             {
-                                index: value.index,
-                                indication: {
-                                    distance: value.indication.distance,
-                                    sense: value.indication.sense
-                                },
-                                text: value.text,
+                                name: value.name,
+                                description: value.description,
                                 image: value.image,
+                                difficulty: value.difficulty,
                                 _id: value._id,
                                 latitude: value.location.coordinates[1],
                                 longitude: value.location.coordinates[0],
                                 showWindow: false,
                                 options: {
-                                    icon: '/images/MapIcons/extended-icons5_77.png',
+                                    icon: dificon,
                                     animation: 0,
-                                    title: value.text,
+                                    title: value.name,
                                     labelAnchor: "26 0",
                                     labelClass: "marker-labels"
                                 }
                             }
                         );
                     });
-                    console.log(markersHints);
+                    console.log(markersAdventures);
                 })
                 .error(function (data) {
                     console.log(data);
                 })
 
-            $scope.map.markersHints = markersHints;
+            $scope.map.markerAdventures = markersAdventures;
+        };
+
+    $scope.ShowHintofAdventureonMap = function (){
+        $scope.CleanMap();
+
+        var markersHints = [];
+        $http.get('/adventures/id/'+ $scope.SelectedAdv._id)
+            .success(function (data) {
+                $scope.SelectedAdv = data;
+                angular.forEach(data.hints, function (value) {
+
+                    var icon = '';
+
+                    if (value.final){
+                        icon = '/images/icons/ic_beenhere_black_48px.svg';
+                    }
+                    else icon = '/images/icons/ic_assistant_photo_black_48px.svg';
+
+                    if (value.indication.distance == 0)
+                    {
+                        markersHints.push(
+                            {
+                                index: value.index,
+                                text: value.text,
+                                final: value.final,
+                                image: value.image,
+                                _id: value._id,
+                                latitude: value.location.coordinates[1],
+                                longitude: value.location.coordinates[0],
+                                showWindow: false,
+                                options: {
+                                    icon: icon,
+                                    animation: google.maps.Animation.DROP,
+                                    title: value.text,
+                                    labelAnchor: "26 0",
+                                    labelClass: "marker-labels"
+                                }
+                            }
+                        );
+                    }
+                    else{
+                        markersHints.push(
+                            {
+                                index: value.index,
+                                indication: {
+                                    distance: 'Distancia de la próxima pista: '+ value.indication.distance,
+                                    sense: 'Rumbo: '+ value.indication.sense
+                                },
+                                text: value.text,
+                                final: value.final,
+                                image: value.image,
+                                _id: value._id,
+                                latitude: value.location.coordinates[1],
+                                longitude: value.location.coordinates[0],
+                                showWindow: false,
+                                options: {
+                                    icon: icon,
+                                    animation: google.maps.Animation.DROP,
+                                    title: value.text,
+                                    labelAnchor: "26 0",
+                                    labelClass: "marker-labels"
+                                }
+                            }
+                        );
+                    }
+
+                });
+                console.log(markersHints);
+                $scope.map.markersHints = markersHints;
+            })
+            .error(function (data) {
+                console.log(data);
+            });
+
         };
 
     $scope.CleanMap = function () {
         $scope.map.markersHints = [];
         $scope.map.markerAdventures = [];
-    }
+    };
 
     $scope.CheckBoxMarkersAventure = function () {
-        if (!CheckBoxMarkersAventureStatus){
-            CheckBoxMarkersAventureStatus = true;
+
+        //Limpieza del Visualize
+        $scope.IsVisualizeActive = false;
+
+        if ($scope.CheckBoxYourAdvActive){
+            //Desactivo la otra
+            $scope.CheckBoxYourAdvActive = false;
+            $scope.CleanMap();
+        }
+        if (!$scope.IsCheckBoxMarkAdvActive){
+            $scope.IsCheckBoxMarkAdvActive = true;
             $scope.ShowAdventuresonMap();
         }
         else {
-            CheckBoxMarkersAventureStatus = false;
+            $scope.IsCheckBoxMarkAdvActive = false;
+            $scope.CleanMap();
+        }
+    };
+
+    $scope.CheckBoxYourAdv = function () {
+
+        //Limpieza del Visualize
+        $scope.IsVisualizeActive = false;
+
+        if($scope.IsCheckBoxMarkAdvActive){
+            //Desactivo la otra
+            $scope.IsCheckBoxMarkAdvActive = false;
+        }
+
+        if (!$scope.CheckBoxYourAdvActive){
+            $scope.CheckBoxYourAdvActive = true;
+            $scope.ShowMyAdventuresonMap();
+        }
+        else {
+            $scope.CheckBoxYourAdvActive = false;
             $scope.CleanMap();
         }
     };
@@ -245,12 +466,43 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
         switch(style){
             case "Diurno":
                 $scope.options.styles = MapBox;
+                if($scope.IsAdventureInputsFilled || $scope.IsNewHintFilled){
+                    $scope.map.createMarker.options.icon = '/images/icons/ic_place_black_48px.svg';
+                }
+                angular.forEach($scope.map.markersHints, function (value) {
+                    if(value.final){
+                        value.options.icon = '/images/icons/ic_beenhere_black_48px.svg';
+                    }
+                    else
+                    value.options.icon = '/images/icons/ic_assistant_photo_black_48px.svg';
+                });
                 break;
             case "Nocturno":
                 $scope.options.styles = BlackMap;
+                if($scope.IsAdventureInputsFilled || $scope.IsNewHintFilled){
+                    $scope.map.createMarker.options.icon = '/images/icons/ic_place_white_48px.svg';
+                }
+                angular.forEach($scope.map.markersHints, function (value) {
+                    if(value.final){
+                        value.options.icon = '/images/icons/ic_beenhere_white_48px.svg';
+                    }
+                    else
+                        value.options.icon = '/images/icons/ic_assistant_photo_white_48px.svg';
+                });
+
                 break;
             default:
                 $scope.options.styles = MapBox;
+                if($scope.IsAdventureInputsFilled || $scope.IsNewHintFilled){
+                    $scope.map.createMarker.options.icon = '/images/icons/ic_place_black_48px.svg';
+                }
+                angular.forEach($scope.map.markersHints, function (value) {
+                    if(value.final){
+                        value.options.icon = '/images/icons/ic_beenhere_black_48px.svg';
+                    }
+                    else
+                        value.options.icon = '/images/icons/ic_assistant_photo_black_48px.svg';
+                });
                 break;
         }
     };
@@ -260,34 +512,62 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
      * @constructor
      */
 
-
     $scope.CreateAdventure = function(){
+        $scope.CleanMap();
+
         if ($rootScope.UserSessionId._id != null) {
 
             $scope.NewAdventure.location_type = 'Point';
-            $scope.NewAdventure.hint = {
-                direction : 'Test N',
-                text: $scope.NewAdventure.hinttext,
-                image: $scope.NewAdventure.hintimage
-            };
+            $scope.NewAdventure.user_id = $rootScope.UserSessionId._id;
+            console.log($scope.NewAdventure);
+
             $http.post('/adventures/createadventure/', $scope.NewAdventure)
                 .success(function (data) {
+                    //[0] necessario para eliminar el array
+                    $scope.SelectedAdv = data;
                     console.log(data);
                     //Reprint Coordinates
                     $scope.NewAdventure.location_coordinates = [$scope.map.createMarker.longitude, $scope.map.createMarker.latitude];
-                    $scope.SuccessMsg = "Adventura creada";
-                    $timeout(function () {
-                        $scope.SuccessMsg = null;
-                    }, 3000);
 
                     var Newassign = {};
                     Newassign.adventure_id = data._id;
                     Newassign.user_id = $rootScope.UserSessionId._id;
 
+                    $scope.NewHint = {
+                        _id: data._id,
+                        text: $scope.NewAdventure.hinttext,
+                        image: $scope.NewAdventure.hintimage,
+                        location_type : 'Point',
+                        location_coordinates : [$scope.map.createMarker.longitude, $scope.map.createMarker.latitude]
+                    };
+
                     $http.post('/user/acreatedadv/', Newassign)
                         .success(function (data) {
-                            $scope.SelectedAdv._id = data;
-                            $scope.NewAdventure = {}; //clear the form
+
+                            $http.post('/hints/createhint/', $scope.NewHint)
+                                .success(function (data) {
+                                    console.log(data);
+
+                                    var Newassign = {};
+                                    Newassign.hint_id = data._id;
+                                    Newassign.adventure_id = $scope.NewHint._id;
+
+                                    console.log(Newassign);
+
+                                    $http.post('/adventures/ahintdadv/', Newassign)
+                                        .success(function (data) {
+                                            $scope.NewHint = {}; //clear the form
+                                            $scope.NewAdventure = {};
+                                            //clear the form
+                                        })
+                                        .error(function (data) {
+                                            console.log('Error:' + data);
+                                        });
+                                })
+                                .error(function (data) {
+                                    console.log('Error:' + data);
+                                });
+
                         })
                         .error(function (data) {
                             console.log('Error:' + data);
@@ -300,6 +580,119 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
         else $scope.ErrorMsg = ('Es necesario estar registrado');
     };
 
+    $scope.showProcessCrAdv = function(ev) {
+        $mdDialog.show({
+            controller: function () {
+                this.parent = $scope;
+            },
+            controllerAs: 'ctrl',
+            templateUrl: 'dialogCreateAdv.tmpl.html',
+            targetEvent: ev,
+            clickOutsideToClose:true,
+            fullscreen: $scope.customFullscreen
+            // Only for -xs, -sm breakpoints.
+        }).then(function() {
+
+            $scope.map.center.latitude = $scope.map.createMarker.latitude;
+            $scope.map.center.longitude = $scope.map.createMarker.longitude;
+
+            console.log($scope.NewAdventure);
+            if(!$scope.IsAdventureInputsFilled){
+                var toast = $mdToast.simple()
+                    .textContent('Creación cancelada!')
+                    .action('OK')
+                    .highlightAction(false)
+                    .hideDelay(5000)
+                    .parent(el)
+                    .position('top');
+                $mdToast.show(toast);
+                $scope.NewAdventure = {};
+                $scope.SwitchTabs("Aventuras");
+            }
+            else
+            {
+                $scope.IsAdventurePos = true;
+
+                $mdToast.show({
+                    hideDelay   : 0,
+                    position    : 'top right',
+                    controller  : 'CreatorCtrl',
+                    templateUrl : 'assignPoint.html',
+                    parent: el
+                }).then(function () {
+                    //Cerramos la Toast
+                    $scope.IsMarkerCreatorActive = false;
+                    console.log("Marker Cerrado:"+ $scope.IsMarkerCreatorActive);
+
+                    $mdDialog.show({
+                        controller: function () { this.parent = $scope; },
+                        controllerAs: 'ctrl',
+                        templateUrl: 'dialogAggHint.tmpl.html',
+                        targetEvent: ev,
+                        clickOutsideToClose:true,
+                        fullscreen: $scope.customFullscreen
+                        // Only for -xs, -sm breakpoints.
+                    }).then(function() {
+                        if(!$scope.IsFirstHintFilled){
+                            var toast = $mdToast.simple()
+                                .textContent('Creación cancelada!')
+                                .action('OK')
+                                .highlightAction(false)
+                                .hideDelay(5000)
+                                .parent(el)
+                                .position('top');
+                            $mdToast.show(toast);
+                            $scope.NewAdventure = {};
+                            $scope.SwitchTabs("Aventuras");
+                        }
+                        else {
+                            console.log($scope.NewAdventure);
+
+                            $scope.IsAdventureInputsFilled = false;
+                            //Si la Localización de la aventura ha sido aplicada
+                            $scope.IsAdventurePos = false;
+                            //Si la primera Pista ha sido rellenada
+                            $scope.IsFirstHintFilled = false;
+                            //Activador del Marker
+                            $scope.IsMarkerCreatorActive = false;
+
+                            $scope.CreateAdventure();
+
+                            //Habilito el boton de Agregar
+                            $scope.IsAdventureFinished = true;
+                            //Limpio el mapa
+                            $scope.CleanMap();
+
+                            var confirm = $mdDialog.confirm()
+                                .title('Agregación de Pistas')
+                                .textContent('Tu Aventura ya esta creada, ahora añadiremos más Pistas')
+                                .ariaLabel('Lucky day')
+                                .targetEvent(ev)
+                                .ok('Siguiente');
+
+                            $mdDialog.show(confirm).then(function() {
+
+                                console.log($scope.SelectedAdv);
+                                var toast = $mdToast.simple()
+                                    .textContent('Aventura Creada: '+ $scope.SelectedAdv.name + ' - Dificultad: '+ $scope.SelectedAdv.difficulty)
+                                    .action('OK')
+                                    .highlightAction(false)
+                                    .hideDelay(8000)
+                                    .parent(el)
+                                    .position('top left');
+                                $mdToast.show(toast);
+
+                                $scope.ShowHintofAdventureonMap();
+
+                            });
+                        }
+
+                    });
+                })
+            }
+        });
+    };
+
     /**
      * Hints Zone
      * @constructor
@@ -308,19 +701,12 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
     $scope.CreateHint = function(advid){
         console.log(advid);
 
-        if ($rootScope.UserSessionId._id != null) {
-
             $scope.NewHint.location_type = 'Point';
             $scope.NewHint._id = $scope.SelectedAdv._id;
 
             $http.post('/hints/createhint/', $scope.NewHint)
                 .success(function (data) {
                     console.log(data);
-                    //Reprint Coordinates
-                    $scope.SuccessMsg = "Pista creada";
-                    $timeout(function () {
-                        $scope.SuccessMsg = null;
-                    }, 3000);
 
                     var Newassign = {};
                     Newassign.hint_id = data._id;
@@ -340,25 +726,266 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
                 .error(function (data) {
                     console.log('Error:' + data);
                 });
-        }
-        else $scope.ErrorMsg = ('Es necesario estar registrado');
     };
 
-    $scope.ActivHintCreator = function (status) {
-        if (status){
-            $scope.StatusHint = false;
-        }
-        else {
-            $scope.StatusHint = true;
-        }
+    $scope.CreateFinalHint = function () {
+
+        console.log("Entrado en FinalHint");
+
+        $scope.NewHint.location_type = 'Point';
+        $scope.NewHint._id = $scope.SelectedAdv._id;
+        $scope.NewHint.text = 'Felicidades has completado la Aventura';
+        $scope.NewHint.image = 'http://res.cloudinary.com/geofinder/image/upload/v1485003782/trophy.gif';
+
+        $http.post('/hints/createhint/', $scope.NewHint)
+            .success(function (data) {
+                console.log(data);
+
+                var Newassign = {};
+                Newassign.hint_id = data._id;
+                Newassign.adventure_id = $scope.SelectedAdv._id;
+
+                console.log(Newassign);
+
+                var User = {};
+                User.id = $rootScope.UserSessionId._id;
+
+                $http.put('/hints/makefinal/'+ data._id, User)
+                    .success(function (data) {
+
+                        $http.post('/adventures/ahintdadv/', Newassign)
+                            .success(function (data) {
+                                $scope.NewHint = {}; //clear the form
+                                $scope.ShowHintofAdventureonMap();
+                            })
+                            .error(function (data) {
+                                console.log('Error:' + data);
+                            });
+                    })
+                    .error(function (data) {
+                        console.log('Error:' + data);
+                    });
+
+            })
+            .error(function (data) {
+                console.log('Error:' + data);
+            });
     };
 
     $scope.SelAdventureforHint = function (id) {
+
         console.log(id);
-        $scope.SelectedAdv =
-            {
-                _id: id
-            };
+        $http.get('/adventures/id/' + id)
+            .success(function(data) {
+                $scope.SelectedAdv = data;
+                //Activación del Visualize
+                $scope.IsVisualizeActive = true;
+                $scope.ShowHintofAdventureonMap();
+
+            })
+            .error(function(data) {
+                console.log('Error: ' + data);
+            });
     };
 
-}]);
+    $scope.showPopUpCrHint = function(ev) {
+        $mdDialog.show({
+            controller: function () {this.parent = $scope;},
+            controllerAs: 'ctrl',
+            templateUrl: 'dialogAggHintWFinal.tmpl.html',
+            targetEvent: ev,
+            clickOutsideToClose:true,
+            fullscreen: $scope.customFullscreen
+            // Only for -xs, -sm breakpoints.
+        }).then(function() {
+            console.log($scope.NewHint);
+            if(!$scope.IsNewHintFilled){
+                var toast = $mdToast.simple()
+                    .textContent('Agregación cancelada!')
+                    .action('OK')
+                    .highlightAction(false)
+                    .hideDelay(5000)
+                    .parent(el)
+                    .position('top');
+                $mdToast.show(toast);
+                $scope.NewHint = {};
+            }
+            else {
+
+                $scope.map.center.latitude = $scope.map.createMarker.latitude;
+                $scope.map.center.longitude = $scope.map.createMarker.longitude;
+
+                /**
+                 * Error notificado por la Andrea
+                 * Status: Al crear un aPista en el mismo sitio, peta en el servidor
+                 * Sol: El sistema limpia los scopes, y si no movemos el marker este no realiza
+                 * la función $scope.NewHint.location_coordinates = [$scope.map.createMarker.longitude,
+                 * $scope.map.createMarker.latitude];
+                 * Por lo tanto se queda el $scope.NewHint vacio
+                 * Implemento $scope.NewHint.location_coordinates = [$scope.map.createMarker.longitude, $scope.map.createMarker.latitude];
+                 * en el proceso.
+                 * @type {boolean}
+                 */
+
+                $scope.NewHint.location_coordinates = [$scope.map.createMarker.longitude, $scope.map.createMarker.latitude];
+
+                $scope.IsMarkerCreatorActive = true;
+                $scope.IsNewHintFilled = true;
+                $scope.CleanMap();
+
+                $mdToast.show({
+                    hideDelay   : 0,
+                    position    : 'top right',
+                    controller  : 'CreatorCtrl',
+                    templateUrl : 'assignHint.html',
+                    parent: el
+                }).then(function () {
+                    //Cerramos la Toast
+                    $scope.IsMarkerCreatorActive = false;
+                    console.log("Marker Cerrado:"+ $scope.IsMarkerCreatorActive);
+
+                    if ($scope.IsFinal){
+
+                        $scope.CreateFinalHint();
+
+                        $scope.IsAdventureInputsFilled = false;
+                        $scope.IsAdventurePos = false;
+                        $scope.IsFirstHintFilled = false;
+                        $scope.IsAdventureFinished = false;
+                        $scope.IsMarkerCreatorActive = false;
+
+                        //Segunda Parte
+                        $scope.IsNewHintFilled = false;
+                        $scope.IsFinal = false;
+
+                        var toast = $mdToast.simple()
+                            .textContent('Pista Final Añadida')
+                            .action('OK')
+                            .highlightAction(false)
+                            .hideDelay(3000)
+                            .parent(el)
+                            .position('top left');
+                        $mdToast.show(toast).then(function () {
+
+                            var toast2 = $mdToast.simple()
+                                .textContent('Aventura Completada')
+                                .action('OK')
+                                .highlightAction(false)
+                                .hideDelay(3000)
+                                .parent(el)
+                                .position('top left');
+                            $mdToast.show(toast2).then(function () {
+                               //Final
+                                $scope.NewHint = {};
+
+                            });
+                        });
+                    }
+                    else {
+                        $scope.CreateHint($scope.SelectedAdv._id);
+
+                        var toast = $mdToast.simple()
+                            .textContent('Pista Creada')
+                            .action('OK')
+                            .highlightAction(false)
+                            .hideDelay(8000)
+                            .parent(el)
+                            .position('top left');
+                        $mdToast.show(toast);
+
+                        $scope.NewHint = {};
+                    }
+
+                })
+            }
+        });
+    };
+
+
+    /**
+     *  Image Zone
+     */
+    $scope.uploadFileForAdv = function(){
+        var file = $scope.myFile;
+        var fd = new FormData();
+        fd.append('file', file);
+        console.log('mi fichero',file);
+
+        $http.post('/hints/update/image/',fd, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        })
+            .success(function(data){
+                console.log("success!!");
+                $scope.NewAdventure.image = data;
+
+            })
+            .error(function(err){
+                console.log("error!!");
+            });
+    };
+    $scope.uploadFileForFirstHint = function(){
+        var file = $scope.myFile;
+        var fd = new FormData();
+        fd.append('file', file);
+        console.log('mi fichero',file);
+
+        $http.post('/adventures/upload/image/',fd, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        })
+            .success(function(data){
+                console.log("success!!");
+                $scope.NewAdventure.hintimage = data;
+            })
+            .error(function(err){
+                console.log("error!!");
+            });
+    };
+    $scope.uploadFileForHints = function(){
+        var file = $scope.myFile;
+        var fd = new FormData();
+        fd.append('file', file);
+        console.log('mi fichero',file);
+
+        $http.post('/adventures/upload/image/',fd, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        })
+            .success(function(data){
+                console.log("success!!");
+                $scope.NewHint.image = data;
+            })
+            .error(function(err){
+                console.log("error!!");
+            });
+    };
+
+
+    $scope.replaceElement1 = function () {
+        angular.element(document.querySelector('#InputFile1')).click();
+    };
+    $scope.replaceElement2 = function () {
+        angular.element(document.querySelector('#InputFile2')).click();
+    };
+    $scope.replaceElement3 = function () {
+        angular.element(document.querySelector('#InputFile3')).click();
+    };
+
+}])
+    .directive('fileModel', ['$parse', function ($parse) {
+        return {
+            restrict: 'A',
+            link: function(scope, element, attrs) {
+                var model = $parse(attrs.fileModel);
+                var modelSetter = model.assign;
+
+                element.bind('change', function(){
+                    scope.$apply(function(){
+                        modelSetter(scope, element[0].files[0]);
+                    });
+                });
+            }
+        };
+    }]);
+

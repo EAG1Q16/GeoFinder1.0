@@ -8,6 +8,9 @@ var Hints = require('../models/modelhints');
 var Adventures = require('../models/modeladventures');
 var router = express.Router();
 var geolib = new require('geolib');
+var multer = require('multer');
+var upload = multer({dest: __dirname+'/../uploads'});
+var cloudinary  = require('cloudinary');
 
 // GET adventures in list
 router.get('/', function(req, res) {
@@ -35,6 +38,8 @@ router.post('/createadventure/', function(req, res) {
         name:req.body.name,
         description:req.body.description,
         difficulty:req.body.difficulty,
+        image: req.body.image,
+        createdby: req.body.user_id,
         location:
         {
              type: req.body.location_type,
@@ -43,41 +48,7 @@ router.post('/createadventure/', function(req, res) {
     }, function(err, adv) {
         if (err)
             res.send(err);
-
-        Hints.create({
-            index:0,
-            text:req.body.hint.text,
-            image:req.body.hint.image,
-            location:
-                {
-                    type: 'Point',
-                    coordinates: req.body.location_coordinates
-                },
-            indication:
-                {
-                    distance: 0,
-                    sense: req.body.hint.direction
-                }
-        }, function(err, hint) {
-            if (err)
-                res.send(err);
-
-            var query = {_id: adv._id};
-            var update = {$addToSet : {"hints" : hint._id}};
-            var options = {};
-
-            Adventures.findOneAndUpdate(query, update, options, function(err) {
-                if (err) {
-                    res.send(err);
-                }
-                Adventures.findById(adv._id, function (err, advent) {
-                    if (err)
-                        res.send(err);
-                    res.send(advent);
-                });
-            });
-
-        });
+        res.send(adv);
     });
 
 });
@@ -185,7 +156,7 @@ router.post('/hintnear/', function (req, res){
         if(adventure){
                 var pistas;
                 var hintadv = adventure.hints;
-                //console.log('hintadv',hintadv);
+                console.log('hintadv',hintadv);
 
 
                 for (var i = 0; i < hintadv.length; i++){
@@ -253,6 +224,37 @@ router.post('/timeplayed/', function(req, res) {
             res.send(err)
         if (adventure)
         res.send(adventure);
+    });
+});
+
+//Subir imagenes
+router.post('/upload/image/', upload.single('file'), function(req, res) {
+    cloudinary.uploader.upload(req.file.path, function (result) {
+        console.log(result);
+        res.send(result.url);
+    });
+});
+
+router.post('/advplay/', function(req, res) {
+    var query = {_id: req.body.user_id};
+    var update = {$inc : {"played" : 30}};
+    var options = {};
+
+    User.findOneAndUpdate(query, update, options, function(err, user) {
+        if (err) {
+            res.send(err);
+        }
+        if(user){
+            console.log(user);
+        }
+
+    });
+
+    User.find({_id: req.body.user_id}).deepPopulate(pathdeepPopulate).exec().then(function (err, user) {
+        if(err)
+            res.send(err)
+        if (user)
+            res.send(user);
     });
 });
 

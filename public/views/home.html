@@ -85,13 +85,13 @@
             <div class="col-md-12">
                 <md-card>
                     <md-card-header class="customColor">
-                        <div class="panel-title"><b><i class=" fa fa-diamond"></i> Rango:</b></div>
+                        <div class="panel-title"><b><i class=" fa fa-diamond"></i> Rango:</b> {{UserHome.score}}</div>
                     </md-card-header>
                     <md-content>
-                        <img ng-if="UserHome.adventures.created.length >= 0 && UserHome.adventures.created.length <3" class="img-responsive center-block" height="100px" width="100px" src="../images/CAmpista.png">
-                        <img ng-if="UserHome.adventures.created.length >= 3 && UserHome.adventures.created.length <10" class="img-responsive center-block" height="100px" width="100px" src="../images/Navegante.png">
-                        <img ng-if="UserHome.adventures.created.length >= 10 && UserHome.adventures.created.length<20" class="img-responsive center-block" height="100px" width="100px" src="../images/Montañero.png">
-                        <img ng-if="UserHome.adventures.created.length >= 20 " class="img-responsive center-block" height="100px" width="100px" src="../images/Aventurero.png">
+                        <img ng-if="UserHome.adventures.created.length >= 0 && UserHome.adventures.created.length <150" class="img-responsive center-block" height="100px" width="100px" src="../images/CAmpista.png">
+                        <img ng-if="UserHome.adventures.created.length >= 150 && UserHome.adventures.created.length <300" class="img-responsive center-block" height="100px" width="100px" src="../images/Navegante.png">
+                        <img ng-if="UserHome.adventures.created.length >= 300 && UserHome.adventures.created.length<450" class="img-responsive center-block" height="100px" width="100px" src="../images/Montañero.png">
+                        <img ng-if="UserHome.adventures.created.length >= 450 " class="img-responsive center-block" height="100px" width="100px" src="../images/Aventurero.png">
                     </md-content>
                 </md-card>
             </div>

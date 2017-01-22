@@ -136,3 +136,10 @@ body {
 /*--------Error page--*/
 .ErrorPage {
   padding-top: 60px}
+
+/*--------CAnvas responsive--*/
+canvas {
+  background-color: transparent;
+  width: 100%;
+  height: auto;
+}
