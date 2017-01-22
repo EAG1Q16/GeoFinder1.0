@@ -518,6 +518,7 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
         if ($rootScope.UserSessionId._id != null) {
 
             $scope.NewAdventure.location_type = 'Point';
+            $scope.NewAdventure.user_id = $rootScope.UserSessionId._id;
             console.log($scope.NewAdventure);
 
             $http.post('/adventures/createadventure/', $scope.NewAdventure)
@@ -813,6 +814,20 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
 
                 $scope.map.center.latitude = $scope.map.createMarker.latitude;
                 $scope.map.center.longitude = $scope.map.createMarker.longitude;
+
+                /**
+                 * Error notificado por la Andrea
+                 * Status: Al crear un aPista en el mismo sitio, peta en el servidor
+                 * Sol: El sistema limpia los scopes, y si no movemos el marker este no realiza
+                 * la función $scope.NewHint.location_coordinates = [$scope.map.createMarker.longitude,
+                 * $scope.map.createMarker.latitude];
+                 * Por lo tanto se queda el $scope.NewHint vacio
+                 * Implemento $scope.NewHint.location_coordinates = [$scope.map.createMarker.longitude, $scope.map.createMarker.latitude];
+                 * en el proceso.
+                 * @type {boolean}
+                 */
+
+                $scope.NewHint.location_coordinates = [$scope.map.createMarker.longitude, $scope.map.createMarker.latitude];
 
                 $scope.IsMarkerCreatorActive = true;
                 $scope.IsNewHintFilled = true;

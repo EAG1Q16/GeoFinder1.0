@@ -39,6 +39,7 @@ router.post('/createadventure/', function(req, res) {
         description:req.body.description,
         difficulty:req.body.difficulty,
         image: req.body.image,
+        createdby: req.body.user_id,
         location:
         {
              type: req.body.location_type,
@@ -155,7 +156,7 @@ router.post('/hintnear/', function (req, res){
         if(adventure){
                 var pistas;
                 var hintadv = adventure.hints;
-                //console.log('hintadv',hintadv);
+                console.log('hintadv',hintadv);
 
 
                 for (var i = 0; i < hintadv.length; i++){
