@@ -91,22 +91,38 @@
     </md-card>
     </div>
     <div class="col-md-5">
-                <md-card>
-                    <md-card-header class="customColor">
-                        <div class="panel-title"><b><i class="fa fa-users"></i> Administrar Seguidores:</b></div>
-                    </md-card-header>
-                    <md-card-content>
+        <div class="row">
+            <md-card>
+                <md-card-header class="customColor">
+                    <div class="panel-title"><b><i class="fa fa-users"></i> QR de Invitación:</b></div>
+                </md-card-header>
+                <md-card-content>
+                    <div class="center-block" style="height:180px; width:180px;">
+                        <qrcode version="5" error-correction-level="M" size="275" data="{{UserProfileInfo.referalid}}"
+                        ></qrcode>
+                    </div>
+                </md-card-content>
+            </md-card>
+        </div>
+        <div class="row">
+            <md-card>
+                <md-card-header class="customColor">
+                    <div class="panel-title"><b><i class="fa fa-users"></i> Administrar Seguidores:</b></div>
+                </md-card-header>
+                <md-card-content>
                     <!-- List group -->
                     <md-list style="background-color: white">
                         <md-list-item class="md-1-line" ng-repeat="FollowingUser in FollowingUsers track by  $index" id="{{FollowingUser._id}}">
-                           <a ng-href="#/userprofile/{{FollowingUser._id}}"><img class="md-avatar" ng-src="{{FollowingUser.photo}}"></a>
-                           <h4>{{FollowingUser.username}}</h4>
-                           <md-button class="md-raised md-warn md-secondary" ng-click="StopFollowUser(FollowingUser._id)">Dejar de seguir</md-button>
-                           <md-divider ng-hide="$last"></md-divider>
+                            <a ng-href="#/userprofile/{{FollowingUser._id}}"><img class="md-avatar" ng-src="{{FollowingUser.photo}}"></a>
+                            <h4>{{FollowingUser.username}}</h4>
+                            <md-button class="md-raised md-warn md-secondary" ng-click="StopFollowUser(FollowingUser._id)">Dejar de seguir</md-button>
+                            <md-divider ng-hide="$last"></md-divider>
                         </md-list-item>
                     </md-list>
-                    </md-card-content>
-                </md-card>
+                </md-card-content>
+            </md-card>
+        </div>
+
     </div>
     </div>
     </div>
