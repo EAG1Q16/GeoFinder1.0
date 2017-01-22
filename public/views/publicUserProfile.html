@@ -10,9 +10,8 @@
                         </md-card-title-text>
                     </md-card-title>
                     <md-card-content>
-                        <p>
-                            {{pUserProfileInfo.description}}
-                        </p>
+                        <p><b>Puntos:</b> {{pUserProfileInfo.score}}</p>
+                        <p>{{pUserProfileInfo.description}}</p>
                     </md-card-content>
                     <md-card-actions layout="column" layout-align="start">
                         <md-button ng-if="pUserProfileInfo._id != UserSessionId._id && isfollowing == 'false'"  class="md-raised" style="background-color: #00ADB5; color: white" ng-click="followUser()"><b>Seguir</b></md-button>
@@ -24,14 +23,14 @@
                 <md-card>
                     <md-card-header class="customColor">
                         <md-card-header-text>
-                            <span class="panel-title"><b><i class=" fa fa-diamond"></i> Rango:</b></span>
+                            <span class="panel-title"><b><i class=" fa fa-diamond"></i> Rango:</b> {{pUserProfileInfo.score}}</span>
                         </md-card-header-text>
                     </md-card-header>
                     <md-card-content>
-                        <img ng-if="AdventuresLength >=0 && AdventuresLength <3" class="img-responsive center-block" height="65px" width="65px" src="../images/CAmpista.png">
-                        <img ng-if="AdventuresLength >= 3 && AdventuresLength <10" class="img-responsive center-block" height="65px" width="65px" src="../images/Navegante.png">
-                        <img ng-if="AdventuresLength >= 10 && AdventuresLength<20" class="img-responsive center-block" height="65px" width="65px" src="../images/Montañero.png">
-                        <img ng-if="AdventuresLength >= 20 " class="img-responsive center-block" height="65px" width="65px" src="../images/Aventurero.png">
+                        <img ng-if="pUserProfileInfo.score >=0 && pUserProfileInfo.score <150" class="img-responsive center-block" height="65px" width="65px" src="../images/CAmpista.png">
+                        <img ng-if="pUserProfileInfo.score >= 150 && pUserProfileInfo.score <300" class="img-responsive center-block" height="65px" width="65px" src="../images/Navegante.png">
+                        <img ng-if="pUserProfileInfo.score >= 300 && pUserProfileInfo.score <450" class="img-responsive center-block" height="65px" width="65px" src="../images/Montañero.png">
+                        <img ng-if="pUserProfileInfo.score >= 450 " class="img-responsive center-block" height="65px" width="65px" src="../images/Aventurero.png">
                     </md-card-content>
                 </md-card>
             </div>
@@ -79,7 +78,7 @@
                             <h5>Todavía no has creado ningúna aventura</h5>
                         </div>
                         <div class="alert alert-info text-center" ng-if="pUserProfileInfo._id != UserSessionId._id">
-                            <h5>Este usuario no ha creado aventuras</h5>
+                            <h5>Este usuario todavía no ha creado aventuras</h5>
                         </div>
                 </div>
                 <md-card ng-repeat="CreatedAdventure in CreatedAdventures">

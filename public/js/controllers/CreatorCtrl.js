@@ -5,6 +5,16 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
     '$timeout','uiGmapIsReady','$mdDialog','$mdToast', function($scope, $rootScope, $http, GoogleMapApi, $timeout, uiGmapIsReady,
                                          $mdDialog, $mdToast){
 
+        // when landing on the page get user session
+        $http.get('/user/sessionid')
+            .success(function(data) {
+                $rootScope.UserSessionId = data;
+                $rootScope.UserSessionUri = data._id;
+            })
+            .error(function(data) {
+                console.log('not logged');
+            });
+
     /**
      * Init zone
      *

@@ -287,20 +287,27 @@ router.put('/update/photo/:user_id', function(req, res) {
 
 //Modify the photo of a user
 router.post('/update/image/:user_id', upload.single('file'), function(req, res) {
+    console.log('hola', req.body);
+    console.log('path', req.file.path);
     cloudinary.uploader.upload(req.file.path, function(result) {
-        console.log(result);
-        User.update({_id : req.params.user_id
-            },{$set:{photo: result.url
-            }},
-            function(err, user) {
-                if (err)
-                    res.send(err);
-                User.findById(req.params.user_id, function(err, user) {
-                    if(err)
-                        res.send(err)
-                    res.send(user);
+        console.log('result', result.url);
+        if (result.url == undefined){
+            res.status(400).send('error with cdn size to big')
+        }
+        else{
+            User.update({_id : req.params.user_id
+                },{$set:{photo: result.url
+                }},
+                function(err, user) {
+                    if (err)
+                        res.send(err);
+                    User.findById(req.params.user_id, function(err, user) {
+                        if(err)
+                            res.send(err)
+                        res.send(user);
+                    });
                 });
-            });
+        }
     });
 });
 

@@ -64,7 +64,7 @@ GeoFinderApp.config(['$routeProvider', function($routeProvider){
         templateUrl: './views/creator.html',
         controller: 'CreatorCtrl',
         resolve:{
-            factory: checkRouting
+          factory: checkRouting
         }
         })
         .otherwise({

@@ -26,8 +26,7 @@
         </div>
         <br>
         <br>
-        <!--<div class="row">-->
-        <!--<div class="col-md-12">-->
+        <div class="row">
             <div class="detailBox">
                 <div class="titleBox">
                     <label><h4>Comentarios:</h4></label>
@@ -55,16 +54,15 @@
                         </div>
                     </form>
                 </div>
-
             </div>
-        <!--</div>-->
+        </div>
         <!--</div>-->
     </div>
     <div class="col-md-4">
-        <div class="row" style="position: fixed">
+        <div class="row">
         <div class="col-md-11">
         <div class="row">
-                            <div class="col-md-12">
+                        <div class="col-md-12">
                                 <md-card>
                         <img style="max-height: 200px" ng-src="{{AdventureProfileInfo.image}}" class="md-card-image">
                         <md-card-title>
@@ -107,29 +105,27 @@
                             </div>
                         </md-card-actions>
                     </md-card>
-                            </div>
-                        </div>
+                    </div>
+                 </div>
             <div class="row">
                 <div class="col-md-12">
                     <md-card>
+                        <md-card-title style="background-color: #00ADB5">
+                            <md-card-title-text>
+                                <span class="md-headline" style="color: white;">Estadísticas:</span>
+                            </md-card-title-text>
+                        </md-card-title>
                         <md-card-content>
-                            <div class="row">
-                                <div class="col-md-12">
-                                <div class="col-md-2"></div>
-                            <div class="col-md-10">
+                            <br>
+                            <br>
                                 <canvas id="radar" class="chart chart-radar" chart-data="chart.data"
                                         chart-options="chart.options" chart-labels="chart.labels"
-                                        chart-colors="chart.colors">
+                                        chart-colors="chart.colors" height="400px" width="450px">
                                 </canvas>
-                            <h3 style="text-align: center">Las aveturas en graficas!</h3>
-                            </div>
-                                </div>
-                            </div>
                         </md-card-content>
                     </md-card>
                 </div>
             </div>
-
         </div>
     </div>
         </div>
