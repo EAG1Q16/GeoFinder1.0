@@ -87,12 +87,12 @@
                     <md-card-header class="customColor">
                         <div class="panel-title"><b><i class=" fa fa-diamond"></i> Rango:</b> {{UserHome.score}}</div>
                     </md-card-header>
-                    <md-content>
-                        <img ng-if="UserHome.adventures.created.length >= 0 && UserHome.adventures.created.length <150" class="img-responsive center-block" height="100px" width="100px" src="../images/CAmpista.png">
-                        <img ng-if="UserHome.adventures.created.length >= 150 && UserHome.adventures.created.length <300" class="img-responsive center-block" height="100px" width="100px" src="../images/Navegante.png">
-                        <img ng-if="UserHome.adventures.created.length >= 300 && UserHome.adventures.created.length<450" class="img-responsive center-block" height="100px" width="100px" src="../images/Montañero.png">
-                        <img ng-if="UserHome.adventures.created.length >= 450 " class="img-responsive center-block" height="100px" width="100px" src="../images/Aventurero.png">
-                    </md-content>
+                    <md-card-content>
+                        <img ng-if="UserHome.score >=0 && UserHome.score <150" class="img-responsive center-block" height="100px" width="100px" src="../images/CAmpista.png">
+                        <img ng-if="UserHome.score >= 150 && UserHome.score <300" class="img-responsive center-block" height="100px" width="100px" src="../images/Navegante.png">
+                        <img ng-if="UserHome.score >= 300 && UserHome.score <450" class="img-responsive center-block" height="100px" width="100px" src="../images/Montañero.png">
+                        <img ng-if="UserHome.score >= 450 " class="img-responsive center-block" height="100px" width="100px" src="../images/Aventurero.png">
+                    </md-card-content>
                 </md-card>
             </div>
         </div>
@@ -133,11 +133,10 @@
                         </md-card-content></a>
                     </md-card>
                  </div>
-
-                <div ng-repeat="FollowingAdv in FollowingAdvs">
-                    <div class="alert alert-info text-center" ng-if="FollowingAdv.adventures.created.length == 0">
-                        Tus amigos aún no han creado ningúna aventura, anímales a hacerlo!
-                    </div>
+                <div class="alert alert-info text-center" ng-if="counter == true">
+                    Tus amigos aún no han creado ningúna aventura, anímales a hacerlo!
+                </div>
+                <div ng-repeat="FollowingAdv in FollowingAdvs" ng-if="counter == false">
                     <md-card ng-repeat="adventure in FollowingAdv.adventures.created | orderBy: adventure.registerdate">
                         <md-card-title>
                             <md-card-title-text>

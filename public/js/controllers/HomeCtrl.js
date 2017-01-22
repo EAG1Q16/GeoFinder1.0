@@ -12,14 +12,27 @@ angular.module('GeoFinderApp').controller('HomeCtrl',['$scope','$location','$roo
                 .success(function(data) {
                     $scope.FollowingAdvs = data.following;
                     console.log($scope.FollowingAdvs);
+                    var count = 0;
+                    var following = 0;
+                    console.log("CONTADORES A 0");
+                    console.log(count);
+                    console.log(following);
+                    $scope.counter = false;
                     angular.forEach($scope.FollowingAdvs, function (Following, key) {
                         angular.forEach(Following.adventures.created, function (Adv, key) {
-                            console.log("HOLI FOREACH");
-                            console.log(Adv.registerdate);
                             Adv.registerdate = moment(Adv.registerdate, "").fromNow();
-                            console.log(Adv.registerdate);
                         })
+                        following ++;
+                        if(Following.adventures.created.length == 0){
+                            count++;
+                        }
                     })
+                    console.log(count);
+                    console.log(following);
+                    if(count == following){
+                        $scope.counter = true;
+                    }
+
                 })
                 .error(function(data) {
                     console.log('not logged');
