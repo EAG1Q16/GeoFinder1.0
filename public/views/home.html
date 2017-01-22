@@ -13,17 +13,12 @@
      <div class="col-md-12">
      <div class="col-md-4">
          <md-card>
-             <img ng-src="/../images/mountain4.png" class="md-card-image" alt="Washed Out">
+             <img ng-src="/../images/descubrir2.jpg" class="md-card-image" alt="Washed Out" >
              <md-card-title>
                  <md-card-title-text>
                      <span class="md-headline">Descubre Aventuras</span>
                  </md-card-title-text>
              </md-card-title>
-             <md-card-content>
-                 <p>
-                     lorem
-                 </p>
-             </md-card-content>
              <md-card-actions layout="column" layout-align="start">
                  <md-button class="md-raised" style="background-color: #00ADB5; color: white" ng-href="#/adventures"><i class="fa fa-binoculars"></i></md-button>
              </md-card-actions>
@@ -31,37 +26,29 @@
      </div>
      <div class="col-md-4">
          <md-card>
-             <img ng-src="/../images/mountain4.png" class="md-card-image" alt="Washed Out">
+             <img ng-src="/../images/compartir.jpg" class="md-card-image" alt="Washed Out" >
              <md-card-title>
                  <md-card-title-text>
                      <span class="md-headline">Juega en tu dispositivo</span>
                  </md-card-title-text>
              </md-card-title>
-             <md-card-content>
-                 <p>
-                     lorem6
-                 </p>
-             </md-card-content>
              <md-card-actions layout="column" layout-align="start">
-                 <md-button class="md-raised" style="background-color: #00ADB5; color: white" href="https://github.com/EAG1Q16"><i class="fa fa-play"></i></md-button>
+                 <md-button class="md-raised" style="background-color: #00ADB5; color: white" href="https://github.com/EAG1Q16/GeoApp1.0"><i class="fa fa-play"></i></md-button>
              </md-card-actions>
          </md-card>
      </div>
      <div class="col-md-4">
          <md-card>
-             <img ng-src="/../images/mountain4.png" class="md-card-image" alt="Washed Out">
+             <img ng-src="/../images/senderismo.jpg" class="md-card-image" alt="Washed Out">
              <md-card-title>
                  <md-card-title-text>
                      <span class="md-headline">Compartelo con tus amigos</span>
                  </md-card-title-text>
              </md-card-title>
-             <md-card-content>
-                 <p>
-                     lorem
-                 </p>
-             </md-card-content>
              <md-card-actions layout="column" layout-align="start">
-                 <md-button class="md-raised" style="background-color: #00ADB5; color: white" href="twitter.com"><i class="fa fa-heart"></i></md-button>
+                 <md-button class="md-raised" style="background-color: #00ADB5; color: white" href="https://twitter.com/share" data-text="Aplicación chuli" data-url="https://www.geofinder.tech" data-hashtags="GeoFinder" data-show-count="false"><i class="fa fa-heart"></i><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></md-button>
+
+                 <!--<md-button class="md-raised" style="background-color: #00ADB5; color: white" href="http://twitter.com/ea_eetac"><i class="fa fa-heart"></i></md-button>-->
              </md-card-actions>
          </md-card>
      </div>
@@ -149,7 +136,7 @@
 
                 <div ng-repeat="FollowingAdv in FollowingAdvs">
                     <div class="alert alert-info text-center" ng-if="FollowingAdv.adventures.created.length == 0">
-                        Tus amigos aún no han creado ningúna aventura anímalos a hacerlo
+                        Tus amigos aún no han creado ningúna aventura, anímales a hacerlo!
                     </div>
                     <md-card ng-repeat="adventure in FollowingAdv.adventures.created | orderBy: adventure.registerdate">
                         <md-card-title>
