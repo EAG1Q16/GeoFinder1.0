@@ -194,7 +194,7 @@ router.post('/posicion/', function (req, res){
             var c_lat = adventure.location.coordinates[1];
             var posicion = geolib.isPointInCircle({latitude: lat, longitude: lon},
                 {latitude: c_lat, longitude: c_long},
-                20);
+                100);
             console.log(c_long);
             console.log(c_lat);
             console.log(lon);
@@ -234,27 +234,6 @@ router.post('/upload/image/', upload.single('file'), function(req, res) {
     });
 });
 
-router.post('/advplay/', function(req, res) {
-    var query = {_id: req.body.user_id};
-    var update = {$inc : {"played" : 30}};
-    var options = {};
 
-    User.findOneAndUpdate(query, update, options, function(err, user) {
-        if (err) {
-            res.send(err);
-        }
-        if(user){
-            console.log(user);
-        }
-
-    });
-
-    User.find({_id: req.body.user_id}).deepPopulate(pathdeepPopulate).exec().then(function (err, user) {
-        if(err)
-            res.send(err)
-        if (user)
-            res.send(user);
-    });
-});
 
 module.exports = router;
