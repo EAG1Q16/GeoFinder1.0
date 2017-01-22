@@ -518,6 +518,7 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
         if ($rootScope.UserSessionId._id != null) {
 
             $scope.NewAdventure.location_type = 'Point';
+            $scope.NewAdventure.user_id = $rootScope.UserSessionId._id;
             console.log($scope.NewAdventure);
 
             $http.post('/adventures/createadventure/', $scope.NewAdventure)
