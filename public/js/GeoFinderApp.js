@@ -102,6 +102,12 @@ GeoFinderApp.config(['$routeProvider', function($routeProvider){
             factory: checkRouting
         }
     })
+    .when('/help', {
+        templateUrl: './views/help.html',
+        resolve:{
+            factory: checkRouting
+        }
+    })
     .otherwise({
             redirectTo: '/index'
     })
