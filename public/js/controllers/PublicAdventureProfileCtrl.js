@@ -41,7 +41,8 @@ angular.module('GeoFinderApp').controller('PublicAdventureProfileCtrl',['$scope'
 
             $scope.AdventureProfileInfo = data;
             $scope.comments = data.comments;
-
+            $scope.creator = data.createdby[0];
+            console.log($scope.creator);
             $scope.chart ={
                 labels: ["Jugada", "Comentarios", "Favoritos"],
                 data: [data.played, data.comments.length, data.favs],

@@ -42,7 +42,7 @@
 .commentList {
     padding:0;
     list-style:none;
-    max-height:300px;
+    max-height:464px;
     overflow:auto;
     background-color: white;
 }
