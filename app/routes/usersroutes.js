@@ -778,6 +778,7 @@ router.post('/app/easy/login', function(req, res){
             res.status(400).send('Algo ha ocurrido mal')
         }
     });
+
 });
 
 router.post('/advplay/', function(req, res) {

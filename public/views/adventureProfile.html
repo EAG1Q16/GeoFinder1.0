@@ -60,7 +60,7 @@
     </div>
     <div class="col-md-4">
         <div class="row">
-        <div class="col-md-11">
+        <div class="col-md-12">
         <div class="row">
                         <div class="col-md-12">
                                 <md-card>
@@ -110,6 +110,28 @@
             <div class="row">
                 <div class="col-md-12">
                     <md-card>
+                        <a style="color: inherit" ng-href="#/userprofile/{{creator._id}}"><md-card-content>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="col-md-4">
+                                        <img class="img-circle" style="height: 100px; width: 100px" ng-src="{{creator.photo}}">
+                                    </div>
+                                    <br>
+                                    <div class="col-md-8">
+                                        <h4>{{creator.name}}</h4>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h5><b>Rango:</b> {{creator.score}}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </md-card-content></a>
+                    </md-card>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <md-card>
                         <md-card-title style="background-color: #00ADB5">
                             <md-card-title-text>
                                 <span class="md-headline" style="color: white;">Estadísticas:</span>
@@ -128,7 +150,7 @@
             </div>
         </div>
     </div>
-        </div>
+    </div>
     </div>
 </div>
 </div>

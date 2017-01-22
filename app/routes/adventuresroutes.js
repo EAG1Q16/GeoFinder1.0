@@ -25,7 +25,7 @@ router.get('/', function(req, res) {
 
 // GET adventure by ID
 router.get('/id/:adv_id', function(req, res){
-    Adventures.findById(req.params.adv_id).deepPopulate(['adventures.comments', 'comments.user', 'hints']).exec().then(function(err, adventure){
+    Adventures.findById(req.params.adv_id).deepPopulate(['adventures.comments', 'comments.user', 'hints','createdby']).exec().then(function(err, adventure){
         if(err)
             res.send(err)
         res.send(adventure);

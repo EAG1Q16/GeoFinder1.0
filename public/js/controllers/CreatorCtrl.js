@@ -811,13 +811,21 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
                 $scope.NewHint = {};
             }
             else {
+                /**
+                 * Separamos el create marker en hortizontal
+                 *
+                 */
+
+                $scope.map.createMarker.latitude = $scope.map.createMarker.latitude + 0.001;
+                $scope.map.createMarker.longitude = $scope.map.createMarker.longitude + 0.001;
+
 
                 $scope.map.center.latitude = $scope.map.createMarker.latitude;
                 $scope.map.center.longitude = $scope.map.createMarker.longitude;
 
                 /**
                  * Error notificado por la Andrea
-                 * Status: Al crear un aPista en el mismo sitio, peta en el servidor
+                 * Status: Al crear un Pista en el mismo sitio, peta en el servidor
                  * Sol: El sistema limpia los scopes, y si no movemos el marker este no realiza
                  * la función $scope.NewHint.location_coordinates = [$scope.map.createMarker.longitude,
                  * $scope.map.createMarker.latitude];
@@ -831,7 +839,6 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
 
                 $scope.IsMarkerCreatorActive = true;
                 $scope.IsNewHintFilled = true;
-                $scope.CleanMap();
 
                 $mdToast.show({
                     hideDelay   : 0,
