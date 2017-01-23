@@ -165,7 +165,7 @@ router.post('/hintnear/', function (req, res){
                     var c_lat = hintadv[i].location.coordinates[1];
                     var test1 = geolib.isPointInCircle({latitude: lat, longitude: lon},
                         {latitude: c_lat, longitude: c_long},
-                        10);
+                        30);
 
                     if (test1 == true) {
                         pistas = hintadv[i];
