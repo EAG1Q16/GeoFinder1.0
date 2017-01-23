@@ -212,15 +212,17 @@
 
                 <md-input-container class="md-block">
                     <span class="md-subhead">Imagen de la Aventura</span>
-                    <input type="file" file-model="ctrl.parent.myFile" id="InputFile1" ng-show="false" aria-label="file"/>
+                    <input type="file" file-model="ctrl.parent.myFile1" id="InputFile1" ng-show="false" aria-label="file"/>
                 </md-input-container>
                 <hr>
                 <div class="row form-group">
-                    <md-button class="md-raised" ng-click="ctrl.parent.replaceElement1()">Seleccionar Archivo</md-button>
+                    <md-button ng-disabled="ctrl.parent.IsFinal" class="md-raised" ng-click="ctrl.parent.replaceElement1()" ng-show="ctrl.parent.myFile1 == undefined">Seleccionar imagen</md-button>
                     <br>
-                    <md-button class="md-raised" ng-click="ctrl.parent.uploadFileForAdv()">Subir</md-button>
+                    <md-button ng-disabled="ctrl.parent.IsFinal" class="md-raised" ng-click="ctrl.parent.uploadFileForAdv()" ng-show="ctrl.parent.myFile1 != undefined">Subir</md-button>
+                    <br>
+                    <md-button ng-disabled="ctrl.parent.IsFinal" class="md-raised md-warn" ng-click="ctrl.parent.cancelUpload()" ng-show="ctrl.parent.myFile1 != undefined">Cancelar</md-button>
                     <hr>
-                    <img ng-src="{{ctrl.parent.NewAdventure.image}}" class="img-responsive" style="vertical-align: middle;">
+                    <img ng-hide="ctrl.parent.myFile1 == undefined" ng-src="{{ctrl.parent.NewAdventure.image}}" class="img-responsive" style="vertical-align: middle;">
                 </div>
                 <div class="form-group">
                     <span class="md-subhead">Dificultad general de la Aventura</span>
@@ -273,15 +275,17 @@
 
                 <md-input-container class="md-block">
                     <span class="md-subhead">Agregar una Imagen</span>
-                    <input type="file" file-model="ctrl.parent.myFile" id="InputFile2" ng-show="false" aria-label="file"/>
+                    <input type="file" file-model="ctrl.parent.myFile2" id="InputFile2" ng-show="false" aria-label="file"/>
                 </md-input-container>
             </form>
             <div class="row">
-                <md-button class="md-raised" ng-click="ctrl.parent.replaceElement2()">Seleccionar Archivo</md-button>
+                <md-button ng-disabled="ctrl.parent.IsFinal" class="md-raised" ng-click="ctrl.parent.replaceElement2()" ng-show="ctrl.parent.myFile2 == undefined">Seleccionar imagen</md-button>
                 <br>
-                <md-button class="md-raised" ng-click="ctrl.parent.uploadFileForFirstHint()">Subir</md-button>
+                <md-button ng-disabled="ctrl.parent.IsFinal" class="md-raised" ng-click="ctrl.parent.uploadFileForFirstHint()" ng-show="ctrl.parent.myFile2 != undefined">Subir</md-button>
+                <br>
+                <md-button ng-disabled="ctrl.parent.IsFinal" class="md-raised md-warn" ng-click="ctrl.parent.cancelUpload()" ng-show="ctrl.parent.myFile2 != undefined">Cancelar</md-button>
                 <hr>
-                <img ng-src="{{ctrl.parent.NewAdventure.hintimage}}" class="img-responsive" style="vertical-align: middle;">
+                <img ng-hide="ctrl.parent.myFile2 == undefined" ng-src="{{ctrl.parent.NewAdventure.hintimage}}" class="img-responsive" style="vertical-align: middle;">
             </div>
         </div>
     </md-dialog-content>
@@ -323,15 +327,17 @@
 
                 <md-input-container class="md-block">
                     <span class="md-subhead">Agregar una Imagen</span>
-                    <input type="file" file-model="ctrl.parent.myFile" id="InputFile3" ng-show="false" aria-label="file"/>
+                    <input type="file" file-model="ctrl.parent.myFile3" id="InputFile3" ng-show="false" aria-label="file"/>
                 </md-input-container>
             </form>
             <div class="row">
-                <md-button ng-disabled="ctrl.parent.IsFinal" class="md-raised" ng-click="ctrl.parent.replaceElement3()">Seleccionar Archivo</md-button>
+                <md-button ng-disabled="ctrl.parent.IsFinal" class="md-raised" ng-click="ctrl.parent.replaceElement3()" ng-show="ctrl.parent.myFile3 == undefined">Seleccionar imagen</md-button>
                 <br>
-                <md-button ng-disabled="ctrl.parent.IsFinal" class="md-raised" ng-click="ctrl.parent.uploadFileForHints()">Subir</md-button>
+                <md-button ng-disabled="ctrl.parent.IsFinal" class="md-raised" ng-click="ctrl.parent.uploadFileForHints()" ng-show="ctrl.parent.myFile3 != undefined">Subir</md-button>
+                <br>
+                <md-button ng-disabled="ctrl.parent.IsFinal" class="md-raised md-warn" ng-click="ctrl.parent.cancelUpload()" ng-show="ctrl.parent.myFile3 != undefined">Cancelar</md-button>
                 <hr>
-                <img ng-src="{{ctrl.parent.NewHint.image}}" class="img-responsive" style="vertical-align: middle;">
+                <img ng-hide="ctrl.parent.myFile3 == undefined" ng-src="{{ctrl.parent.NewHint.image}}" class="img-responsive" style="vertical-align: middle;">
             </div>
         </div>
     </md-dialog-content>
