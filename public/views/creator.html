@@ -314,7 +314,8 @@
 
     <md-dialog-content>
         <div class="md-dialog-content">
-            <md-checkbox class="blue" ng-click="ctrl.parent.IsFinal = true">Pista Final</md-checkbox>
+            <md-checkbox class="blue" ng-click="ctrl.parent.IsFinal ? ctrl.parent.IsFinal = false : ctrl.parent.IsFinal = true;"
+            >Pista Final</md-checkbox>
             <form>
                 <md-input-container md-no-float class="md-block">
                     <input ng-disabled="ctrl.parent.IsFinal" required ng-model="ctrl.parent.NewHint.text" placeholder="Texto de la Pista">
