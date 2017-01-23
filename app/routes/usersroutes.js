@@ -781,6 +781,45 @@ router.post('/app/easy/login', function(req, res){
 
 });
 
+//Follow a user with the referalid QR
+router.post('/follow/qr/:user_id', function(req, res) {
+    var query1 = {referalid: req.params.user_id};
+    User.findOne(query1, function(err, existingUser) {
+        if (existingUser) {
+            //The id recived in the uri is the id of the user public profile and the id recived in the req is the id of the user logged in
+            //Here we save the user wich i follow in the mongo database using the season id of the user logged in
+            var query2 = {_id: req.body._id};
+            var update = {$addToSet : {"following" : existingUser._id}};
+            var options = {};
+            User.findOneAndUpdate(query2, update, options, function(err, user) {
+                if (err) {
+                    res.send(err);
+                }
+                if(user){
+                    //Then if this works we add these id to the other user making a simple relationship
+                    var query3 = {_id: existingUser._id};
+                    var update2 = {$addToSet : {"followers" : req.body._id}};
+                    User.findOneAndUpdate(query3, update2, options, function(err, user) {
+                        if (err) {
+                            res.send(err);
+                        }
+                        if(user){
+                            User.find({_id: req.body._id}).populate('following').exec().then(function (err, user) {
+                                if(err)
+                                    res.send(err)
+                                res.send(user);
+                            });
+                        }
+                    });
+                }
+            });
+        }
+        if(err){
+            res.status(400).send('Usuario no encontrado')
+        }
+    });
+});
+
 router.post('/advplay/', function(req, res) {
     var query = {_id: req.body.user_id};
     var update = {$inc : {"score" : 30}};
