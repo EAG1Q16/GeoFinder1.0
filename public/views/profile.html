@@ -13,12 +13,15 @@
                 <div class="col-md-3" style="padding-left: 7%">
                     <img ng-src="{{UpdatedUser.photo}}" class="img-rounded" height="150px" width="150px" alt="Washed Out">
                 </div>
-                <div class="col-md-4" style="padding-top: 5%; padding-left: 6%" >
+                <div class="col-md-2" style="padding-top: 5%; padding-left: 6%" >
                     <br  ng-show="myFile == undefined">
                     <input type="file" file-model="myFile" id="InputFileID" class="ng-hide"/>
                     <md-button class="md-raised" ng-click="replaceElement()" ng-show="myFile == undefined">Seleccionar imagen</md-button>
                     <md-button class="md-raised" ng-click="uploadFile()" ng-show="myFile != undefined">Subir</md-button>
                     <md-button class="md-raised md-warn" ng-click="cancelUpload()" ng-show="myFile != undefined">Cancelar</md-button>
+                </div>
+                <div class="col-md-4" style="padding-top: 6%; padding-left: 6%">
+                    <h5>{{myFile.name}}</h5>
                 </div>
             </div>
             <br>

@@ -596,6 +596,8 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
             $scope.map.center.latitude = $scope.map.createMarker.latitude;
             $scope.map.center.longitude = $scope.map.createMarker.longitude;
 
+            $scope.myFile1 = undefined;
+
             console.log($scope.NewAdventure);
             if(!$scope.IsAdventureInputsFilled){
                 var toast = $mdToast.simple()
@@ -647,6 +649,8 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
                         }
                         else {
                             console.log($scope.NewAdventure);
+
+                            $scope.myFile2 = undefined;
 
                             $scope.IsAdventureInputsFilled = false;
                             //Si la Localización de la aventura ha sido aplicada
@@ -840,6 +844,8 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
                 $scope.IsMarkerCreatorActive = true;
                 $scope.IsNewHintFilled = true;
 
+                $scope.myFile3 = undefined;
+
                 $mdToast.show({
                     hideDelay   : 0,
                     position    : 'top right',
@@ -913,7 +919,7 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
      *  Image Zone
      */
     $scope.uploadFileForAdv = function(){
-        var file = $scope.myFile;
+        var file = $scope.myFile1;
         var fd = new FormData();
         fd.append('file', file);
         console.log('mi fichero',file);
@@ -932,7 +938,7 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
             });
     };
     $scope.uploadFileForFirstHint = function(){
-        var file = $scope.myFile;
+        var file = $scope.myFile2;
         var fd = new FormData();
         fd.append('file', file);
         console.log('mi fichero',file);
@@ -950,7 +956,7 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
             });
     };
     $scope.uploadFileForHints = function(){
-        var file = $scope.myFile;
+        var file = $scope.myFile3;
         var fd = new FormData();
         fd.append('file', file);
         console.log('mi fichero',file);
@@ -977,6 +983,16 @@ angular.module('GeoFinderApp').controller('CreatorCtrl',['$scope','$rootScope','
     };
     $scope.replaceElement3 = function () {
         angular.element(document.querySelector('#InputFile3')).click();
+    };
+
+    $scope.cancelUpload = function () {
+        $scope.myFile1 = undefined;
+        $scope.myFile2 = undefined;
+        $scope.myFile3 = undefined;
+        $scope.NewHint.image = undefined;
+        $scope.NewAdventure.hintimage = undefined;
+        $scope.NewAdventure.image = undefined;
+
     };
 
 }])
